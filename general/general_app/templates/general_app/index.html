@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+    Симкарты без терминалов:
+    {% for num in sim_list %}
+        <li>{{ num }}, {{ num.operator }}</li>
+    {% endfor %}
+    Юзеры без человека:
+    {% for user in user_list %}
+        <li>{{ user }}</li>
+    {% endfor %}
+    Терминалы без объектов:
+    {% for term in term_list %}
+        <li>{{ term }}</li>
+    {% endfor %}
+</body>
+</html>

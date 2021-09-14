@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Human, TelephoneNumber, Telegram, Terminals, SimCards, WialonUser, WialonObject, WialonObjectActive
+from .models import Human, TelephoneNumber, Telegram, Terminals, SimCards, WialonUser, WialonObject, WialonObjectActive, UserWialonServer
 
 
 @admin.register(Human)
@@ -33,7 +33,7 @@ class WialonUserAdmin(admin.ModelAdmin):
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'wialon_user', 'terminal')
-    search_fields = ('name',)
+    search_fields = ('name', 'terminal__imei')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'
 
@@ -41,7 +41,7 @@ class WialonObjectAdmin(admin.ModelAdmin):
 @admin.register(WialonObjectActive)
 class WialonObjectActiveAdmin(admin.ModelAdmin):
     list_display = ('wialon_object', 'active', 'last_modified')
-    search_fields = ('wialon_object',)
+    search_fields = ('wialon_object__name', )
     empty_value_display = '-пусто-'
 
 
@@ -56,4 +56,12 @@ class TerminalsAdmin(admin.ModelAdmin):
 class SimCardsAdmin(admin.ModelAdmin):
     list_display = ('number', 'icc', 'operator', 'terminal')
     search_fields = ('number', 'icc')
+    empty_value_display = '-пусто-'
+
+
+@admin.register(UserWialonServer)
+class UserWialonServerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'server',)
+    search_fields = ('user__user_name',)
+    list_filter = ('server',)
     empty_value_display = '-пусто-'
