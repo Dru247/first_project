@@ -169,7 +169,7 @@ class WialonObjectActive(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.wialon_object
+        return str(self.wialon_object)
 
     class Meta:
         ordering = ['wialon_object']

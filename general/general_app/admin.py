@@ -5,7 +5,7 @@ from .models import Human, TelephoneNumber, Telegram, Terminals, SimCards, Wialo
 @admin.register(Human)
 class HumanAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
-    search_fields = ('last_name',)
+    search_fields = ('first_name', 'last_name')
     empty_value_display = '-пусто-'
 
 
