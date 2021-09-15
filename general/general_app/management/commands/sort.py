@@ -1,5 +1,5 @@
 import csv
-from general_app.models import SimCards, OperatorsSim, WialonServer, Terminals, Human, TelephoneNumber, UserWialonServer, Telegram, WialonUser, WialonObject, WialonObjectActive
+from general_app.models import SimCards, OperatorsSim, HumanTerminalPresence, WialonServer, Terminals, Human, TelephoneNumber, UserWialonServer, Telegram, WialonUser, WialonObject, WialonObjectActive
 from django.core.management.base import BaseCommand
 import time
 from django.core.files.base import File
@@ -11,21 +11,25 @@ class Command(BaseCommand):
     help = 'Сортировка'
 
     def handle(self, *args, **options):
-        term_all = Terminals.objects.all()
-        sim_list_2 = []
-        for i in term_all:
-            if not WialonObject.objects.filter(terminal=i).exists():
-                sim_list_2.append(i)
-        print(len(sim_list_2))
+#        term_all = Terminals.objects.all()
+#        sim_list_2 = []
+#        for i in term_all:
+#            if not WialonObject.objects.filter(terminal=i).exists():
+#                sim_list_2.append(i)
+#        print(len(sim_list_2))
 
-#        path = 'general_app/management/commands/y4_s1.csv'
-#        with open(path, 'r', newline='') as data:
-#            result = csv.DictReader(data, delimiter=',')
-#            list_y4 = []
-#            for line in result:
-#                i = line['Имя']
-#                x = line['Учетная запись']
-#                y = line['ID']
+        path = 'general_app/management/commands/list_47.csv'
+        with open(path, 'r', newline='') as data:
+            result = csv.DictReader(data, delimiter=',')
+            list_y4 = []
+            for line in result:
+                a = line['ID']
+                b = line['last_n']
+                x = Terminals.objects.get(imei=a)
+                y = Human.objects.get(last_name=b)
+                HumanTerminalPresence.objects.get_or_create(human=y, terminal=x)
+
+
 #                if x not in list_y4:
 #                    list_y4.append(x)
 #            for r in list_y4:

@@ -8,6 +8,9 @@ class Human(models.Model):
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
 
+    class Meta:
+        ordering = ['first_name']
+
 
 class TelephoneNumber(models.Model):
     human = models.ForeignKey(Human,
@@ -85,6 +88,19 @@ class Terminals(models.Model):
         ordering = ['imei']
 
 
+class HumanTerminalPresence(models.Model):
+    human = models.ForeignKey(Human,
+                              on_delete=models.PROTECT,
+                              null=True,
+                              )
+    terminal = models.OneToOneField(Terminals,
+                                    on_delete=models.PROTECT,
+                                    )
+
+    class Meta:
+        ordering = ['human']
+
+
 class OperatorsSim(models.Model):
     name = models.CharField(max_length=20,
                             null=True,
@@ -120,6 +136,19 @@ class SimCards(models.Model):
 
     class Meta:
         ordering = ['number']
+
+
+class HumanSimPresence(models.Model):
+    human = models.ForeignKey(Human,
+                              on_delete=models.PROTECT,
+                              null=True,
+                              )
+    simcard = models.OneToOneField(SimCards,
+                                   on_delete=models.PROTECT,
+                                   )
+
+    class Meta:
+        ordering = ['human']
 
 
 class WialonUser(models.Model):
