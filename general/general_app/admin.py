@@ -12,6 +12,7 @@ class HumanAdmin(admin.ModelAdmin):
 @admin.register(TelephoneNumber)
 class TelephoneNumberAdmin(admin.ModelAdmin):
     list_display = ('human', 'number')
+    autocomplete_fields = ('human',)
     search_fields = ('human__first_name', 'human__last_name')
     empty_value_display = '-пусто-'
 
@@ -19,6 +20,7 @@ class TelephoneNumberAdmin(admin.ModelAdmin):
 @admin.register(Telegram)
 class TelegramAdmin(admin.ModelAdmin):
     list_display = ('human', 'telegram_id',)
+    autocomplete_fields = ('human',)
     search_fields = ('telegram_id', 'human__first_name', 'human__last_name')
     empty_value_display = '-пусто-'
 
@@ -26,6 +28,7 @@ class TelegramAdmin(admin.ModelAdmin):
 @admin.register(WialonUser)
 class WialonUserAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'password', 'human')
+    autocomplete_fields = ('human',)
     search_fields = ('user_name', 'human__first_name', 'human__last_name')
     empty_value_display = '-пусто-'
 
@@ -34,6 +37,7 @@ class WialonUserAdmin(admin.ModelAdmin):
 class WialonObjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'wialon_user', 'terminal', 'active')
     search_fields = ('name', 'terminal__imei')
+    autocomplete_fields = ('terminal', 'wialon_user')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'
 
@@ -46,6 +50,7 @@ class WialonObjectAdmin(admin.ModelAdmin):
 class WialonObjectActiveAdmin(admin.ModelAdmin):
     list_display = ('wialon_object', 'active', 'last_modified')
     search_fields = ('wialon_object__name', )
+    autocomplete_fields = ('wialon_object',)
     empty_value_display = '-пусто-'
 
 
@@ -60,6 +65,7 @@ class TerminalsAdmin(admin.ModelAdmin):
 class SimCardsAdmin(admin.ModelAdmin):
     list_display = ('number', 'icc', 'operator', 'terminal')
     search_fields = ('number', 'icc', 'terminal__imei')
+    autocomplete_fields = ('terminal',)
     empty_value_display = '-пусто-'
 
 
@@ -67,6 +73,7 @@ class SimCardsAdmin(admin.ModelAdmin):
 class UserWialonServerAdmin(admin.ModelAdmin):
     list_display = ('user', 'server',)
     search_fields = ('user__user_name',)
+    autocomplete_fields = ('user',)
     list_filter = ('server',)
     empty_value_display = '-пусто-'
 
@@ -75,6 +82,7 @@ class UserWialonServerAdmin(admin.ModelAdmin):
 class HumanTerminalPresenceAdmin(admin.ModelAdmin):
     list_display = ('human', 'terminal', 'terminal_model', 'terminal_serial_number')
     search_fields = ('terminal__imei',)
+    autocomplete_fields = ('human', 'terminal')
     list_filter = ('human',)
     empty_value_display = '-пусто-'
 
@@ -90,6 +98,7 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
 @admin.register(HumanSimPresence)
 class HumanSimPresenceAdmin(admin.ModelAdmin):
     list_display = ('human', 'simcard', 'simcard_icc')
+    autocomplete_fields = ('human', 'simcard')
     list_filter = ('human',)
     empty_value_display = '-пусто-'
 
