@@ -36,7 +36,7 @@ class WialonUserAdmin(admin.ModelAdmin):
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'wialon_user', 'terminal', 'active')
-    search_fields = ('name', 'terminal__imei', 'wialon_user',)
+    search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
     autocomplete_fields = ('terminal', 'wialon_user')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'
@@ -98,6 +98,7 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
 @admin.register(HumanSimPresence)
 class HumanSimPresenceAdmin(admin.ModelAdmin):
     list_display = ('human', 'simcard', 'simcard_icc')
+    search_fields = ('simcard__number', 'simcard__icc')
     autocomplete_fields = ('human', 'simcard')
     list_filter = ('human',)
     empty_value_display = '-пусто-'
