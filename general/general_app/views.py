@@ -7,16 +7,14 @@ from django.db.models import Count, Q
 @login_required
 def index_view(request):
     sim_list = SimCards.objects.filter(terminal=None, humansimpresence__isnull=True)
-    term_all = Terminals.objects.all()
-    term_list = []
-    for i in term_all:
-        if not WialonObject.objects.filter(terminal=i).exists():
-            term_list.append(i)
+    term_list = Terminals.objects.filter(wialonobject__isnull=True, humanterminalpresence__isnull=True)
     user_list = WialonUser.objects.filter(human=None)
+    wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
     context = {
         'sim_list': sim_list,
         'term_list': term_list,
-        'user_list': user_list
+        'user_list': user_list,
+        'wia_obj_list': wia_obj_list,
     }
     return render(request, 'general_app/index.html', context=context)
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone as tz
 
 
 class Human(models.Model):
@@ -195,7 +196,7 @@ class WialonObjectActive(models.Model):
                                          on_delete=models.CASCADE,
                                          )
     active = models.BooleanField(default=True)
-    last_modified = models.DateTimeField(auto_now=True)
+    last_modified = models.DateTimeField(default=tz.now)
 
     def __str__(self):
         return str(self.wialon_object)

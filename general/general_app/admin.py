@@ -36,7 +36,7 @@ class WialonUserAdmin(admin.ModelAdmin):
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'wialon_user', 'terminal', 'active')
-    search_fields = ('name', 'terminal__imei')
+    search_fields = ('name', 'terminal__imei', 'wialon_user',)
     autocomplete_fields = ('terminal', 'wialon_user')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'

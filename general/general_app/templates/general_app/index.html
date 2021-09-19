@@ -2,20 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Чек-страница</title>
 </head>
 <body>
-    Симкарты без терминалов:
+    <p style="color:red;">Симкарты без терминалов:</p>
+    <ol>
     {% for num in sim_list %}
         <li>{{ num }}, {{ num.operator }}</li>
     {% endfor %}
-    Юзеры без человека:
+    </ol>
+    <p style="color:red;">Юзеры без человека:</p>
+    <ol>
     {% for user in user_list %}
         <li>{{ user }}</li>
     {% endfor %}
-    Терминалы без объектов:
+    </ol>
+    <p style="color:red;">Терминалы без объектов Wialon:</p>
+    <ol>
     {% for term in term_list %}
         <li>{{ term }}</li>
     {% endfor %}
+    </ol>
+    <p style="color:red;">Объекты Wialon без статуса:</p>
+    <ol>
+    {% for obj in wia_obj_list %}
+        <li>{{ obj }}</li>
+    {% endfor %}
+    </ol>
 </body>
 </html>
