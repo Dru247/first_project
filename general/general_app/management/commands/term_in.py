@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 print(len(sim_now))
                 term = Terminals.objects.get(imei=imei)
                 for sim in sim_now:
-                    SimCards.objects.filter(icc=sim).update(terminal=term)
+                    SimCards.objects.filter(icc=sim.icc).update(terminal=term)
                     try:
                         HumanSimPresence.objects.get(simcard=sim).delete()
                     except ObjectDoesNotExist:
