@@ -1,33 +1,43 @@
 import csv
-from general_app.models import SimCards, OperatorsSim, HumanTerminalPresence, WialonServer, Terminals, Human, TelephoneNumber, UserWialonServer, Telegram, WialonUser, WialonObject, WialonObjectActive
-from django.core.management.base import BaseCommand
 import time
+
 from django.core.files.base import File
-from django.db.models import Count
-from django.db.models import Q
+from django.core.management.base import BaseCommand
+from django.db.models import Count, Q
+from general_app.models import (Human, HumanSimPresence, HumanTerminalPresence,
+                                OperatorsSim, SimCards, Telegram,
+                                TelephoneNumber, Terminals, UserWialonServer,
+                                WialonObject, WialonObjectActive, WialonServer,
+                                WialonUser)
 
 
 class Command(BaseCommand):
     help = 'Сортировка'
 
     def handle(self, *args, **options):
-#        term_all = Terminals.objects.all()
-#        sim_list_2 = []
-#        for i in term_all:
-#            if not WialonObject.objects.filter(terminal=i).exists():
-#                sim_list_2.append(i)
-#        print(len(sim_list_2))
-
-        path = 'general_app/management/commands/list_47.csv'
+        """Загрузка новых симкарт(чек - result, x,)"""
+        path = 'general_app/management/commands/mega.csv'
         with open(path, 'r', newline='') as data:
-            result = csv.DictReader(data, delimiter=',')
-            list_y4 = []
+            result = csv.DictReader(data, delimiter=';')
+            x = OperatorsSim.objects.get(name='Мегафон')
+            y = Human.objects.get(last_name='Лехтин')
             for line in result:
-                a = line['ID']
-                b = line['last_n']
-                x = Terminals.objects.get(imei=a)
-                y = Human.objects.get(last_name=b)
-                HumanTerminalPresence.objects.get_or_create(human=y, terminal=x)
+                a = line['number']
+                b = line['ICC']
+#                c = line['Operator']
+                if SimCards.objects.filter(number=a).exists():
+                    pass
+                else:
+                    SimCards.objects.get_or_create(
+                        operator=x,
+                        number=a,
+                        icc=b
+                    )
+                    z = SimCards.objects.get(number=a)
+                    HumanSimPresence.objects.get_or_create(
+                        human=y,
+                        simcard=z
+                    )
 
 
 #                if x not in list_y4:
@@ -64,7 +74,8 @@ class Command(BaseCommand):
 #            'wialonuser__wialonobject__wialonobjectactive',
 #            filter=Q(wialonuser__wialonobject__wialonobjectactive__active=True)
 #        )
-#        a = Human.objects.annotate(all=wialin_obj_all).annotate(active=wialin_obj_active)
+#        a = Human.objects.annotate(all=wialin_obj_all). \
+#            annotate(active=wialin_obj_active)
 #        for i in a:
 #            y = i.all
 #            z = i.active

@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Human, TelephoneNumber, Telegram, Terminals, SimCards, HumanSimPresence, WialonUser, WialonObject, WialonObjectActive, UserWialonServer, HumanTerminalPresence
+
+from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
+                     Telegram, TelephoneNumber, Terminals, UserWialonServer,
+                     WialonObject, WialonObjectActive, WialonUser)
 
 
 @admin.register(Human)
@@ -80,8 +83,13 @@ class UserWialonServerAdmin(admin.ModelAdmin):
 
 @admin.register(HumanTerminalPresence)
 class HumanTerminalPresenceAdmin(admin.ModelAdmin):
-    list_display = ('human', 'terminal', 'terminal_model', 'terminal_serial_number')
-    search_fields = ('terminal__imei',)
+    list_display = (
+        'human',
+        'terminal',
+        'terminal_model',
+        'terminal_serial_number'
+    )
+    search_fields = ('terminal__imei', 'terminal__serial_number')
     autocomplete_fields = ('human', 'terminal')
     list_filter = ('human',)
     empty_value_display = '-пусто-'

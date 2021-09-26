@@ -1,13 +1,21 @@
-from django.shortcuts import render
-from .models import Human, SimCards, Terminals, WialonObject, WialonUser, WialonObjectActive
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
+from django.shortcuts import render
+
+from .models import (Human, SimCards, Terminals, WialonObject,
+                     WialonObjectActive, WialonUser)
 
 
 @login_required
 def index_view(request):
-    sim_list = SimCards.objects.filter(terminal=None, humansimpresence__isnull=True)
-    term_list = Terminals.objects.filter(wialonobject__isnull=True, humanterminalpresence__isnull=True)
+    sim_list = SimCards.objects.filter(
+        terminal=None,
+        humansimpresence__isnull=True
+    )
+    term_list = Terminals.objects.filter(
+        wialonobject__isnull=True,
+        humanterminalpresence__isnull=True
+    )
     user_list = WialonUser.objects.filter(human=None)
     wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
     context = {
@@ -28,7 +36,8 @@ def clients_view(request):
         'wialonuser__wialonobject__wialonobjectactive',
         filter=Q(wialonuser__wialonobject__wialonobjectactive__active=True)
     )
-    client_list = Human.objects.annotate(all=wialon_obj_all).annotate(active=wialon_obj_active)
+    client_list = Human.objects.annotate(all=wialon_obj_all). \
+        annotate(active=wialon_obj_active)
     context = {
         'client_list': client_list,
         'activ_obj_all': activ_obj_all,

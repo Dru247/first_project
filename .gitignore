@@ -131,3 +131,6 @@ dmypy.json
 
 .idea/
 .idea
+
+#dj_commads_file
+/general/general_app/management/commands/term.csv
