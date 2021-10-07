@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Чек-страница</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Чек-страница{% endblock %}
+{% block content %}
+    <p style="color:red;">Активные объекты на серверах:</p>
+    {% for serv in wia_obj_serv_active %}
+        <p>{{ serv }}, {{ serv.active }}</p>
+    {% endfor %}
     <p style="color:red;">Симкарты без терминалов:</p>
     <ol>
     {% for num in sim_list %}
@@ -29,5 +29,4 @@
         <li>{{ obj }}</li>
     {% endfor %}
     </ol>
-</body>
-</html>
+{% endblock %}

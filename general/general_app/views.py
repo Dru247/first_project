@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from .models import (Human, SimCards, Terminals, WialonObject,
-                     WialonObjectActive, WialonUser)
+                     WialonObjectActive, WialonUser, WialonServer, UserWialonServer)
 
 
 @login_required
@@ -18,11 +18,17 @@ def index_view(request):
     )
     user_list = WialonUser.objects.filter(human=None)
     wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
+    sum_wia_obj_serv_active = Count(
+        'userwialonserver__user__wialonobject__wialonobjectactive',
+        filter=Q(userwialonserver__user__wialonobject__wialonobjectactive__active=True)
+    )
+    wia_obj_serv_active = WialonServer.objects.annotate(active=sum_wia_obj_serv_active)
     context = {
         'sim_list': sim_list,
         'term_list': term_list,
         'user_list': user_list,
         'wia_obj_list': wia_obj_list,
+        'wia_obj_serv_active': wia_obj_serv_active,
     }
     return render(request, 'general_app/index.html', context=context)
 
@@ -44,3 +50,18 @@ def clients_view(request):
         'not_activ_obj_all': not_activ_obj_all,
     }
     return render(request, 'general_app/clients.html', context=context)
+
+
+@login_required
+def server_view(request, server_id):
+    serv_now = get_object_or_404(WialonServer, pk=server_id)
+    a = WialonUser.objects.filter(userwialonserver__server=serv_now).filter(wialonobject__wialonobjectactive__active=True)
+    sum_wia_obj_active = Count(
+        'wialonuser__wialonobject__wialonobjectactive',
+        filter=Q(wialonuser__wialonobject__wialonobjectactive__active=True)
+    )
+    human_list_server = Human.objects.filter(wialonuser__in=a).annotate(active=sum_wia_obj_active)
+    context = {
+        'human_list_server': human_list_server,
+    }
+    return render(request, 'general_app/server.html', context=context)

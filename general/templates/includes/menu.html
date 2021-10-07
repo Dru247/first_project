@@ -1,0 +1,29 @@
+<div>
+  <ul>
+    <li>
+      <a href="{% url 'general_app:index-view' %}">
+        Чек-страница
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'general_app:clients-view' %}">
+        Клиенты
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'general_app:server-view' server_id=1 %}">
+        Клиенты COM
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'general_app:server-view' server_id=2 %}">
+        Клиенты RU
+    </a>
+    </li>
+    <li>
+      <a href="{% url 'general_app:server-view' server_id=3 %}">
+        Клиенты local
+    </a>
+    </li>
+  </ul>
+</div>
