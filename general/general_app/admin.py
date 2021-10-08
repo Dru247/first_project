@@ -2,7 +2,8 @@ from django.contrib import admin
 
 from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Telegram, TelephoneNumber, Terminals, UserWialonServer,
-                     WialonObject, WialonObjectActive, WialonUser)
+                     WialonObject, WialonObjectActive, WialonUser, Company,
+                     UserCompany, HumanCompany)
 
 
 @admin.register(Human)
@@ -114,3 +115,24 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     @admin.display()
     def simcard_icc(self, obj):
         return obj.simcard.icc
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    empty_value_display = '-пусто-'
+
+
+@admin.register(UserCompany)
+class UserCompanyAdmin(admin.ModelAdmin):
+    list_display = ('company', 'user')
+    search_fields = ('user', 'company')
+    empty_value_display = '-пусто-'
+
+
+@admin.register(HumanCompany)
+class HumanCompanyAdmin(admin.ModelAdmin):
+    list_display = ('company', 'human')
+    search_fields = ('user', 'company')
+    empty_value_display = '-пусто-'

@@ -14,22 +14,24 @@ class Human(models.Model):
 
 
 class TelephoneNumber(models.Model):
-    human = models.ForeignKey(Human,
-                              on_delete=models.PROTECT,
-                              )
-    number = models.CharField(max_length=20,
-                              unique=True
-                              )
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+    )
+    number = models.CharField(
+        max_length=20,
+        unique=True
+    )
 
     def __str__(self):
         return str(self.number)
 
 
 class Telegram(models.Model):
-    human = models.ForeignKey(Human,
-                              on_delete=models.PROTECT,
-                              null=True
-                              )
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT
+    )
     telegram_id = models.PositiveBigIntegerField(unique=True)
 
     def __str__(self):
@@ -37,10 +39,11 @@ class Telegram(models.Model):
 
 
 class BrandTerminals(models.Model):
-    brand = models.CharField(max_length=20,
-                             null=True,
-                             unique=True
-                             )
+    brand = models.CharField(
+        max_length=20,
+        null=True,
+        unique=True
+    )
 
     def __str__(self):
         return self.brand
@@ -50,15 +53,17 @@ class BrandTerminals(models.Model):
 
 
 class ModelTerminals(models.Model):
-    brand = models.ForeignKey(BrandTerminals,
-                              on_delete=models.PROTECT,
-                              related_name='t_brand',
-                              null=True
-                              )
-    model = models.CharField(max_length=20,
-                             null=True,
-                             unique=True
-                             )
+    brand = models.ForeignKey(
+        BrandTerminals,
+        on_delete=models.PROTECT,
+        related_name='t_brand',
+        null=True
+    )
+    model = models.CharField(
+        max_length=20,
+        null=True,
+        unique=True
+    )
 
     def __str__(self):
         return self.model
@@ -68,19 +73,22 @@ class ModelTerminals(models.Model):
 
 
 class Terminals(models.Model):
-    model = models.ForeignKey(ModelTerminals,
-                              on_delete=models.PROTECT,
-                              related_name='t_model',
-                              null=True,
-                              blank=True
-                              )
-    serial_number = models.CharField(max_length=20,
-                                     null=True
-                                     )
-    imei = models.CharField(max_length=20,
-                            unique=True,
-                            null=True,
-                            )
+    model = models.ForeignKey(
+        ModelTerminals,
+        on_delete=models.PROTECT,
+        related_name='t_model',
+        null=True,
+        blank=True
+    )
+    serial_number = models.CharField(
+        max_length=20,
+        null=True
+    )
+    imei = models.CharField(
+        max_length=20,
+        unique=True,
+        null=True,
+    )
 
     def __str__(self):
         return str(self.imei)
@@ -90,47 +98,55 @@ class Terminals(models.Model):
 
 
 class HumanTerminalPresence(models.Model):
-    human = models.ForeignKey(Human,
-                              on_delete=models.PROTECT,
-                              null=True,
-                              )
-    terminal = models.OneToOneField(Terminals,
-                                    on_delete=models.PROTECT,
-                                    )
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        null=True,
+    )
+    terminal = models.OneToOneField(
+        Terminals,
+        on_delete=models.PROTECT,
+    )
 
     class Meta:
         ordering = ['human']
 
 
 class OperatorsSim(models.Model):
-    name = models.CharField(max_length=20,
-                            null=True,
-                            unique=True
-                            )
+    name = models.CharField(
+        max_length=20,
+        null=True,
+        unique=True
+    )
 
     def __str__(self):
         return self.name
 
 
 class SimCards(models.Model):
-    operator = models.ForeignKey(OperatorsSim,
-                                 on_delete=models.PROTECT,
-                                 related_name='s_operator',
-                                 null=True
-                                 )
-    number = models.CharField(max_length=20,
-                              null=True,
-                              unique=True)
-    icc = models.CharField(max_length=20,
-                           null=True,
-                           unique=True
-                           )
-    terminal = models.ForeignKey(Terminals,
-                                 on_delete=models.PROTECT,
-                                 related_name='s_terminal',
-                                 null=True,
-                                 blank=True
-                                 )
+    operator = models.ForeignKey(
+        OperatorsSim,
+        on_delete=models.PROTECT,
+        related_name='s_operator',
+        null=True
+    )
+    number = models.CharField(
+        max_length=20,
+        null=True,
+        unique=True
+    )
+    icc = models.CharField(
+        max_length=20,
+        null=True,
+        unique=True
+    )
+    terminal = models.ForeignKey(
+        Terminals,
+        on_delete=models.PROTECT,
+        related_name='s_terminal',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.number
@@ -140,31 +156,36 @@ class SimCards(models.Model):
 
 
 class HumanSimPresence(models.Model):
-    human = models.ForeignKey(Human,
-                              on_delete=models.PROTECT,
-                              null=True,
-                              )
-    simcard = models.OneToOneField(SimCards,
-                                   on_delete=models.PROTECT,
-                                   )
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        null=True,
+    )
+    simcard = models.OneToOneField(
+        SimCards,
+        on_delete=models.PROTECT,
+    )
 
     class Meta:
         ordering = ['human']
 
 
 class WialonUser(models.Model):
-    user_name = models.CharField(max_length=20,
-                                 unique=True
-                                 )
-    password = models.CharField(max_length=20,
-                                null=True,
-                                blank=True
-                                )
-    human = models.ForeignKey(Human,
-                              on_delete=models.PROTECT,
-                              null=True,
-                              blank=True
-                              )
+    user_name = models.CharField(
+        max_length=20,
+        unique=True
+    )
+    password = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True
+    )
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.user_name
@@ -175,14 +196,16 @@ class WialonUser(models.Model):
 
 class WialonObject(models.Model):
     name = models.CharField(max_length=20)
-    wialon_user = models.ForeignKey(WialonUser,
-                                    on_delete=models.PROTECT,
-                                    null=True,
-                                    blank=True
-                                    )
-    terminal = models.OneToOneField(Terminals,
-                                    on_delete=models.PROTECT,
-                                    )
+    wialon_user = models.ForeignKey(
+        WialonUser,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+    terminal = models.OneToOneField(
+        Terminals,
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return self.name
@@ -192,9 +215,10 @@ class WialonObject(models.Model):
 
 
 class WialonObjectActive(models.Model):
-    wialon_object = models.OneToOneField(WialonObject,
-                                         on_delete=models.CASCADE,
-                                         )
+    wialon_object = models.OneToOneField(
+        WialonObject,
+        on_delete=models.CASCADE,
+    )
     active = models.BooleanField(default=True)
     last_modified = models.DateTimeField(default=tz.now)
 
@@ -213,11 +237,57 @@ class WialonServer(models.Model):
 
 
 class UserWialonServer(models.Model):
-    user = models.OneToOneField(WialonUser,
-                                on_delete=models.CASCADE,
-                                )
-    server = models.ForeignKey(WialonServer,
-                               on_delete=models.PROTECT,
-                               null=True,
-                               blank=True
-                               )
+    user = models.OneToOneField(
+        WialonUser,
+        on_delete=models.CASCADE,
+    )
+    server = models.ForeignKey(
+        WialonServer,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+
+
+class Company(models.Model):
+    name = models.CharField(max_length=45)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Компания'
+        verbose_name_plural = 'Компании'
+
+
+class UserCompany(models.Model):
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.PROTECT
+    )
+    user = models.ForeignKey(
+        WialonUser,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        verbose_name = 'Компания + Юзер'
+        verbose_name_plural = 'Компании + Юзеры'
+
+
+class HumanCompany(models.Model):
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.PROTECT,
+        verbose_name='Компания'
+    )
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        verbose_name='Человек'
+    )
+
+    class Meta:
+        verbose_name = 'Компания + Человек'
+        verbose_name_plural = 'Компании + Люди'

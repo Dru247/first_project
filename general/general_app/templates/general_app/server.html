@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-    <p style="color:red;">Клиенты:</p>
+  <table border="1" cellspacing="0">
+    <caption>Клиенты/Активные объекты</caption>
+    <tr><th>Клиент</th><th>Кол-во</th></tr>
     {% for client in human_list_server %}
-        <li>{{ client }}, {{ client.active }}</li>
+      <tr><td>{{ client }}</td><td>{{ client.active }}</td></tr>
     {% endfor %}
+  </table>
 {% endblock %}
