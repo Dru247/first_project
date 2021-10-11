@@ -290,7 +290,14 @@ class UserWialonServer(models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(
+        max_length=45,
+        verbose_name='Название'
+    )
+    human_company = models.ManyToManyField(
+        Human,
+        through='HumanCompany'
+    )
 
     def __str__(self):
         return self.name
@@ -299,21 +306,6 @@ class Company(models.Model):
         ordering = ['name']
         verbose_name = 'Компания'
         verbose_name_plural = 'Компании'
-
-
-class UserCompany(models.Model):
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.PROTECT
-    )
-    user = models.ForeignKey(
-        WialonUser,
-        on_delete=models.PROTECT
-    )
-
-    class Meta:
-        verbose_name = 'Компания + Юзер'
-        verbose_name_plural = 'Компании + Юзеры'
 
 
 class HumanCompany(models.Model):
@@ -331,3 +323,19 @@ class HumanCompany(models.Model):
     class Meta:
         verbose_name = 'Компания + Человек'
         verbose_name_plural = 'Компании + Люди'
+
+
+class UserCompany(models.Model):
+    """Удалить модель"""
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.PROTECT
+    )
+    user = models.ForeignKey(
+        WialonUser,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        verbose_name = 'Компания + Юзер'
+        verbose_name_plural = 'Компании + Юзеры'

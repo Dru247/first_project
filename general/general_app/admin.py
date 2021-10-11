@@ -116,15 +116,9 @@ class CompanyAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-@admin.register(UserCompany)
-class UserCompanyAdmin(admin.ModelAdmin):
-    list_display = ('company', 'user')
-    search_fields = ('user', 'company')
-    empty_value_display = '-пусто-'
-
-
 @admin.register(HumanCompany)
 class HumanCompanyAdmin(admin.ModelAdmin):
     list_display = ('company', 'human')
-    search_fields = ('user', 'company')
+    search_fields = ('human__first_name', 'human__first_name', 'company')
+    autocomplete_fields = ('human',)
     empty_value_display = '-пусто-'
