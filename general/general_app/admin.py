@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Telegram, TelephoneNumber, Terminals, UserWialonServer,
                      WialonObject, WialonObjectActive, WialonUser, Company,
-                     UserCompany, HumanCompany)
+                     UserCompany, HumanCompany, Contact, HumanContact)
 
 
 @admin.register(Human)
@@ -13,19 +13,11 @@ class HumanAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-@admin.register(TelephoneNumber)
-class TelephoneNumberAdmin(admin.ModelAdmin):
-    list_display = ('human', 'number')
+@admin.register(HumanContact)
+class HumanContactAdmin(admin.ModelAdmin):
+    list_display = ('human', 'contact', 'contact_rec')
+    search_fields = ('human__first_name', 'human__last_name', 'contact_rec',)
     autocomplete_fields = ('human',)
-    search_fields = ('human__first_name', 'human__last_name')
-    empty_value_display = '-пусто-'
-
-
-@admin.register(Telegram)
-class TelegramAdmin(admin.ModelAdmin):
-    list_display = ('human', 'telegram_id',)
-    autocomplete_fields = ('human',)
-    search_fields = ('telegram_id', 'human__first_name', 'human__last_name')
     empty_value_display = '-пусто-'
 
 

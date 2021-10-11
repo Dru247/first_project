@@ -13,7 +13,46 @@ class Human(models.Model):
         ordering = ['first_name']
 
 
+class Contact(models.Model):
+    name = models.CharField(max_length=45)
+    record = models.ManyToManyField(
+        Human,
+        through='HumanContact'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
+class HumanContact(models.Model):
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.CASCADE,
+        verbose_name='Человек'
+    )
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.CASCADE,
+        verbose_name='Версия контакта'
+    )
+    contact_rec = models.CharField(
+        max_length=45,
+        verbose_name='Запись'
+    )
+
+    def __str__(self):
+        return self.contact_rec
+
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+
+
 class TelephoneNumber(models.Model):
+    """Пока не нужна"""
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
@@ -28,6 +67,7 @@ class TelephoneNumber(models.Model):
 
 
 class Telegram(models.Model):
+    """Пока не нужна"""
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT
