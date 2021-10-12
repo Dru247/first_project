@@ -118,7 +118,15 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(HumanCompany)
 class HumanCompanyAdmin(admin.ModelAdmin):
-    list_display = ('company', 'human')
-    search_fields = ('human__first_name', 'human__first_name', 'company')
-    autocomplete_fields = ('human',)
+    list_display = ('company_hum', 'human_comp')
+    search_fields = ('human_comp__first_name', 'human_comp__first_name', 'company_hum')
+    autocomplete_fields = ('human_comp',)
+    empty_value_display = '-пусто-'
+
+
+@admin.register(UserCompany)
+class HumanCompanyAdmin(admin.ModelAdmin):
+    list_display = ('company_us', 'user_comp')
+    search_fields = ('user_comp__user_name', 'company_us_name',)
+    autocomplete_fields = ('company_us', 'user_comp')
     empty_value_display = '-пусто-'

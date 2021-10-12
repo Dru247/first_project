@@ -309,12 +309,12 @@ class Company(models.Model):
 
 
 class HumanCompany(models.Model):
-    company = models.ForeignKey(
+    company_hum = models.ForeignKey(
         Company,
         on_delete=models.PROTECT,
         verbose_name='Компания'
     )
-    human = models.ForeignKey(
+    human_comp = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
         verbose_name='Человек'
@@ -326,14 +326,15 @@ class HumanCompany(models.Model):
 
 
 class UserCompany(models.Model):
-    """Удалить модель"""
-    company = models.ForeignKey(
+    company_us = models.ForeignKey(
         Company,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        verbose_name='Компания'
     )
-    user = models.ForeignKey(
+    user_comp = models.ForeignKey(
         WialonUser,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        verbose_name='Юзер'
     )
 
     class Meta:

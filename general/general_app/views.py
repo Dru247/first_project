@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
+from django.db import models
 
 from .models import (Human, SimCards, Terminals, WialonObject,
-                     WialonObjectActive, WialonUser, WialonServer, UserWialonServer)
+                     WialonObjectActive, WialonUser, WialonServer, Company, UserCompany)
 
 
 @login_required
@@ -16,7 +17,8 @@ def index_view(request):
         wialonobject__isnull=True,
         humanterminalpresence__isnull=True
     )
-    user_list = WialonUser.objects.filter(human=None)
+    user_company_list = UserCompany.objects.all()
+    user_list = WialonUser.objects.filter(human=None).exclude(usercompany__in=user_company_list)
     wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
     sum_wia_obj_serv_active = Count(
         'userwialonserver__user__wialonobject__wialonobjectactive',
@@ -61,7 +63,21 @@ def server_view(request, server_id):
         filter=Q(wialonuser__wialonobject__wialonobjectactive__active=True)
     )
     human_list_server = Human.objects.filter(wialonuser__in=a).annotate(active=sum_wia_obj_active)
+    sum_wia_obj_active_comp = Count(
+        'usercompany__user_comp__wialonobject__wialonobjectactive',
+        filter=Q(usercompany__user_comp__wialonobject__wialonobjectactive__active=True)
+    )
+    company_list = Company.objects.filter(usercompany__user_comp__in=a)
+    company_list_annot = company_list.annotate(active=sum_wia_obj_active_comp)
+    sum_wia_obj_serv_active = Count(
+        'userwialonserver__user__wialonobject__wialonobjectactive',
+        filter=Q(userwialonserver__user__wialonobject__wialonobjectactive__active=True)
+    )
+    wia_obj_serv = WialonServer.objects.filter(pk=server_id)
+    wia_obj_serv_active = wia_obj_serv.annotate(active=sum_wia_obj_serv_active)
     context = {
         'human_list_server': human_list_server,
+        'company_list_annot': company_list_annot,
+        'wia_obj_serv_active': wia_obj_serv_active
     }
     return render(request, 'general_app/server.html', context=context)
