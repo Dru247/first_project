@@ -235,7 +235,7 @@ class WialonUser(models.Model):
 
 
 class WialonObject(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=45)
     wialon_user = models.ForeignKey(
         WialonUser,
         on_delete=models.PROTECT,
