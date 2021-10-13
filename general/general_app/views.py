@@ -25,12 +25,14 @@ def index_view(request):
         filter=Q(userwialonserver__user__wialonobject__wialonobjectactive__active=True)
     )
     wia_obj_serv_active = WialonServer.objects.annotate(active=sum_wia_obj_serv_active)
+    user_not_serv = WialonUser.objects.filter(userwialonserver__isnull=True)
     context = {
         'sim_list': sim_list,
         'term_list': term_list,
         'user_list': user_list,
         'wia_obj_list': wia_obj_list,
         'wia_obj_serv_active': wia_obj_serv_active,
+        'user_not_serv': user_not_serv
     }
     return render(request, 'general_app/index.html', context=context)
 

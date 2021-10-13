@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-
     <p><table border="1" cellspacing="0">
       <caption>Активные объекты</caption>
       <tr><th>Сервер</th><th>Кол-во</th></tr>
@@ -9,20 +8,18 @@
         <tr><td>{{ serv }}</td><td>{{ serv.active }}</td></tr>
       {% endfor %}
     </table></p>
-
-   <table border="1" cellspacing="0">
+   <p><table border="1" cellspacing="0">
     <caption>Юр лица/Активные объекты</caption>
     <tr><th>Клиент</th><th>Кол-во</th></tr>
     {% for client in company_list_annot %}
       <tr><td>{{ client }}</td><td>{{ client.active }}</td></tr>
     {% endfor %}
-  </table>
-
-  <table border="1" cellspacing="0">
+  </table></p>
+  <p><table border="1" cellspacing="0">
     <caption>Клиенты/Активные объекты</caption>
     <tr><th>Клиент</th><th>Кол-во</th></tr>
     {% for client in human_list_server %}
       <tr><td>{{ client }}</td><td>{{ client.active }}</td></tr>
     {% endfor %}
-  </table>
+  </table></p>
 {% endblock %}

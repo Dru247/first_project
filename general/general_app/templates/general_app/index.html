@@ -33,4 +33,10 @@
         <tr><td>{{ obj }}</td></tr>
       {% endfor %}
     </table></p>
+    <p><table border="1" cellspacing="0">
+      <tr><th>Юзеры без сервера</th></tr>
+      {% for us in user_not_serv %}
+        <tr><td>{{ us }}</td></tr>
+      {% endfor %}
+    </table></p>
 {% endblock %}
