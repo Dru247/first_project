@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
@@ -83,3 +85,26 @@ def server_view(request, server_id):
         'wia_obj_serv_active': wia_obj_serv_active
     }
     return render(request, 'general_app/server.html', context=context)
+
+
+@login_required
+def delete_sim_view(request):
+    delta_1 = datetime.timedelta(days=365)
+    date_1 = datetime.datetime.now()
+    month_now = date_1.month
+    if month_now < 6:
+        month_now = date_1.month + 12
+    month_delta = month_now - 5
+    date_delta = date_1 - delta_1
+    sim_list = SimCards.objects.filter(
+        terminal__wialonobject__wialonobjectactive__last_modified__lte=date_delta
+    ).order_by('operator')
+    sim_list_deactivate = SimCards.objects.filter(
+        terminal__wialonobject__wialonobjectactive__last_modified__month=month_delta,
+        operator__name='МТС'
+    )
+    context = {
+        'sim_list': sim_list,
+        'sim_list_deactivate': sim_list_deactivate
+    }
+    return render(request, 'general_app/sim_delete.html', context=context)

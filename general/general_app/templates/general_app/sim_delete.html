@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <p><table border="1" cellspacing="0">
+      <caption>Симкарты на удаление</caption>
+      <tr><th>Оператор</th><th>Номер</th><th>ICC</th></tr>
+      {% for sim in sim_list %}
+        <tr><td>{{ sim.operator }}</td><td>{{ sim.number }}</td><td>{{ sim.icc }}</td></tr>
+      {% endfor %}
+    </table></p>
+    <p><table border="1" cellspacing="0">
+      <caption>Деактивация симкарт</caption>
+      <tr><th>Оператор</th><th>Номер</th><th>ICC</th></tr>
+      {% for sim in sim_list_deactivate %}
+        <tr><td>{{ sim.operator }}</td><td>{{ sim.number }}</td><td>{{ sim.icc }}</td></tr>
+      {% endfor %}
+    </table></p>
+{% endblock %}
