@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
-from django.db import models
+from django.db.models import Max
 
 from .models import (Human, SimCards, Terminals, WialonObject,
                      WialonObjectActive, WialonUser, WialonServer, Company, UserCompany)
@@ -89,19 +89,25 @@ def server_view(request, server_id):
 
 @login_required
 def delete_sim_view(request):
-    delta_1 = datetime.timedelta(days=365)
     date_1 = datetime.datetime.now()
+    year_now = date_1.year
+    month_now_1 = date_1.month
     month_now = date_1.month
     if month_now < 6:
         month_now = date_1.month + 12
     month_delta = month_now - 5
-    date_delta = date_1 - delta_1
     sim_list = SimCards.objects.filter(
-        terminal__wialonobject__wialonobjectactive__last_modified__lte=date_delta
+        terminal__wialonobject__wialonobjectactive__last_modified__month__lte=month_now_1,
+    ).exclude(
+        terminal__wialonobject__wialonobjectactive__last_modified__year=year_now
+    ).annotate(
+        data_deactivate=Max('terminal__wialonobject__wialonobjectactive__last_modified')
     ).order_by('operator')
     sim_list_deactivate = SimCards.objects.filter(
         terminal__wialonobject__wialonobjectactive__last_modified__month=month_delta,
         operator__name='МТС'
+    ).annotate(
+        data_deactivate=Max('terminal__wialonobject__wialonobjectactive__last_modified')
     )
     context = {
         'sim_list': sim_list,
