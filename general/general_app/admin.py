@@ -44,7 +44,7 @@ class WialonObjectAdmin(admin.ModelAdmin):
 
 @admin.register(WialonObjectActive)
 class WialonObjectActiveAdmin(admin.ModelAdmin):
-    list_display = ('wialon_object', 'active', 'last_modified')
+    list_display = ('wialon_object', 'active',)
     search_fields = ('wialon_object__name', )
     autocomplete_fields = ('wialon_object',)
     empty_value_display = '-пусто-'

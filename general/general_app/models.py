@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone as tz
+from django.core.exceptions import ValidationError
 
 
 class Human(models.Model):
@@ -96,8 +97,7 @@ class ModelTerminals(models.Model):
     brand = models.ForeignKey(
         BrandTerminals,
         on_delete=models.PROTECT,
-        related_name='t_brand',
-        null=True
+        related_name='models',
     )
     model = models.CharField(
         max_length=20,
@@ -106,7 +106,7 @@ class ModelTerminals(models.Model):
     )
 
     def __str__(self):
-        return self.model
+        return '%s %s' % (self.brand, self.model)
 
     class Meta:
         ordering = ['model']
@@ -129,6 +129,9 @@ class Terminals(models.Model):
         unique=True,
         null=True,
     )
+    time_create = models.DateTimeField(
+        auto_now_add=True
+    )
 
     def __str__(self):
         return str(self.imei)
@@ -150,6 +153,8 @@ class HumanTerminalPresence(models.Model):
 
     class Meta:
         ordering = ['human']
+        verbose_name = 'Человек + Терминал'
+        verbose_name_plural = 'Люди + Терминалы'
 
 
 class OperatorsSim(models.Model):
@@ -171,7 +176,7 @@ class SimCards(models.Model):
         null=True
     )
     number = models.CharField(
-        max_length=20,
+        max_length=16,
         null=True,
         unique=True
     )
@@ -186,6 +191,9 @@ class SimCards(models.Model):
         related_name='s_terminal',
         null=True,
         blank=True
+    )
+    time_create = models.DateTimeField(
+        auto_now_add=True
     )
 
     def __str__(self):
@@ -208,6 +216,8 @@ class HumanSimPresence(models.Model):
 
     class Meta:
         ordering = ['human']
+        verbose_name = 'Человек + Симка'
+        verbose_name_plural = 'Люди + Симки'
 
 
 class WialonUser(models.Model):
@@ -246,12 +256,19 @@ class WialonObject(models.Model):
         Terminals,
         on_delete=models.PROTECT,
     )
+    time_create = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        HumanTerminalPresence.objects.filter(
+                terminal=self.terminal
+        ).delete()
+        super(WialonObject, self).save(*args, **kwargs)
 
 
 class WialonObjectActive(models.Model):
