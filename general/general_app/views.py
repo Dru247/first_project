@@ -114,3 +114,8 @@ def delete_sim_view(request):
         'sim_list_deactivate': sim_list_deactivate
     }
     return render(request, 'general_app/sim_delete.html', context=context)
+
+
+@login_required
+def maks_view(request):
+    return render(request, 'general_app/maks_func.html')
