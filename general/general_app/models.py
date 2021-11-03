@@ -207,11 +207,12 @@ class HumanSimPresence(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        null=True,
+        related_name='humansimpresences'
     )
     simcard = models.OneToOneField(
         SimCards,
         on_delete=models.PROTECT,
+        related_name='humansimpresences'
     )
 
     class Meta:
@@ -249,12 +250,14 @@ class WialonObject(models.Model):
     wialon_user = models.ForeignKey(
         WialonUser,
         on_delete=models.PROTECT,
+        related_name='wialonobjects',
         null=True,
         blank=True
     )
     terminal = models.OneToOneField(
         Terminals,
         on_delete=models.PROTECT,
+        related_name='wialonobjects'
     )
     time_create = models.DateTimeField(auto_now_add=True)
 

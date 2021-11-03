@@ -3,7 +3,7 @@ import csv
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from general_app.models import (Human, HumanSimPresence, HumanTerminalPresence,
-                                ModelTerminals, SimCards, Terminals)
+                                ModelTerminals, SimCards, Terminals, WialonObject)
 
 
 class Command(BaseCommand):
@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 sn = line['sn']
                 icc_1 = line['icc_1']
                 icc_2 = line['icc_2']
-                human_2 = line['human']
+                human = line['human']
                 Terminals.objects.get_or_create(
                     model=brand_list[model],
                     serial_number=sn,
@@ -38,8 +38,9 @@ class Command(BaseCommand):
                         HumanSimPresence.objects.get(simcard=sim).delete()
                     except ObjectDoesNotExist:
                         print(f'{sim} отсутствует у Лехтина')
-                human = Human.objects.get(last_name=human_2)
-                HumanTerminalPresence.objects.get_or_create(
-                    human=human,
-                    terminal=term
-                )
+                human_now = Human.objects.get(last_name=human)
+                if not WialonObject.objects.filter(terminal=term).exists():
+                    HumanTerminalPresence.objects.get_or_create(
+                        human=human_now,
+                        terminal=term
+                    )
