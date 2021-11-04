@@ -38,9 +38,8 @@ class Command(BaseCommand):
                         HumanSimPresence.objects.get(simcard=sim).delete()
                     except ObjectDoesNotExist:
                         print(f'{sim} отсутствует у Лехтина')
-                human_now = Human.objects.get(last_name=human)
-                if not WialonObject.objects.filter(terminal=term).exists():
-                    HumanTerminalPresence.objects.get_or_create(
-                        human=human_now,
-                        terminal=term
-                    )
+                human_now = Human.objects.get(pk=human)
+                HumanTerminalPresence.objects.get_or_create(
+                    human=human_now,
+                    terminal=term
+                )
