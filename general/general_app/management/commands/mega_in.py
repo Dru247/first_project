@@ -10,13 +10,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         path = 'general_app/management/commands/mega.csv'
-        with open(path, 'r', newline='') as data:
-            result = csv.DictReader(data, delimiter=',')
+        with open(path, 'r', newline='', encoding='cp1251') as data:
+            result = csv.DictReader(data, delimiter=';')
             operator = OperatorsSim.objects.get(name='Мегафон')
             human = Human.objects.get(last_name='Лехтин')
+            list_number = []
             for line in result:
-                number = line['number']
-                icc = line['icc']
+                number = line['Номер']
+                icc = line['ICC']
+                list_number.append(number)
                 SimCards.objects.get_or_create(
                     operator=operator,
                     number=number,
@@ -28,3 +30,8 @@ class Command(BaseCommand):
                         human=human,
                         simcard=sim
                     )
+            sim_list = SimCards.objects.filter(operator=operator)
+            for sim in sim_list:
+                if sim.number not in list_number:
+                    print(sim.number)
+            print('^ - этих симкарт нет на сайте, но есть в проекте')
