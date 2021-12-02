@@ -52,16 +52,17 @@ class WialonObjectActiveAdmin(admin.ModelAdmin):
 
 @admin.register(Terminals)
 class TerminalsAdmin(admin.ModelAdmin):
-    list_display = ('imei', 'serial_number', 'model')
+    list_display = ('imei', 'serial_number', 'model', 'time_create')
     search_fields = ('imei', 'serial_number')
     empty_value_display = '-пусто-'
 
 
 @admin.register(SimCards)
 class SimCardsAdmin(admin.ModelAdmin):
-    list_display = ('number', 'icc', 'operator', 'terminal')
+    list_display = ('number', 'icc', 'operator', 'terminal', 'time_create')
     search_fields = ('number', 'icc', 'terminal__imei')
     autocomplete_fields = ('terminal',)
+    list_filter = ('operator',)
     empty_value_display = '-пусто-'
 
 
