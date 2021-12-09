@@ -24,22 +24,30 @@ class Command(BaseCommand):
                 icc_1 = line['icc_1']
                 icc_2 = line['icc_2']
                 human = line['human']
-                Terminals.objects.get_or_create(
-                    model=brand_list[model],
-                    serial_number=sn,
-                    imei=imei
-                )
-                sim_now = SimCards.objects.filter(icc__in=[icc_1, icc_2])
-                print(len(sim_now))
-                term = Terminals.objects.get(imei=imei)
-                for sim in sim_now:
-                    SimCards.objects.filter(icc=sim.icc).update(terminal=term)
-                    try:
-                        HumanSimPresence.objects.get(simcard=sim).delete()
-                    except ObjectDoesNotExist:
-                        print(f'{sim} отсутствует у Лехтина')
-                human_now = Human.objects.get(pk=human)
-                HumanTerminalPresence.objects.get_or_create(
-                    human=human_now,
-                    terminal=term
-                )
+                if Terminals.objects.filter(imei=imei).exists():
+                    pass
+                    print('check pass')
+                else:
+                    print('check else')
+                    Terminals.objects.create(
+                        model=brand_list[model],
+                        serial_number=sn,
+                        imei=imei
+                    )
+                    terminal = Terminals.objects.get(
+                        model=brand_list[model],
+                        serial_number=sn,
+                        imei=imei
+                    )
+                    sim_now = SimCards.objects.filter(icc__in=[icc_1, icc_2])
+                    sim_now.update(terminal=terminal)
+                    for sim in sim_now:
+                        try:
+                            HumanSimPresence.objects.get(simcard=sim).delete()
+                        except ObjectDoesNotExist:
+                            print(f'{sim} отсутствует у Лехтина')
+                    human_now = Human.objects.get(pk=human)
+                    HumanTerminalPresence.objects.get_or_create(
+                        human=human_now,
+                        terminal=terminal
+                    )
