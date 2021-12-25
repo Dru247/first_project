@@ -122,7 +122,8 @@ class Terminals(models.Model):
     )
     serial_number = models.CharField(
         max_length=20,
-        null=True
+        null=True,
+        blank=True
     )
     imei = models.CharField(
         max_length=20,
