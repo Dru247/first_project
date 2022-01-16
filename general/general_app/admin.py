@@ -83,9 +83,14 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
         'terminal_model',
         'terminal_serial_number'
     )
-    search_fields = ('terminal__imei', 'terminal__serial_number')
+    search_fields = (
+        'terminal__imei',
+        'terminal__serial_number',
+        'human__last_name',
+        'human__first_name'
+    )
     autocomplete_fields = ('human', 'terminal')
-    list_filter = ('human',)
+    list_filter = ('terminal__model',)
     empty_value_display = '-пусто-'
 
     @admin.display()
