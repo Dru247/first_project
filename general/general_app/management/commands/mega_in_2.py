@@ -6,17 +6,16 @@ from general_app.models import Human, HumanSimPresence, OperatorsSim, SimCards
 
 
 class Command(BaseCommand):
-    help = 'Занесение симкарт МТС на проект'
-
+    help = 'Занесение симкарт Мегафон на проект'
     def handle(self, *args, **options):
-        path = 'general_app/management/commands/mts.csv'
-        with open(path, 'r', newline='', encoding='utf-8-sig') as data:
-            operator = OperatorsSim.objects.get(name='МТС')
+        path = 'general_app/management/commands/mega.csv'
+        with open(path, 'r', newline='', encoding='cp1251') as data:
+            operator = OperatorsSim.objects.get(name='Мегафон')
             human = Human.objects.get(last_name='Лехтин')
             result = csv.DictReader(data, delimiter=';')
             for line in result:
-                number = line['Абонентский номер'][1:]
-                icc = line['Номер SIM-карты'].strip()
+                number = line['Номер']
+                icc = line['ICC']
                 if SimCards.objects.filter(number=number).exists():
                     pass
                 else:
@@ -30,3 +29,4 @@ class Command(BaseCommand):
                         human=human,
                         simcard=sim
                     )
+
