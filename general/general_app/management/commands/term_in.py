@@ -16,7 +16,7 @@ class Command(BaseCommand):
         }
         path = 'general_app/management/commands/term.csv'
         with open(path, 'r', newline='') as data:
-            result = csv.DictReader(data, delimiter=',')
+            result = csv.DictReader(data, delimiter=';')
             for line in result:
                 model = line['model']
                 imei = line['imei']
