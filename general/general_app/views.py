@@ -96,8 +96,9 @@ def delete_sim_view(request):
     if month_now < 6:
         month_now = date_1.month + 12
     month_delta = month_now - 5
-    sim_list = SimCards.objects.filter(
+    sim_list_delete = SimCards.objects.filter(
         terminal__wialonobjects__wialonobjectactive__last_modified__month__lte=month_now_1,
+        terminal__wialonobjects__wialonobjectactive__active=False
     ).exclude(
         terminal__wialonobjects__wialonobjectactive__last_modified__year=year_now
     ).annotate(
@@ -105,12 +106,13 @@ def delete_sim_view(request):
     ).order_by('operator')
     sim_list_deactivate = SimCards.objects.filter(
         terminal__wialonobjects__wialonobjectactive__last_modified__month=month_delta,
+        terminal__wialonobjects__wialonobjectactive__active=False,
         operator__name='МТС'
     ).annotate(
         data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
     )
     context = {
-        'sim_list': sim_list,
+        'sim_list': sim_list_delete,
         'sim_list_deactivate': sim_list_deactivate
     }
     return render(request, 'general_app/sim_delete.html', context=context)
