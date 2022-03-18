@@ -1,18 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <style>
-      body {
-        background-color: black;
-      }
-      a, p, h1, h2, h3, caption, td, th, li {
-	color: white;
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body class="body-background-color">
   {% include 'includes/menu.html' %}
   {% block content %}
   {% endblock %}
