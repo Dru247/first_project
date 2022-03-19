@@ -3,16 +3,44 @@
 {% block content %}
     <p><table border="1" cellspacing="0">
       <caption>Симкарты на удаление</caption>
-      <tr><th>Оператор</th><th>Номер</th><th>ICC</th><th>Дата деактивации</th></tr>
+      <thead>
+        <tr>
+          <th>Оператор</th>
+          <th>Номер</th>
+          <th>ICC</th>
+          <th>Дата деактивации</th>
+          </tr>
+      </thead>
+      <tbody>
       {% for sim in sim_list %}
-        <tr><td>{{ sim.operator }}</td><td>{{ sim.number }}</td><td>{{ sim.icc }}</td><td>{{ sim.data_deactivate }}</td></tr>
+        <tr>
+          <td>{{ sim.operator }}</td>
+          <td>{{ sim.number }}</td>
+          <td>{{ sim.icc }}</td>
+          <td>{{ sim.data_deactivate }}</td>
+        </tr>
       {% endfor %}
+      </tbody>
     </table></p>
     <p><table border="1" cellspacing="0">
       <caption>Деактивация симкарт</caption>
-      <tr><th>Оператор</th><th>Номер</th><th>ICC</th><th>Дата деактивации</th></tr>
+      <thead>
+        <tr>
+          <th>Оператор</th>
+          <th>Номер</th>
+          <th>ICC</th>
+          <th>Дата деактивации</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for sim in sim_list_deactivate %}
-        <tr><td>{{ sim.operator }}</td><td>{{ sim.number }}</td><td>{{ sim.icc }}</td><td>{{ sim.data_deactivate }}</tr>
+        <tr>
+          <td>{{ sim.operator }}</td>
+          <td>{{ sim.number }}</td>
+          <td>{{ sim.icc }}</td>
+          <td>{{ sim.data_deactivate }}</td>
+        </tr>
       {% endfor %}
+      </tbody>
     </table></p>
 {% endblock %}

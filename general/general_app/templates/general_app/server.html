@@ -3,23 +3,53 @@
 {% block content %}
     <p><table border="1" cellspacing="0">
       <caption>Активные объекты</caption>
-      <tr><th>Сервер</th><th>Кол-во</th></tr>
+      <thead>
+        <tr>
+          <th>Сервер</th>
+          <th>Кол-во</th>
+        </tr>
+      </thead>
+      <tbody>
       {% for serv in wia_obj_serv_active %}
-        <tr><td>{{ serv }}</td><td>{{ serv.active }}</td></tr>
+        <tr>
+          <td>{{ serv }}</td>
+          <td>{{ serv.active }}</td>
+        </tr>
       {% endfor %}
+      </tbody>
     </table></p>
    <p><table border="1" cellspacing="0">
     <caption>Юр лица/Активные объекты</caption>
-    <tr><th>Клиент</th><th>Кол-во</th></tr>
+    <thead>
+      <tr>
+        <th>Клиент</th>
+        <th>Кол-во</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for client in company_list_annot %}
-      <tr><td>{{ client }}</td><td>{{ client.active }}</td></tr>
+      <tr>
+        <td>{{ client }}</td>
+        <td>{{ client.active }}</td>
+      </tr>
     {% endfor %}
+    </tbody>
   </table></p>
   <p><table border="1" cellspacing="0">
     <caption>Клиенты/Активные объекты</caption>
-    <tr><th>Клиент</th><th>Кол-во</th></tr>
+    <thead>
+      <tr>
+        <th>Клиент</th>
+        <th>Кол-во</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for client in human_list_server %}
-      <tr><td>{{ client }}</td><td>{{ client.active }}</td></tr>
+      <tr>
+        <td>{{ client }}</td>
+        <td>{{ client.active }}</td>
+      </tr>
     {% endfor %}
+    </tbody>
   </table></p>
 {% endblock %}

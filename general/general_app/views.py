@@ -22,6 +22,7 @@ def index_view(request):
     user_company_list = UserCompany.objects.all()
     user_list = WialonUser.objects.filter(human=None).exclude(usercompany__in=user_company_list)
     wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
+    sum_wia_obj = WialonObject.objects.filter(wialonobjectactive__active=True).count()
     sum_wia_obj_serv_active = Count(
         'userwialonserver__user__wialonobjects__wialonobjectactive',
         filter=Q(userwialonserver__user__wialonobjects__wialonobjectactive__active=True)
@@ -34,7 +35,8 @@ def index_view(request):
         'user_list': user_list,
         'wia_obj_list': wia_obj_list,
         'wia_obj_serv_active': wia_obj_serv_active,
-        'user_not_serv': user_not_serv
+        'user_not_serv': user_not_serv,
+        'sum_wia_obj': sum_wia_obj
     }
     return render(request, 'general_app/index.html', context=context)
 

@@ -2,3 +2,11 @@
   background: #222;
   color: white;
 }
+
+tbody tr:nth-child(odd) {
+  background-color: #111;
+}
+
+tr {
+    padding: 3px;
+}
