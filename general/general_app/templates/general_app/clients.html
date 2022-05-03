@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}Клиенты{% endblock %}
 {% block content %}
-<p>Всего объектов: {{ activ_obj_all }} (активных), {{ not_activ_obj_all }} (неактивных).</p>
-  <p>Клиенты (всего объектов, активные объекты):</p>
-  {% for client in client_list %}
-    <li>{{ client }}, {{ client.all }}, {{ client.active }}</li>
-  {% endfor %}
+<p>
+  Всего объектов: {{ activ_obj_all }} (активных), {{ not_activ_obj_all }} (неактивных).
+</p>
+<p>
+  <table>
+    <caption>Все клиенты</caption>
+    <thead>
+      <tr>
+        <th>Клиенты</th>
+        <th>Всего объектов</th>
+	<th>Активные объекты</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in client_list %}
+      <tr>
+        <td>{{ client }}</td>
+        <td>{{ client.all }}</td>
+        <td>{{ client.active }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</p>
 {% endblock %}

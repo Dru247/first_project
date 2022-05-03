@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Чек-страница{% endblock %}
 {% block content %}
-    <p><table border="1" cellspacing="0">
-      <caption>Активные объекты</caption>
-      <thead>
-        <tr>
-          <th>Сервер</th>
-          <th>Кол-во</th>
-        </tr>
-      </thead>
-      <tbody>
+<p>
+  <table>
+    <caption>Активные объекты</caption>
+    <thead>
+      <tr>
+        <th>Сервер</th>
+        <th>Кол-во</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for serv in wia_obj_serv_active %}
-        <tr>
-          <td>{{ serv }}</td>
-          <td>{{ serv.active }}</td>
-        </tr>
+      <tr>
+        <td>{{ serv }}</td>
+        <td>{{ serv.active }}</td>
+      </tr>
       {% endfor %}
-      </tbody>
+    </tbody>
       <tfoot>
         <tr>
           <td>Итого</td>
@@ -24,7 +25,7 @@
         </tr>
       </tfoot>
     </table></p>
-    <p><table border="1" cellspacing="0">
+    <p><table>
       <caption>Симкарты без терминалов</caption>
       <thead>
        <tr>
@@ -33,52 +34,52 @@
       </tr>
       </thead>
       <tbody>
-      {% for num in sim_list %}
+        {% for num in sim_list %}
         <tr>
           <td>{{ num }}</td>
           <td>{{ num.operator }}</td>
         </tr>
-      {% endfor %}
+        {% endfor %}
       </tbody>
     </table></p>
-    <p><table border="1" cellspacing="0">
+    <p><table>
       <caption>Юзеры без человека и компании</caption>
       <tbody>
-      {% for user in user_list %}
+        {% for user in user_list %}
         <tr>
           <td>{{ user }}</td>
         </tr>
-      {% endfor %}
+        {% endfor %}
       </tbody>
     </table></p>
     <p><table border="1" cellspacing="0">
       <caption>Терминалы без объектов Wialon</caption>
       <tbody>
-      {% for term in term_list %}
+        {% for term in term_list %}
         <tr>
           <td>{{ term }}</td>
         </tr>
-      {% endfor %}
+        {% endfor %}
       </tbody>
     </table></p>
     <p><table border="1" cellspacing="0">
       <caption>Объекты Wialon без статуса</caption>
       <tbody>
-      {% for obj in wia_obj_list %}
+        {% for obj in wia_obj_list %}
         <tr>
           <td>{{ obj }}</td>
         </tr>
-      {% endfor %}
+        {% endfor %}
       </tbody>
     </table></p>
     <p><table border="1" cellspacing="0">
       <caption>Юзеры без сервера</caption>
       <tbody>
-      {% for us in user_not_serv %}
+        {% for us in user_not_serv %}
         <tr>
           <td>{{ us }}</td>
         </tr>
-      {% endfor %}
+        {% endfor %}
       </tbody>
     </table></p>
 {% endblock %}
