@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Информация{% endblock %}
+{% block content %}
+<h2>Хостинги</h2>
+<table>
+  <caption>Адреса серверов</caption>
+  <tr><th>Сервер</th><th>Домен (оборудование)</th><th>IP (оборудование)</th><th>Hosting</th><th>CMS</th></tr>
+  <tr><td>Wialon.COM</td><td>nl.gpsgsm.org</td><td>193.193.165.165</td><td><a href="https://hosting.wialon.com/">https://hosting.wialon.com/</a></td><td><a href="https://cms.wialon.com/">https://cms.wialon.com/</a></td></tr>
+  <tr><td>Wialon.RU</td><td>ru.gpsgsm.org</td><td>185.213.0.24</td><td><a href="https://hosting.wialon.ru/">https://hosting.wialon.ru/</a></td><td><a href="https://cms.wialon.ru/">https://cms.wialon.ru/</a></td></tr>
+  <tr><td>Wialon.LOCAL</td><td>onwc.ru</td><td></td><td><a href="http://online.wialon.center/">http://online.wialon.center/</a></td><td><a href="http://cms.wialon.center/">http://cms.wialon.center/</a></td></tr>
+  <tr><td>Fort Monitor</td><td>dev.fort-monitor.ru</td><td>95.213.250.92</td><td><a href="https://web.fort-monitor.ru/login.aspx">https://web.fort-monitor.ru/</a></td></tr>
+</table>
+<p><table>
+  <caption>Порты<caption>
+  <tr><th>Марка/Модель</th><th>Wialon</th><th>FM</th></tr>
+  <tr><td>Навтелеком / Smart S-24xx</td><td>21626</td><td>65511</td></tr>
+  <tr><td>Навтелеком / Smart S-23xx</td><td>20966</td><td>65511</td></tr>
+  <tr><td>Навтелеком / Signal S-2551</td><td>20740</td><td>65511</td></tr>
+  <tr><td>Навтелеком / Signal S-26xx</td><td>21889</td><td>65511</td></tr>
+  <tr><td>Неоматика / ADM333</td><td>21848</td><td>65511</td></tr>
+  <tr><td>Неоматика / ADM007</td><td>21404</td><td>65511</td></tr>
+</table></p>
+<p><a href="https://help.wialon.com/help/wialon-hosting/ru/user-guide/">Wialon. Инструкция</a></p>
+<p><a href="https://forum.gurtam.com/">Wialon. Форум</a></p>
+<p><a href="https://support.fort-monitor.ru/">Fort Monitor. Инструкция</a></p>
+<h2>Навтелеком</h2>
+<p><a href="https://navtelecom.ru/ru/">Официфльный сайт</a></p>
+<h3>Smart S-24xx</h3>
+<table>
+ <caption>Команды</caption>
+ <tr><th>Функция</th><th>TCP</th><th>SMS</th></tr>
+ <tr><td>Смена сервера</td><td>*!EDITS TRANS:SRV1(,,,nl.gpsgsm.org)</td><td></td><tr>
+		 <tr><td>Удалённое подключение</td><td>*!CNCT_RCS:89.208.152.55:8100:84008748</td><td></td></tr>
+</table>
+{% endblock %}

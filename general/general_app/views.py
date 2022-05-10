@@ -123,3 +123,8 @@ def delete_sim_view(request):
 @login_required
 def maks_view(request):
     return render(request, 'general_app/maks_func.html')
+
+
+@login_required
+def info_view(request):
+    return render(request, 'general_app/info_list.html')
