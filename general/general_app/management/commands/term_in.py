@@ -12,7 +12,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         brand_list = {
             '2425': ModelTerminals.objects.get(model='Smart S-2425'),
-            '2435': ModelTerminals.objects.get(model='Smart S-2435')
+            '2435': ModelTerminals.objects.get(model='Smart S-2435'),
+            '333': ModelTerminals.objects.get(model='ADM333')
         }
         path = 'general_app/management/commands/term.csv'
         with open(path, 'r', newline='') as data:

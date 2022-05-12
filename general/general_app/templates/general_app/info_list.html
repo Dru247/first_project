@@ -27,9 +27,20 @@
 <p><a href="https://navtelecom.ru/ru/">Официфльный сайт</a></p>
 <h3>Smart S-24xx</h3>
 <table>
- <caption>Команды</caption>
- <tr><th>Функция</th><th>TCP</th><th>SMS</th></tr>
- <tr><td>Смена сервера</td><td>*!EDITS TRANS:SRV1(,,,nl.gpsgsm.org)</td><td></td><tr>
-		 <tr><td>Удалённое подключение</td><td>*!CNCT_RCS:89.208.152.55:8100:84008748</td><td></td></tr>
+  <caption>Команды</caption>
+  <tr><th>Функция</th><th>TCP</th><th>SMS</th></tr>
+  <tr><td>Смена сервера</td><td>*!EDITS TRANS:SRV1(,,,nl.gpsgsm.org)</td><td></td><tr>
+  <tr><td rowspan="2">Удалённое подключение</td><td rowspan="2">*!CNCT_RCS:89.208.152.55:8100:84008748</td><td>314511<br>NTC_CONNECT<br>89.208.152.55<br>8100<br>24402551</td></tr>
+  <tr><td>314511 *!CNCT_RCS 89.208.152.55,8100,73609794</td></tr>
+  <tr><td>Обновить прошивку устройсва до последней версии</td><td>*!CNCT_RFU:89.208.152.55:9100:LAST</td><td>314511 *!CNCT_RFU:89.208.152.55:9100:LAST</td></tr>
+  <tr><td>Соединиться с DRC сервером</td><td>*!CNCT_DRC</td><td>314511 *!CNCT_DRC</td></tr>
+  <tr><td>Смена сим-карты</td><td>*!CHNGSIM</td><td>314511 *!CHNGSIM</td></tr>
+  <tr><td>Перезагрузка устройства</td><td>*!DEV_RESET</td><td>314511 *!DEV_RESET</td></tr>
+  <tr><td>Узнать ICCID активной симкарты</td><td>*?ICCID</td><td>314511 *!CNCT_DRC</td></tr>
+  <tr><td>Узнать ICCID всех симкарт</td><td>*?ICCID 3</td></tr>
+  <tr><td>Калибровка акселерометра</td><td>*!ACL_C:G3</td><td>314511 CALIB ACL G</td></tr>
+  <tr><td>Команда ВКЛ выхода</td><td>*!2Y</td><td>314511 *!2Y</td></tr>
+  <tr><td>Команды ВЫКЛ выхода</td><td>*!2N</td><td>314511 *!2N</td></tr>
+  <tr><td></td></tr>
 </table>
 {% endblock %}
