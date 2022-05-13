@@ -12,7 +12,7 @@ class Command(BaseCommand):
         path = 'general_app/management/commands/mts.csv'
         with open(path, 'r', newline='', encoding='utf-8-sig') as data:
             operator = OperatorsSim.objects.get(name='МТС')
-            human = Human.objects.get(last_name='Лехтин')
+            human = Human.objects.get(pk=input('Введите ID человека, на которого нужно внести симки > '))
             result = csv.DictReader(data, delimiter=';')
             for line in result:
                 number = line['Абонентский номер'][1:]
