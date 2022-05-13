@@ -104,15 +104,24 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
 
 @admin.register(HumanSimPresence)
 class HumanSimPresenceAdmin(admin.ModelAdmin):
-    list_display = ('human', 'simcard', 'simcard_icc')
-    search_fields = ('simcard__number', 'simcard__icc')
+    list_display = ('human', 'simcard', 'simcard_icc', 'simcard_operator')
+    search_fields = (
+            'simcard__number',
+            'simcard__icc',
+            'human__first_name',
+            'human__last_name'
+    )
     autocomplete_fields = ('human', 'simcard')
-    list_filter = ('human',)
+    list_filter = ('simcard__operator',)
     empty_value_display = '-пусто-'
 
     @admin.display()
     def simcard_icc(self, obj):
         return obj.simcard.icc
+
+    @admin.display()
+    def simcard_operator(self, obj):
+        return obj.simcard.operator
 
 
 @admin.register(Company)
