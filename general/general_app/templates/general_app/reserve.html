@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Резерв{% endblock %}
+{% block content %}
+<table>
+  <caption>Сумбулов</caption>
+  <tr>
+    <th>Номенклатура</th>
+    <th>Кол-во</th>
+  </tr>
+  <tr>
+    <td>S-2425</td>
+    <td>{{ symb_2425 }}</td>
+  </tr>
+  <tr>
+    <td>S-2435</td>
+    <td>{{ symb_2435 }}</td>
+  </tr>
+  <tr>
+    <td>ADM333</td>
+    <td>{{ symb_333 }}</td>
+  </tr>
+  <tr>
+    <td>ADM007</td>
+    <td>{{ symb_007 }}</td>
+  </tr>
+    <tr>
+    <td>МТС</td>
+    <td>{{ symb_mts }}</td>
+  </tr>
+  <tr>
+    <td>Мегафон</td>
+    <td>{{ symb_mega }}</td>
+  </tr>
+</table>
+<p><table>
+  <caption>Малашин</caption>
+  <tr>
+    <th>Номенклатура</th>
+    <th>Кол-во</th>
+  </tr>
+  <tr>
+    <td>S-2425</td>
+    <td>{{ malash_2425 }}</td>
+  </tr>
+  <tr>
+    <td>S-2435</td>
+    <td>{{ malash_2435 }}</td>
+  </tr>
+  <tr>
+    <td>ADM333</td>
+    <td>{{ malash_333 }}</td>
+  </tr>
+  <tr>
+    <td>ADM007</td>
+    <td>{{ malash_007 }}</td>
+  </tr>
+    <tr>
+    <td>МТС</td>
+    <td>{{ malash_mts }}</td>
+  </tr>
+  <tr>
+    <td>Мегафон</td>
+    <td>{{ malash_mega }}</td>
+  </tr>
+</table></p>
+<p><table>
+  <caption>Лехтин</caption>
+  <tr>
+    <th>Номенклатура</th>
+    <th>Кол-во</th>
+  </tr>
+  <tr>
+    <td>S-2425</td>
+    <td>{{ leht_2425 }}</td>
+  </tr>
+  <tr>
+    <td>S-2435</td>
+    <td>{{ leht_2435 }}</td>
+  </tr>
+  <tr>
+    <td>ADM333</td>
+    <td>{{ leht_333 }}</td>
+  </tr>
+  <tr>
+    <td>ADM007</td>
+    <td>{{ leht_007 }}</td>
+  </tr>
+  <tr>
+    <td>МТС</td>
+    <td>{{ leht_mts }}</td>
+  </tr>
+  <tr>
+    <td>Мегафон</td>
+    <td>{{ leht_mega }}</td>
+  </tr>
+</table></p>
+<p><table>
+  <caption>Мерзляков</caption>
+  <tr>
+    <th>Номенклатура</th>
+    <th>Кол-во</th>
+  </tr>
+  <tr>
+    <td>МТС</td>
+    <td>{{ mersl_mts }}</td>
+  </tr>
+  <tr>
+    <td>Мегафон</td>
+    <td>{{ mersl_mega }}</td>
+  </tr>
+</table></p>
+{% endblock %}

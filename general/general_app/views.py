@@ -5,8 +5,9 @@ from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
 
-from .models import (Human, SimCards, Terminals, WialonObject,
-                     WialonObjectActive, WialonUser, WialonServer, Company, UserCompany)
+from .models import (Human, SimCards, Terminals, WialonObject, HumanTerminalPresence,
+                     WialonObjectActive, WialonUser, WialonServer, Company, UserCompany,
+                     HumanSimPresence)
 
 
 @login_required
@@ -128,3 +129,55 @@ def maks_view(request):
 @login_required
 def info_view(request):
     return render(request, 'general_app/info_list.html')
+
+
+@login_required
+def reserve_view(request):
+    symb_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='151').count()
+    symb_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='151').count()
+    symb_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='151').count()
+    symb_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='151').count()
+    symb_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='151').count()
+    symb_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='151').count()
+
+    malash_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='154').count()
+    malash_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='154').count()
+    malash_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='154').count()
+    malash_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='154').count()
+    malash_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='154').count()
+    malash_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='154').count()
+
+    leht_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='152').count()
+    leht_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='152').count()
+    leht_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='152').count()
+    leht_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='152').count()
+    leht_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='152').count()
+    leht_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='152').count()
+
+    mersl_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='673').count()
+    mersl_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='673').count()
+
+    context = {
+        'symb_2425': symb_2425,
+        'symb_2435': symb_2435,
+        'symb_333': symb_333,
+        'symb_007': symb_007,
+        'symb_mts': symb_mts,
+        'symb_mega': symb_mega,
+        'malash_2425': malash_2425,
+        'malash_2435': malash_2435,
+        'malash_333': malash_333,
+        'malash_007': malash_007,
+        'malash_mts': malash_mts,
+        'malash_mega': malash_mega,
+        'leht_2425': leht_2425,
+        'leht_2435': leht_2435,
+        'leht_333': leht_333,
+        'leht_007': leht_007,
+        'leht_mts': leht_mts,
+        'leht_mega': leht_mega,
+        'mersl_mts': mersl_mts,
+        'mersl_mega': mersl_mega
+
+    }
+    return render(request, 'general_app/reserve.html', context=context)
