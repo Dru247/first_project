@@ -43,4 +43,27 @@
   <tr><td>Команды ВЫКЛ выхода</td><td>*!2N</td><td>314511 *!2N</td></tr>
   <tr><td></td></tr>
 </table>
+<p><table>
+  <caption>Wialon, тексты уведомлений</caption>
+  <tr>
+    <th>Уведомление</th>
+    <th>Текст</th>
+  </tr>
+  <tr>
+    <td>МО</td>
+    <td>Уведомление: МО.<br>Объект: %UNIT%.<br>Описание: Объект вышел из "%ZONE%".<br>Время: %POS_TIME%.<br>Скорость: %SPEED%.<br>Место: %LOCATION%. %GOOGLE_LINK%.</td>
+  </tr>
+  <tr>
+    <td>Отключение питания</td>
+    <td>Уведомление: Отключение питания.<br>Объект: %UNIT%.<br>Описание: !ГЛОНАСС обесточен! Отключили прибор или сняли АКБ с машины!<br>%SENSOR(*Бортовое напряжение)%.<br>Время: %POS_TIME%.<br>Скорость: %SPEED%.<br>Место: %LOCATION%. %GOOGLE_LINK%.</td>
+  </tr>
+  <tr>
+    <td>Разряд АКБ в машине</td>
+    <td>Уведомление: Разряд АКБ в машине.<br>Объект: %UNIT%.<br>Описание: Разряд Аккумуляторной батареи в машине.<br>Бортовое напряжение: %SENSOR_VALUE%.<br>Время: %POS_TIME%.<br>Скорость: %SPEED%.<br>Место: %LOCATION%. %GOOGLE_LINK%.</td>
+  </tr>
+  <tr>
+    <td>Связь</td>
+    <td>Уведомление: Связь.<br>Объект: %UNIT%.<br>Описание: %LOSE_RESTORE%.<br>Время: %POS_TIME%.<br>Скорость: %SPEED%.<br>Место: %LOCATION%. %GOOGLE_LINK%.</td>
+  </tr>
+</table></p>
 {% endblock %}
