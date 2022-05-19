@@ -151,6 +151,9 @@ class HumanTerminalPresence(models.Model):
         Terminals,
         on_delete=models.PROTECT,
     )
+    time_create = models.DateTimeField(
+        auto_now=True
+    )
 
     class Meta:
         ordering = ['human']
@@ -214,6 +217,9 @@ class HumanSimPresence(models.Model):
         SimCards,
         on_delete=models.PROTECT,
         related_name='humansimpresences'
+    )
+    time_create = models.DateTimeField(
+        auto_now=True
     )
 
     class Meta:

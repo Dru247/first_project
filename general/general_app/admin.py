@@ -81,7 +81,8 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
         'human',
         'terminal',
         'terminal_model',
-        'terminal_serial_number'
+        'terminal_serial_number',
+        'time_create'
     )
     search_fields = (
         'terminal__imei',
@@ -106,10 +107,11 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
 class HumanSimPresenceAdmin(admin.ModelAdmin):
     list_display = ('human', 'simcard', 'simcard_icc', 'simcard_operator')
     search_fields = (
-            'simcard__number',
-            'simcard__icc',
-            'human__first_name',
-            'human__last_name'
+        'simcard__number',
+        'simcard__icc',
+        'human__first_name',
+        'human__last_name',
+        'timecreate'
     )
     autocomplete_fields = ('human', 'simcard')
     list_filter = ('simcard__operator',)
