@@ -37,12 +37,14 @@
   <tr><td>Соединиться с DRC сервером</td><td>*!CNCT_DRC</td><td>314511 *!CNCT_DRC</td></tr>
   <tr><td>Смена сим-карты</td><td>*!CHNGSIM</td><td>314511 *!CHNGSIM</td></tr>
   <tr><td>Перезагрузка устройства</td><td>*!DEV_RESET</td><td>314511 *!DEV_RESET</td></tr>
-  <tr><td>Узнать ICCID активной симкарты</td><td>*?ICCID</td><td>314511 *!CNCT_DRC</td></tr>
-  <tr><td>Узнать ICCID всех симкарт</td><td>*?ICCID 3</td></tr>
+  <tr><td>Запрос модели устройства и версии прошивки устройства</td><td>*?V</td><td>314511 *?V</td></tr>
   <tr><td>Калибровка акселерометра</td><td>*!ACL_C:G3</td><td>314511 CALIB ACL G</td></tr>
   <tr><td>Команда ВКЛ выхода</td><td>*!2Y</td><td>314511 *!2Y</td></tr>
   <tr><td>Команды ВЫКЛ выхода</td><td>*!2N</td><td>314511 *!2N</td></tr>
-  <tr><td></td></tr>
+  <tr><td>Включение роуминга на 1й симкарте</td><td>*!EDITS TRANS:ROAM(3000,,300,,1),ROAMSIM1(1,,1,1,,,,,,,,,,)</td></tr>
+  <tr><td>Запись дополнительных точек трека, при певышении скорость 130 км/ч (GNSS)</td><td>*!EDITS TRACK:POINTS(,1,130,,,,,,,,)</td></tr>
+  <tr><td>Узнать ICCID активной симкарты</td><td>*?ICCID</td><td>314511 *!CNCT_DRC</td></tr>
+  <tr><td>Узнать ICCID всех симкарт</td><td>*?ICCID 3</td></tr>
 </table>
 <p><table>
   <caption>Wialon, тексты уведомлений</caption>

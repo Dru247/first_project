@@ -1,10 +1,13 @@
-.body-background-color {
+/* .body-background-color {
   background: #222;
   color: white;
+} */
+body {
+  margin: 0;
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #111;
+  background-color: #EEE;
 }
 
 table {
@@ -13,5 +16,29 @@ table {
 
 th, td {
   padding: 3px;
-  border: 1px solid white;
+  border: 1px solid black;
+}
+
+.navigation {
+  border-bottom: 1px solid black;
+}
+
+.navigation-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation-link {
+  display: block;
+  padding: 10px;
+  margin: 5px;
+  text-decoration: none;
+}
+
+.navigation-link:hover {
+  background-color: #FF5555;
+  border-radius: 3px;
 }

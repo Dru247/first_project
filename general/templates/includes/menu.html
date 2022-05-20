@@ -1,47 +1,47 @@
-<nav>
-  <ul>
+<nav class="navigation">
+  <ul class="navigation-list">
     <li>
-      <a href="{% url 'general_app:index-view' %}">
+      <a class="navigation-link" href="{% url 'general_app:index-view' %}">
         Чек-страница
       </a>
     </li>
         <li>
-      <a href="{% url 'general_app:reserve-view' %}">
+      <a class="navigation-link" href="{% url 'general_app:reserve-view' %}">
         Резерв
       </a>
     </li>
     <li>
-      <a href="{% url 'general_app:clients-view' %}">
+      <a class="navigation-link" href="{% url 'general_app:clients-view' %}">
         Клиенты
       </a>
     </li>
     <li>
-      <a href="{% url 'general_app:server-view' server_id=1 %}">
+      <a class="navigation-link" href="{% url 'general_app:server-view' server_id=1 %}">
         Клиенты COM
       </a>
     </li>
     <li>
-      <a href="{% url 'general_app:server-view' server_id=2 %}">
+      <a class="navigation-link" href="{% url 'general_app:server-view' server_id=2 %}">
         Клиенты RU
     </a>
     </li>
     <li>
-      <a href="{% url 'general_app:server-view' server_id=3 %}">
+      <a class="navigation-link" href="{% url 'general_app:server-view' server_id=3 %}">
         Клиенты local
     </a>
     </li>
     <li>
-      <a href="{% url 'general_app:delete-sim-view' %}">
+      <a class="navigation-link" href="{% url 'general_app:delete-sim-view' %}">
         Симкарты на удаление
-    </a>
+      </a>
     </li>
     <li>
-      <a href="{% url 'general_app:maks-func-view' %}">
+      <a class="navigation-link" href="{% url 'general_app:maks-func-view' %}">
         Макс-инструкции
     </a>
     </li>
     <li>
-      <a href="{% url 'general_app:info-view' %}">Информация</a>
+      <a class="navigation-link" href="{% url 'general_app:info-view' %}">Информация</a>
     </li>
   </ul>
 </nav>
