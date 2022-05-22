@@ -42,3 +42,18 @@ th, td {
   background-color: #FF5555;
   border-radius: 3px;
 }
+
+.table-list {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  column-gap: 5px;
+  row-gap: 15px;
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.card-table {
+  margin: 0 auto;
+}
