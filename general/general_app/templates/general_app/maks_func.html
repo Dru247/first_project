@@ -1,54 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}Макс-инструкции{% endblock %}
 {% block content %}
-    <h2>По установкам</h2>
+    <h2>Сообщения клиентам</h2>
     <table>
-      <caption>Новым клиентам RU, COM</caption>
+      <caption>Таблица сообщений новым клиентам</caption>
       <tbody>
-        <tr><th>№</th><th>Текст</th></tr>
-        <tr><td>1</td><td>Скачайте приложение "Wialon"</td></tr>
-	<tr><td>2</td><td>Логин:</td></tr>
-	<tr><td>3</td><td><label class="wialon-login" for="wialon-login">ИванПетров</label><form class="form-wia-login-change" method="get" action="#"><input type="text" name="wialon-login" id="wialon-login" class="change-wia-login" placeholder="ИванПетров"><button type="button" class="button-change-wia-login">Изменить</button></form></td></tr>
-        <tr><td>4</td><td>Пароль:</td></tr>
-	<tr><td>5</td><td><label class="wialon-password" for="wialon-password">m5r0H</label><form class="form-wia-password-change" method="get" action="#"><input type="text" name="wialon-password" id="wialon-password" class="change-wia-password" placeholder="m5r0H"><button type="button" class="button-change-wia-password">Изменить</button></form></td></tr>
-        <tr><td>6</td><td>Настройки приложения сделайте такими:</td></tr>
-        <tr><td>7</td><td>--Фото с настройками приложения--</td></tr>
-        <tr><td>8</td><td>
+	<tr><th rowspan="2">№</th><th colspan="3">Текст</th></tr>
+	<tr><th colspan="2">COM / RU</th><th>Local</th></tr>
+	<tr><td>1</td><td>Имя и фамилию скажите, пожалуйста, используем для Логина</td><td><a href="https://contacts.google.com/?hl=ru" target="_blank">Google контакты</a></td><td></td></tr>
+	<tr><td rowspan="4">2</td><td colspan="2" rowspan="4">Скачайте приложение "Wialon"</td><td>Скачайте приложение "Wialon local"</td></tr>
+	<tr><td>Адрес сервера (нужно вставить в верхнюю строку в приложении):</td></tr>
+	<tr><td>http://online.wialon.center/</td></tr>
+	<tr><td>Далее нажимайте галочку или кнопку "Открыть"</td></tr>
+	<tr><td>3</td><td colspan="3">Логин:</td></tr>
+	<tr><td>4</td><td colspan="3"><span class="wialon-login">ИванПетров</span><form class="form-wia-login-change" method="get" action="#"><input type="text" name="wialon-login" id="wialon-login" class="change-wia-login" placeholder="ИванПетров"><button type="button" class="button-change-wia-login">Изменить</button></form></td></tr>
+	<tr><td rowspan="2"></td><td colspan="2" rowspan="2"></td><td>Инструкция по входу:</td></tr>
+	<tr><td>--Фото с инструкцией по входу--</td></tr>
+	<tr><td>5</td><td colspan="3">Пароль:</td></tr>
+	<tr><td>6</td><td colspan="3"><span class="wialon-password">m5r0H</span><form class="form-wia-password-change" method="get" action="#"><input type="text" name="wialon-password" id="wialon-password" class="change-wia-password" placeholder="m5r0H"><button type="button" class="button-change-wia-password">Изменить</button></form></td></tr>
+        <tr><td>7</td><td colspan="3">Настройки приложения сделайте такими:</td></tr>
+        <tr><td>8</td><td colspan="3">--Фото с настройками приложения--</td></tr>
+        <tr><td>9</td><td colspan="3">
             Вам будет настроены PUSH-уведомления:<br>
             -Отключение питания прибора<br>
             -Потеря связи с прибором<br>
             -Разряд аккумуляторной батареи на машине<br>
             -Выезд из Московской области<br>
             Если нужно изменить уведомления или ненужные отключить, дайте знать</td></tr>
-        <tr><td>9</td><td>По абонентскому обслуживанию 350 руб, я вам буду отписывать о переводе начиная с 25 числа - за следующий месяц</td></tr>
-        <tr><td>10</td><td>Если какое-то время не планируете пользоваться, можно отключить объект и симку на срок до 6 месяцев. Далее оператор может заблокировать симку</td></tr>
+        <tr><td>10</td><td colspan="3">По абонентскому обслуживанию 350 руб, я вам буду отписывать о переводе начиная с 25 числа - за следующий месяц</td></tr>
+        <tr><td>11</td><td colspan="3">Если какое-то время не планируете пользоваться, можно отключить объект и симку на срок до 6 месяцев. Далее оператор может заблокировать симку</td></tr>
       </tbody>
     </table>
     <p><table>
-      <caption>Новым клиентам local</caption>
+      <caption>Дополнительные сoобщения</caption>
       <tbody>
-        <tr><th>№</th><th>Текст</th></tr>
-        <tr><td>1</td><td>Скачайте приложение "Wialon local"</td></tr>
-        <tr><td>2</td><td>Адрес сервера (нужно вставить в верхнюю строку в приложении):</td></tr>
-        <tr><td>3</td><td>http://online.wialon.center/</td></tr>
-        <tr><td>4</td><td>Далее нажимайте галочку или кнопку "Открыть"</td></tr>
-        <tr><td>5</td><td>Логин:</td></tr>
-        <tr><td>6</td><td><label class="wialon-login-2" for="wialon-login-2">ИванПетров</label><form class="form-wia-login-change-2" method="get" action="#"><input type="text" name="wialon-login-2" id="wialon-login-2" class="change-wia-login-2" placeholder="ИванПетров"><button type="button" class="button-change-wia-login-2">Изменить</button></form></td></tr>
-        <tr><td>7</td><td>Пароль:</td></tr>
-        <tr><td>8</td><td><label class="wialon-password-2" for="wialon-password-2">m5r0H</label><form class="form-wia-password-change-2" method="get" action="#"><input type="text" name="wialon-password-2" id="wialon-password-2" class="change-wia-password-2" placeholder="m5r0H"><button type="button" class="button-change-wia-password-2">Изменить</button></form></td></tr>
-        <tr><td>9</td><td>Инструкция по входу</td></tr>
-        <tr><td>10</td><td>--Фото с инструкцие по входу--</td></tr>
-        <tr><td>11</td><td>Настройки приложения сделайте такими:</td></tr>
-        <tr><td>12</td><td>--Фото с настройками приложения--</td></tr>
-        <tr><td>13</td><td>
-            Вам будет настроены PUSH-уведомления:<br>
-            -Отключение питания прибора<br>
-            -Потеря связи с прибором<br>
-            -Разряд аккумуляторной батареи на машине<br>
-            -Выезд из Московской области<br>
-            Если нужно изменить уведомления или ненужные отключить, дайте знать</td></tr>
-        <tr><td>14</td><td>По абонентскому обслуживанию 350 руб, я вам буду отписывать о переводе начиная с 25 числа - за следующий месяц</td></tr>
-        <tr><td>15</td><td>Если какое-то время не планируете пользоваться, можно отключить объект и симку на срок до 6 месяцев. Далее оператор может заблокировать симку</td></tr>
+	<tr><th>№</th><th>Текст</th></tr>
+        <tr><td>1</td><td>В течении суток всё восстановится. По готовности отпишемся</td></tr>
+	<tr><td>2</td><td>Добрый день. Проверяем информацию. В ближайшее время вам отпишемся</td></tr>
       </tbody>
     </table></p>
     <p>

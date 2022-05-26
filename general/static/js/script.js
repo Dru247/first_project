@@ -15,24 +15,6 @@ password_button.onclick = function() {
   change_password.textContent = input_password.value;
 };
 
-
-let change_login_2 = document.querySelector('.wialon-login-2');
-let input_login_2 = document.querySelector('.change-wia-login-2');
-let login_button_2 = document.querySelector('.button-change-wia-login-2')
-
-login_button_2.onclick = function() {
-  change_login_2.textContent = input_login_2.value;
-};
-
-
-let change_password_2 = document.querySelector('.wialon-password-2');
-let input_password_2 = document.querySelector('.change-wia-password-2');
-let password_button_2 = document.querySelector('.button-change-wia-password-2')
-
-password_button_2.onclick = function() {
-  change_password_2.textContent = input_password_2.value;
-};
-
 /* function copyValue(elementId) {
 //    Get the text field
   var copyText = document.getElementById(elementId).innerHTML;
