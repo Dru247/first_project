@@ -27,9 +27,9 @@ class Command(BaseCommand):
                 human = line['human']
                 if Terminals.objects.filter(imei=imei).exists():
                     pass
-                    print('check pass')
+                    print(f'{imei} - терминала есть на проете. Проверяй.')
                 else:
-                    print('check else')
+                    print(f'{imei} - терминала нет на проекте. Всё ок.')
                     Terminals.objects.create(
                         model=brand_list[model],
                         serial_number=sn,
