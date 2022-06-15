@@ -20,16 +20,13 @@
   <tr><td>Неоматика / ADM333</td><td>21848</td><td>65511</td></tr>
   <tr><td>Неоматика / ADM007</td><td>21404</td><td>65511</td></tr>
 </table></p>
-<p><a target="_blank" href="https://help.wialon.com/help/wialon-hosting/ru/user-guide/">Wialon. Инструкция</a></p>
-<p><a target="_blank" href="https://forum.gurtam.com/">Wialon. Форум</a></p>
-<p><a target="_blank" href="https://support.fort-monitor.ru/">Fort Monitor. Инструкция</a></p>
 <h2>Навтелеком</h2>
 <p><a target="_blank" href="https://navtelecom.ru/ru/">Официфльный сайт</a></p>
 <p><a target="_blank" href="https://disk.yandex.ru/i/S52Uvt4Uc6BI4Q">Протокол FLEX. Описание параметров.</a></p>
 <h3>Smart S-24xx</h3>
 <table>
   <caption>Команды</caption>
-  <tr><th>Функция</th><th>TCP</th><th>SMS</th></tr>
+  <tr><th>Функция</th><th>GPRS</th><th>SMS</th></tr>
   <tr><td>Смена сервера</td><td>*!EDITS TRANS:SRV1(,,,nl.gpsgsm.org)</td><td></td><tr>
   <tr><td rowspan="2">Удалённое подключение</td><td rowspan="2">*!CNCT_RCS:89.208.152.55:8100:84008748</td><td>314511<br>NTC_CONNECT<br>89.208.152.55<br>8100<br>24402551</td></tr>
   <tr><td>314511 *!CNCT_RCS 89.208.152.55,8100,73609794</td></tr>
@@ -46,6 +43,34 @@
   <tr><td>Узнать ICCID активной симкарты</td><td>*?ICCID</td><td>314511 *!CNCT_DRC</td></tr>
   <tr><td>Узнать ICCID всех симкарт</td><td>*?ICCID 3</td></tr>
 </table>
+<h2>Неоматика</h2>
+<p><a href="https://disk.yandex.ru/d/LrOk643VPZPlaw" target="_blank">Инструкции к оборудованию</a></p>
+<table>
+  <caption>Команды</caption>
+  <tr><th>Функция</th><th>GPRS</th><th>SMS</th></tr>
+  <tr><td>Запрос статуса</td><td>STATUS</td><td>STATUS 314511</td></tr>
+  <tr><td>Запрос ICCID установленный симкарт</td><td>ICCID</td><td>ICCID 314511</td></tr>
+  <tr><td>Перезагрузка устройства</td><td>RESET</td><td>RESET 314511</td></tr>
+  <tr><td>Обновление прошивки</td><td>UPDATE</td><td>UPDATE 314511</td></tr>
+  <tr><td>Смена сервера на Local</td><td>SETHOST0 onwc.ru:21848</td><td>SETHOST0 onwc.ru:21848 314511</td></tr>
+  <tr><td>Смена сервера на COM</td><td>SETHOST0 nl.gpsgsm.org:21848</td><td>SETHOST0 nl.gpsgsm.org:21848 314511</td></tr>
+  <tr><td>Смена сервера на RU</td><td>SETHOST0 ru.gpsgsm.org:21848</td><td>SETHOST0 ru.gpsgsm.org:21848 314511</td></tr>
+  <tr><td>Удалённое подключение</td><td>REMOTE</td><td>REMOTE 314511</td></tr>
+  <tr><td>Регистрация номера телефона</td><td>ADD ME +79991112233</td><td>ADD ME 314511</td></tr>
+  <tr><td>Активация выхода</td><td>OUTPUT 1</td><td>OUTPUT 1 314511</td></tr>
+  <tr><td>Деактивация выхода</td><td>OUTPUT 0</td><td>OUTPUT 0 314511</td></tr>
+</table>
+<h3>Управление устройством по SMS</h3>
+<dl>
+  <dt>Принципы</dt>
+  <dd>Если номер не авторизирован в терминале, на команды с этого номера он не реагирует</dd>
+  <dd>Если не установлен пароль, любой номер может зарегистрировать себя, установить пароль и управлять устройством</dd>
+  <dt>Вывод:</dt>
+  <dd>Установка пароля является <strong>ОБЯЗАТЕЛЬНЫМ</strong> мероприятием!</dd>
+</dl>
+<h2>Wialon</h2>
+<p><a target="_blank" href="https://help.wialon.com/help/wialon-hosting/ru/user-guide/">Wialon. Инструкция</a></p>
+<p><a target="_blank" href="https://forum.gurtam.com/">Wialon. Форум</a></p>
 <p><table>
   <caption>Wialon, тексты уведомлений</caption>
   <tbody>
@@ -68,4 +93,6 @@
     </tr>
     </tbody>
 </table></p>
+<h2>Fort Monitor</h2>
+<p><a target="_blank" href="https://support.fort-monitor.ru/">Fort Monitor. Инструкция</a></p>
 {% endblock %}

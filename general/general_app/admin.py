@@ -105,13 +105,18 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
 
 @admin.register(HumanSimPresence)
 class HumanSimPresenceAdmin(admin.ModelAdmin):
-    list_display = ('human', 'simcard', 'simcard_icc', 'simcard_operator')
+    list_display = (
+        'human',
+        'simcard',
+        'simcard_icc',
+        'simcard_operator',
+        'time_create'
+    )
     search_fields = (
         'simcard__number',
         'simcard__icc',
         'human__first_name',
-        'human__last_name',
-        'timecreate'
+        'human__last_name'
     )
     autocomplete_fields = ('human', 'simcard')
     list_filter = ('simcard__operator',)
