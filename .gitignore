@@ -133,8 +133,5 @@ dmypy.json
 .idea
 
 #dj_commads_file
-/general/general_app/management/commands/term.csv
-/general/general_app/management/commands/mts.csv
-/general/general_app/management/commands/mega.csv
-/general/general_app/management/commands/mega_out.csv
-/general/general_app/management/commands/mts_out.csv
+/general/general_app/management/commands/csv_input/
+/general/general_app/management/commands/csv_output/

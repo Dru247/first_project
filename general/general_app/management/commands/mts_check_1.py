@@ -10,8 +10,8 @@ class Command(BaseCommand):
            ', с выводом недостающих симкарт в cvs'
 
     def handle(self, *args, **options):
-        path = 'general_app/management/commands/mts.csv'
-        path_2 = 'general_app/management/commands/mts_out.csv'
+        path = 'general_app/management/commands/csv_input/mts.csv'
+        path_2 = 'general_app/management/commands/csv_output/mts_out.csv'
         write = open(path_2, 'w', newline='', encoding='utf-8')
         fieldnames = [
                 'Наименование устройства',

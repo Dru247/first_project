@@ -15,7 +15,7 @@ class Command(BaseCommand):
             '2435': ModelTerminals.objects.get(model='Smart S-2435'),
             '333': ModelTerminals.objects.get(model='ADM333')
         }
-        path = 'general_app/management/commands/term.csv'
+        path = 'general_app/management/commands/csv_input/term.csv'
         with open(path, 'r', newline='') as data:
             result = csv.DictReader(data, delimiter=';')
             for line in result:

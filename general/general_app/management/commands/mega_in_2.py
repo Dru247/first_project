@@ -8,7 +8,7 @@ from general_app.models import Human, HumanSimPresence, OperatorsSim, SimCards
 class Command(BaseCommand):
     help = 'Занесение симкарт Мегафон на проект'
     def handle(self, *args, **options):
-        path = 'general_app/management/commands/mega.csv'
+        path = 'general_app/management/commands/csv_input/mega.csv'
         with open(path, 'r', newline='', encoding='cp1251') as data:
             operator = OperatorsSim.objects.get(name='Мегафон')
             human = Human.objects.get(pk=input('Введите ID человека, на которого нужно внести симки > '))

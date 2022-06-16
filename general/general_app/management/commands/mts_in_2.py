@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Занесение симкарт МТС на проект'
 
     def handle(self, *args, **options):
-        path = 'general_app/management/commands/mts.csv'
+        path = 'general_app/management/commands/csv_input/mts.csv'
         with open(path, 'r', newline='', encoding='utf-8-sig') as data:
             operator = OperatorsSim.objects.get(name='МТС')
             human = Human.objects.get(pk=input('Введите ID человека, на которого нужно внести симки > '))
