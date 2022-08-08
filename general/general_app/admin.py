@@ -31,15 +31,21 @@ class WialonUserAdmin(admin.ModelAdmin):
 
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'wialon_user', 'terminal', 'active')
+    list_display = ('name', 'wialon_user', 'terminal', 'active', 'last_change', 'sim')
     search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
     autocomplete_fields = ('terminal', 'wialon_user')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'
 
-    @admin.display()
+    @admin.display(ordering='wialonobjectactive__last_modified')
+    def last_change(self, obj):
+        return WialonObjectActive.objects.get(wialon_object=obj).last_modified
+
     def active(self, obj):
         return WialonObjectActive.objects.get(wialon_object=obj).active
+
+    def sim(self, obj):
+        return SimCards.objects.filter(terminal=obj.terminal)
 
 
 @admin.register(WialonObjectActive)

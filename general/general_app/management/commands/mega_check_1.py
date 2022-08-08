@@ -10,9 +10,9 @@ class Command(BaseCommand):
            ', с выводом недостающих симкарт в cvs'
 
     def handle(self, *args, **options):
-        path = 'general_app/management/commands/csv_input/mega.csv'
-        path_1 = 'general_app/management/commands/csv_output/mega_out.csv'
-        path_2 = 'general_app/management/commands/csv_output/mega_for-roaming.csv'
+        path = 'general_app/management/commands/mega.csv'
+        path_1 = 'general_app/management/commands/mega_out.csv'
+        path_2 = 'general_app/management/commands/mega_for-roaming.csv'
 
         write_1 = open(path_1, 'w', newline='', encoding='utf-8')
         fieldnames = [

@@ -133,5 +133,4 @@ dmypy.json
 .idea
 
 #dj_commads_file
-csv_input/*.csv
-csv_output/*.csv
+general/general_app/management/commands/*.csv
