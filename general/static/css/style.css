@@ -57,3 +57,7 @@ th, td {
 .card-table {
   margin: 0 auto;
 }
+
+.copy-all {
+  user-select: all;
+}

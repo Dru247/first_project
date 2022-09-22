@@ -91,6 +91,8 @@ class BrandTerminals(models.Model):
 
     class Meta:
         ordering = ['brand']
+        verbose_name = 'Марка терминала'
+        verbose_name_plural = 'Марки терминалов'
 
 
 class ModelTerminals(models.Model):
@@ -110,6 +112,8 @@ class ModelTerminals(models.Model):
 
     class Meta:
         ordering = ['model']
+        verbose_name = 'Модель терминала'
+        verbose_name_plural = 'Модели терминалов'
 
 
 class Terminals(models.Model):
@@ -139,6 +143,8 @@ class Terminals(models.Model):
 
     class Meta:
         ordering = ['imei']
+        verbose_name = 'Терминал'
+        verbose_name_plural = 'Терминалы'
 
 
 class HumanTerminalPresence(models.Model):
@@ -205,6 +211,8 @@ class SimCards(models.Model):
 
     class Meta:
         ordering = ['number']
+        verbose_name = 'Сим-карта'
+        verbose_name_plural = 'Сим-карты'
 
 
 class HumanSimPresence(models.Model):

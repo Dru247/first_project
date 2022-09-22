@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Telegram, TelephoneNumber, Terminals, UserWialonServer,
                      WialonObject, WialonObjectActive, WialonUser, Company,
-                     UserCompany, HumanCompany, Contact, HumanContact)
+                     UserCompany, HumanCompany, Contact, HumanContact, BrandTerminals, ModelTerminals)
 
 
 @admin.register(Human)
@@ -54,6 +54,26 @@ class WialonObjectActiveAdmin(admin.ModelAdmin):
     search_fields = ('wialon_object__name', )
     autocomplete_fields = ('wialon_object',)
     empty_value_display = '-пусто-'
+
+
+@admin.register(BrandTerminals)
+class BrandTerminalsAdmin(admin.ModelAdmin):
+    list_display = ('brand',)
+    empty_value_display = '-пусто-'
+
+    class Meta:
+        verbose_name = 'Марка терминала'
+        verbose_name_plural = 'Марки терминалов'
+
+
+@admin.register(ModelTerminals)
+class ModelTerminalsAdmin(admin.ModelAdmin):
+    list_display = ('brand', 'model',)
+    empty_value_display = '-пусто-'
+
+    class Meta:
+        verbose_name = 'Модель терминала'
+        verbose_name_plural = 'Модели терминалов'
 
 
 @admin.register(Terminals)

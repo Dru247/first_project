@@ -15,8 +15,8 @@
       {% for sim in sim_list %}
         <tr>
           <td>{{ sim.operator }}</td>
-          <td>{{ sim.number }}</td>
-          <td>{{ sim.icc }}</td>
+          <td class="copy-all">{{ sim.number }}</td>
+          <td class="copy-all">{{ sim.icc }}</td>
           <td>{{ sim.data_deactivate }}</td>
         </tr>
       {% endfor %}
@@ -36,8 +36,8 @@
       {% for sim in sim_list_deactivate %}
         <tr>
           <td>{{ sim.operator }}</td>
-          <td>{{ sim.number }}</td>
-          <td>{{ sim.icc }}</td>
+          <td class="copy-all">{{ sim.number }}</td>
+          <td class="copy-all">{{ sim.icc }}</td>
           <td>{{ sim.data_deactivate }}</td>
         </tr>
       {% endfor %}
