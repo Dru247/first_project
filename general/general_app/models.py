@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone as tz
 from django.core.exceptions import ValidationError
 
+import datetime
+
 
 class Human(models.Model):
     first_name = models.CharField(max_length=20)
@@ -375,3 +377,110 @@ class UserCompany(models.Model):
     class Meta:
         verbose_name = 'Компания + Юзер'
         verbose_name_plural = 'Компании + Юзеры'
+
+
+class BrandCar(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name='Название Марки'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Марка ТС'
+        verbose_name_plural = 'Марки ТС'
+
+
+class ModelCar(models.Model):
+    brand = models.ForeignKey(
+        BrandCar,
+        on_delete=models.PROTECT,
+        related_name='modelcars',
+        verbose_name='Марка ТС'
+    )
+    name = models.CharField(
+        max_length=50,
+        verbose_name='Название Модели'
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.brand, self.name)
+
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Модель ТС'
+        verbose_name_plural = 'Модели ТС'
+
+
+class Installation(models.Model):
+    date = models.DateField(
+        default=datetime.date.today,
+        verbose_name='Дата'
+    )
+    location = models.CharField(
+        max_length=200,
+        verbose_name='Место'
+    )
+    brand = models.ForeignKey(
+        BrandCar,
+        on_delete=models.PROTECT,
+        related_name='installations',
+        verbose_name='Марка ТС'
+    )
+    model = models.ForeignKey(
+        ModelCar,
+        on_delete=models.PROTECT,
+        related_name='installations',
+        verbose_name='Модель ТС'
+    )
+    state_number = models.CharField(
+        max_length=20,
+        verbose_name='Гос. номер'
+    )
+    terminal = models.ForeignKey(
+        Terminals,
+        on_delete=models.PROTECT,
+        related_name='installations',
+        verbose_name='Терминал'
+    )
+    human_worker = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        related_name='installations',
+        verbose_name='Установщик'
+    )
+    user = models.ForeignKey(
+        WialonUser,
+        on_delete=models.PROTECT,
+        related_name='installations',
+        verbose_name='Пользователь'
+    )
+    payment = models.BooleanField(
+        default=False,
+        verbose_name='Оплата'
+    )
+    comment = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
+    )
+
+    def __str__(self):
+        return '%s %s %s' % (self.brand, self.model, self.terminal)
+
+    class Meta:
+        ordering = ['-date']
+        verbose_name = 'Установка'
+        verbose_name_plural = 'Установки'
+
+
+
+
+
+

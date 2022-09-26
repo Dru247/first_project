@@ -3,7 +3,9 @@ from django.contrib import admin
 from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Telegram, TelephoneNumber, Terminals, UserWialonServer,
                      WialonObject, WialonObjectActive, WialonUser, Company,
-                     UserCompany, HumanCompany, Contact, HumanContact, BrandTerminals, ModelTerminals)
+                     UserCompany, HumanCompany, Contact, HumanContact,
+                     BrandTerminals, ModelTerminals, BrandCar, ModelCar,
+                     Installation)
 
 
 @admin.register(Human)
@@ -61,19 +63,11 @@ class BrandTerminalsAdmin(admin.ModelAdmin):
     list_display = ('brand',)
     empty_value_display = '-пусто-'
 
-    class Meta:
-        verbose_name = 'Марка терминала'
-        verbose_name_plural = 'Марки терминалов'
-
 
 @admin.register(ModelTerminals)
 class ModelTerminalsAdmin(admin.ModelAdmin):
     list_display = ('brand', 'model',)
     empty_value_display = '-пусто-'
-
-    class Meta:
-        verbose_name = 'Модель терминала'
-        verbose_name_plural = 'Модели терминалов'
 
 
 @admin.register(Terminals)
@@ -178,3 +172,50 @@ class HumanCompanyAdmin(admin.ModelAdmin):
     search_fields = ('user_comp__user_name', 'company_us_name',)
     autocomplete_fields = ('company_us', 'user_comp')
     empty_value_display = '-пусто-'
+
+
+@admin.register(BrandCar)
+class BrandCarAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    empty_value_display = '-пусто-'
+
+
+@admin.register(ModelCar)
+class ModelCarAdmin(admin.ModelAdmin):
+    list_display = ('brand', 'name')
+    search_fields = ('brand', 'name')
+    empty_value_display = '-пусто-'
+
+
+@admin.register(Installation)
+class InstallationAdmin(admin.ModelAdmin):
+    list_display = (
+        'date',
+        'location',
+        'brand',
+        'model',
+        'state_number',
+        'terminal',
+        'human_worker',
+        'user',
+        'payment',
+        'comment'
+    )
+    autocomplete_fields = (
+        'brand',
+        'model',
+        'terminal',
+        'human_worker',
+        'user'
+    )
+    search_fields = (
+        'state_number',
+        'terminal__imei',
+        'comment'
+    )
+    empty_value_display = '-пусто-'
+
+
+
+
