@@ -426,12 +426,6 @@ class Installation(models.Model):
         max_length=200,
         verbose_name='Место'
     )
-    brand = models.ForeignKey(
-        BrandCar,
-        on_delete=models.PROTECT,
-        related_name='installations',
-        verbose_name='Марка ТС'
-    )
     model = models.ForeignKey(
         ModelCar,
         on_delete=models.PROTECT,

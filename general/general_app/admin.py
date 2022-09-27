@@ -193,7 +193,6 @@ class InstallationAdmin(admin.ModelAdmin):
     list_display = (
         'date',
         'location',
-        'brand',
         'model',
         'state_number',
         'terminal',
@@ -203,7 +202,6 @@ class InstallationAdmin(admin.ModelAdmin):
         'comment'
     )
     autocomplete_fields = (
-        'brand',
         'model',
         'terminal',
         'human_worker',
@@ -212,7 +210,9 @@ class InstallationAdmin(admin.ModelAdmin):
     search_fields = (
         'state_number',
         'terminal__imei',
-        'comment'
+        'comment',
+        'model__brand__name',
+        'model__name'
     )
     empty_value_display = '-пусто-'
 
