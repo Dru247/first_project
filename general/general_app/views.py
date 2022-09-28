@@ -25,8 +25,8 @@ def index_view(request):
     wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
     sum_wia_obj = WialonObject.objects.filter(wialonobjectactive__active=True).count()
     sum_wia_obj_serv_active = Count(
-        'userwialonserver__user__wialonobjects__wialonobjectactive',
-        filter=Q(userwialonserver__user__wialonobjects__wialonobjectactive__active=True)
+        'userwialonservers__user__wialonobjects__wialonobjectactive',
+        filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
     )
     wia_obj_serv_active = WialonServer.objects.annotate(active=sum_wia_obj_serv_active)
     user_not_serv = WialonUser.objects.filter(userwialonserver__isnull=True)
@@ -77,8 +77,8 @@ def server_view(request, server_id):
     company_list = Company.objects.filter(usercompany__user_comp__in=a)
     company_list_annot = company_list.annotate(active=sum_wia_obj_active_comp)
     sum_wia_obj_serv_active = Count(
-        'userwialonserver__user__wialonobjects__wialonobjectactive',
-        filter=Q(userwialonserver__user__wialonobjects__wialonobjectactive__active=True)
+        'userwialonservers__user__wialonobjects__wialonobjectactive',
+        filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
     )
     wia_obj_serv = WialonServer.objects.filter(pk=server_id)
     wia_obj_serv_active = wia_obj_serv.annotate(active=sum_wia_obj_serv_active)

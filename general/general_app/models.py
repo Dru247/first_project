@@ -161,7 +161,7 @@ class Terminals(models.Model):
     )
 
     def __str__(self):
-        return str(self.imei)
+        return self.imei
 
     class Meta:
         ordering = ['imei']
@@ -491,7 +491,7 @@ class ModelCar(models.Model):
 
 
     class Meta:
-        ordering = ['name']
+        ordering = ['brand']
         verbose_name = 'Модель ТС'
         verbose_name_plural = 'Модели ТС'
 
@@ -543,17 +543,32 @@ class Installation(models.Model):
         default=False,
         verbose_name='Оплата'
     )
-    comment = models.CharField(
-        max_length=200,
-        null=True,
-        blank=True,
-        verbose_name='Комментарий'
-    )
 
     def __str__(self):
-        return '%s %s' % (self.model, self.terminal)
+        return str(self.terminal)
 
     class Meta:
         ordering = ['-date']
         verbose_name = 'Установка'
         verbose_name_plural = 'Установки'
+
+
+class InstallationComment(models.Model):
+    installation = models.OneToOneField(
+        Installation,
+        on_delete=models.PROTECT,
+        related_name='installationcomments',
+        verbose_name='Установка'
+    )
+    text = models.CharField(
+        max_length=255,
+        verbose_name='Текст'
+    )
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        ordering = ['installation']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Установки + Комментарии'

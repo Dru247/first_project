@@ -5,7 +5,7 @@ from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      WialonObject, WialonObjectActive, WialonUser, Company,
                      UserCompany, HumanCompany, Contact, HumanContact,
                      BrandTerminals, ModelTerminals, BrandCar, ModelCar,
-                     Installation)
+                     Installation, InstallationComment)
 
 
 @admin.register(Human)
@@ -161,32 +161,32 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     def simcard_operator(self, obj):
         return obj.simcard.operator
 
-'''
-@admin.register(Company)
-class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-    empty_value_display = '-пусто-'
 
-
-@admin.register(HumanCompany)
-class HumanCompanyAdmin(admin.ModelAdmin):
-    list_display = ('company_hum', 'human_comp')
-    search_fields = (
-        'human_comp__first_name',
-        'human_comp__first_name',
-        'company_hum'
-    )
-    autocomplete_fields = ('human_comp',)
-    empty_value_display = '-пусто-'
-
-
-@admin.register(UserCompany)
-class HumanCompanyAdmin(admin.ModelAdmin):
-    list_display = ('company_us', 'user_comp')
-    search_fields = ('user_comp__user_name', 'company_us_name',)
-    autocomplete_fields = ('company_us', 'user_comp')
-    empty_value_display = '-пусто-' '''
+# @admin.register(Company)
+# class CompanyAdmin(admin.ModelAdmin):
+#    list_display = ('name',)
+#    search_fields = ('name',)
+#    empty_value_display = '-пусто-'
+#
+#
+# @admin.register(HumanCompany)
+# class HumanCompanyAdmin(admin.ModelAdmin):
+#    list_display = ('company_hum', 'human_comp')
+#    search_fields = (
+#        'human_comp__first_name',
+#        'human_comp__first_name',
+#        'company_hum'
+#    )
+#    autocomplete_fields = ('human_comp',)
+#    empty_value_display = '-пусто-'
+#
+#
+# @admin.register(UserCompany)
+# class HumanCompanyAdmin(admin.ModelAdmin):
+#    list_display = ('company_us', 'user_comp')
+#    search_fields = ('user_comp__user_name', 'company_us_name',)
+#    autocomplete_fields = ('company_us', 'user_comp')
+#    empty_value_display = '-пусто-'
 
 
 @admin.register(BrandCar)
@@ -225,12 +225,20 @@ class InstallationAdmin(admin.ModelAdmin):
     search_fields = (
         'state_number',
         'terminal__imei',
-        'comment',
+        'installationcomments__text',
         'model__brand__name',
         'model__name'
     )
     empty_value_display = '-пусто-'
 
+    @admin.display()
+    def comment(self, obj):
+        return InstallationComment.objects.get(installation=obj).text
 
 
-
+@admin.register(InstallationComment)
+class InstallationCommentAdmin(admin.ModelAdmin):
+    list_display = ('installation', 'text')
+    autocomplete_fields = ('installation',)
+    search_fields = ('installation__terminal__imei', 'text')
+    empty_value_display = 'пусто'
