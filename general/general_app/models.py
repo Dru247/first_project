@@ -6,21 +6,32 @@ import datetime
 
 
 class Human(models.Model):
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
+    first_name = models.CharField(
+        max_length=20,
+        verbose_name='Имя'
+    )
+    last_name = models.CharField(
+        max_length=20,
+        verbose_name='Фамилия')
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
 
     class Meta:
         ordering = ['first_name']
+        verbose_name = 'Человек'
+        verbose_name_plural = 'Люди'
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(
+        max_length=45,
+        verbose_name='Название контакта'
+    )
     record = models.ManyToManyField(
         Human,
-        through='HumanContact'
+        through='HumanContact',
+        verbose_name='Человек'
     )
 
     def __str__(self):
@@ -28,6 +39,8 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = 'Вариант контакта'
+        verbose_name_plural = 'Варианты контактов'
 
 
 class HumanContact(models.Model):
@@ -85,7 +98,8 @@ class BrandTerminals(models.Model):
     brand = models.CharField(
         max_length=20,
         null=True,
-        unique=True
+        unique=True,
+        verbose_name='Название'
     )
 
     def __str__(self):
@@ -102,11 +116,13 @@ class ModelTerminals(models.Model):
         BrandTerminals,
         on_delete=models.PROTECT,
         related_name='models',
+        verbose_name='Марка'
     )
     model = models.CharField(
         max_length=20,
         null=True,
-        unique=True
+        unique=True,
+        verbose_name='Модель'
     )
 
     def __str__(self):
@@ -123,21 +139,25 @@ class Terminals(models.Model):
         ModelTerminals,
         on_delete=models.PROTECT,
         related_name='t_model',
+        verbose_name='Модель',
         null=True,
         blank=True
     )
     serial_number = models.CharField(
         max_length=20,
+        verbose_name='Серийный номер',
         null=True,
         blank=True
     )
     imei = models.CharField(
         max_length=20,
+        verbose_name='IMEI',
         unique=True,
         null=True,
     )
     time_create = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
+        verbose_name='Дата'
     )
 
     def __str__(self):
@@ -153,14 +173,17 @@ class HumanTerminalPresence(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        null=True,
+        related_name='humanterminalpresences',
+        verbose_name='Человек'
     )
     terminal = models.OneToOneField(
         Terminals,
         on_delete=models.PROTECT,
+        verbose_name='Терминал'
     )
     time_create = models.DateTimeField(
-        auto_now=True
+        auto_now=True,
+        verbose_name='Дата'
     )
 
     class Meta:
@@ -172,6 +195,7 @@ class HumanTerminalPresence(models.Model):
 class OperatorsSim(models.Model):
     name = models.CharField(
         max_length=20,
+        verbose_name='Название',
         null=True,
         unique=True
     )
@@ -179,33 +203,40 @@ class OperatorsSim(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Оператор'
+        verbose_name_plural = 'Операторы'
+
 
 class SimCards(models.Model):
     operator = models.ForeignKey(
         OperatorsSim,
         on_delete=models.PROTECT,
         related_name='s_operator',
-        null=True
+        verbose_name='Оператор'
     )
     number = models.CharField(
         max_length=16,
-        null=True,
-        unique=True
+        unique=True,
+        verbose_name='Номер'
     )
     icc = models.CharField(
         max_length=20,
-        null=True,
-        unique=True
+        unique=True,
+        verbose_name='ICC'
     )
     terminal = models.ForeignKey(
         Terminals,
         on_delete=models.PROTECT,
         related_name='s_terminal',
+        verbose_name='Терминал',
         null=True,
         blank=True
     )
     time_create = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
+        verbose_name='Дата'
     )
 
     def __str__(self):
@@ -213,44 +244,50 @@ class SimCards(models.Model):
 
     class Meta:
         ordering = ['number']
-        verbose_name = 'Сим-карта'
-        verbose_name_plural = 'Сим-карты'
+        verbose_name = 'SIM-карта'
+        verbose_name_plural = 'SIM-карты'
 
 
 class HumanSimPresence(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        related_name='humansimpresences'
+        related_name='humansimpresences',
+        verbose_name='Человек'
     )
     simcard = models.OneToOneField(
         SimCards,
         on_delete=models.PROTECT,
-        related_name='humansimpresences'
+        related_name='humansimpresences',
+        verbose_name='SIM-карта'
     )
     time_create = models.DateTimeField(
-        auto_now=True
+        auto_now=True,
+        verbose_name='Дата'
     )
 
     class Meta:
         ordering = ['human']
-        verbose_name = 'Человек + Симка'
-        verbose_name_plural = 'Люди + Симки'
+        verbose_name = 'Человек + SIM-карта'
+        verbose_name_plural = 'Люди + SIM-карты'
 
 
 class WialonUser(models.Model):
     user_name = models.CharField(
         max_length=20,
-        unique=True
+        unique=True,
+        verbose_name='Пользователь'
     )
     password = models.CharField(
         max_length=20,
+        verbose_name='Пароль',
         null=True,
         blank=True
     )
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
+        verbose_name='Человек',
         null=True,
         blank=True
     )
@@ -260,6 +297,8 @@ class WialonUser(models.Model):
 
     class Meta:
         ordering = ['user_name']
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class WialonObject(models.Model):
@@ -268,21 +307,28 @@ class WialonObject(models.Model):
         WialonUser,
         on_delete=models.PROTECT,
         related_name='wialonobjects',
+        verbose_name='Пользователь',
         null=True,
         blank=True
     )
     terminal = models.OneToOneField(
         Terminals,
         on_delete=models.PROTECT,
-        related_name='wialonobjects'
+        related_name='wialonobjects',
+        verbose_name='Терминал'
     )
-    time_create = models.DateTimeField(auto_now_add=True)
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата'
+    )
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+        verbose_name = 'Объект'
+        verbose_name_plural = 'Объекты'
 
     def save(self, *args, **kwargs):
         HumanTerminalPresence.objects.filter(
@@ -295,35 +341,65 @@ class WialonObjectActive(models.Model):
     wialon_object = models.OneToOneField(
         WialonObject,
         on_delete=models.CASCADE,
+        verbose_name='Объект'
     )
-    active = models.BooleanField(default=True)
-    last_modified = models.DateTimeField(default=tz.now)
+    active = models.BooleanField(
+        default=True,
+        verbose_name='Статус'
+    )
+    last_modified = models.DateTimeField(
+        default=tz.now,
+        verbose_name='Дата'
+    )
 
     def __str__(self):
         return str(self.wialon_object)
 
     class Meta:
         ordering = ['wialon_object']
+        verbose_name = 'Объект + Статус'
+        verbose_name_plural = 'Объекты + Статусы'
 
 
 class WialonServer(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(
+        max_length=20,
+        verbose_name='Сервер'
+    )
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Сервер'
+        verbose_name_plural = 'Серверы'
+
 
 
 class UserWialonServer(models.Model):
     user = models.OneToOneField(
         WialonUser,
         on_delete=models.CASCADE,
+        verbose_name='Пользователь'
     )
     server = models.ForeignKey(
         WialonServer,
         on_delete=models.PROTECT,
+        related_name='userwialonservers',
+        verbose_name='Сервер',
         null=True,
-        blank=True
+        blank=True,
     )
+
+    def __str__(self):
+        return '%s %s' % (self.user, self.server)
+
+
+    class Meta:
+        ordering = ['user']
+        verbose_name = 'Пользователь + Сервер'
+        verbose_name_plural = 'Пользователи + Серверы'
 
 
 class Company(models.Model):
@@ -333,7 +409,8 @@ class Company(models.Model):
     )
     human_company = models.ManyToManyField(
         Human,
-        through='HumanCompany'
+        through='HumanCompany',
+        verbose_name='Человек'
     )
 
     def __str__(self):
@@ -371,12 +448,12 @@ class UserCompany(models.Model):
     user_comp = models.ForeignKey(
         WialonUser,
         on_delete=models.PROTECT,
-        verbose_name='Юзер'
+        verbose_name='Пользователь'
     )
 
     class Meta:
-        verbose_name = 'Компания + Юзер'
-        verbose_name_plural = 'Компании + Юзеры'
+        verbose_name = 'Компания + Пользователь'
+        verbose_name_plural = 'Компании + Пользователи'
 
 
 class BrandCar(models.Model):
@@ -404,6 +481,8 @@ class ModelCar(models.Model):
     )
     name = models.CharField(
         max_length=50,
+        null=True,
+        blank=True,
         verbose_name='Название Модели'
     )
 
@@ -424,16 +503,22 @@ class Installation(models.Model):
     )
     location = models.CharField(
         max_length=200,
+        null=True,
+        blank=True,
         verbose_name='Место'
     )
     model = models.ForeignKey(
         ModelCar,
         on_delete=models.PROTECT,
+        null=True,
+        blank=True,
         related_name='installations',
         verbose_name='Модель ТС'
     )
     state_number = models.CharField(
         max_length=20,
+        null=True,
+        blank=True,
         verbose_name='Гос. номер'
     )
     terminal = models.ForeignKey(
@@ -466,15 +551,9 @@ class Installation(models.Model):
     )
 
     def __str__(self):
-        return '%s %s %s' % (self.brand, self.model, self.terminal)
+        return '%s %s' % (self.model, self.terminal)
 
     class Meta:
         ordering = ['-date']
         verbose_name = 'Установка'
         verbose_name_plural = 'Установки'
-
-
-
-
-
-

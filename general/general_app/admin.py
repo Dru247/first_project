@@ -25,15 +25,26 @@ class HumanContactAdmin(admin.ModelAdmin):
 
 @admin.register(WialonUser)
 class WialonUserAdmin(admin.ModelAdmin):
-    list_display = ('user_name', 'password', 'human')
+    list_display = ('user_name', 'password', 'human', 'server')
     autocomplete_fields = ('human',)
     search_fields = ('user_name', 'human__first_name', 'human__last_name')
     empty_value_display = '-пусто-'
 
+    @admin.display()
+    def server(self, obj):
+        return UserWialonServer.objects.get(user=obj).server
+
 
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'wialon_user', 'terminal', 'active', 'last_change', 'sim')
+    list_display = (
+        'name',
+        'wialon_user',
+        'terminal',
+        'active',
+        'last_change',
+        'sim'
+    )
     search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
     autocomplete_fields = ('terminal', 'wialon_user')
     list_filter = ('wialon_user',)
@@ -150,7 +161,7 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     def simcard_operator(self, obj):
         return obj.simcard.operator
 
-
+'''
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -161,7 +172,11 @@ class CompanyAdmin(admin.ModelAdmin):
 @admin.register(HumanCompany)
 class HumanCompanyAdmin(admin.ModelAdmin):
     list_display = ('company_hum', 'human_comp')
-    search_fields = ('human_comp__first_name', 'human_comp__first_name', 'company_hum')
+    search_fields = (
+        'human_comp__first_name',
+        'human_comp__first_name',
+        'company_hum'
+    )
     autocomplete_fields = ('human_comp',)
     empty_value_display = '-пусто-'
 
@@ -171,7 +186,7 @@ class HumanCompanyAdmin(admin.ModelAdmin):
     list_display = ('company_us', 'user_comp')
     search_fields = ('user_comp__user_name', 'company_us_name',)
     autocomplete_fields = ('company_us', 'user_comp')
-    empty_value_display = '-пусто-'
+    empty_value_display = '-пусто-' '''
 
 
 @admin.register(BrandCar)
