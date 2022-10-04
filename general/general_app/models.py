@@ -315,7 +315,9 @@ class WialonObject(models.Model):
         Terminals,
         on_delete=models.PROTECT,
         related_name='wialonobjects',
-        verbose_name='Терминал'
+        verbose_name='Терминал',
+        null=True,
+        blank=True
     )
     time_create = models.DateTimeField(
         auto_now_add=True,
