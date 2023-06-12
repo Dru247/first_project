@@ -227,7 +227,8 @@ class InstallationAdmin(admin.ModelAdmin):
         'terminal__imei',
         'installationcomments__text',
         'model__brand__name',
-        'model__name'
+        'model__name',
+        'user__user_name'
     )
     empty_value_display = '-пусто-'
 
