@@ -133,8 +133,12 @@ def info_view(request):
 
 @login_required
 def reserve_view(request):
+    symb_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='151').count()
+    symb_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='151').count()
+    symb_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='151').count()
     symb_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='151').count()
     symb_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='151').count()
+    symb_2437 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2437').filter(human__id='151').count()
     symb_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='151').count()
     symb_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='151').count()
     symb_invis_duos = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos').filter(human__id='151').count()
@@ -142,9 +146,14 @@ def reserve_view(request):
     symb_invis_duos_3d_l = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos 3D L').filter(human__id='151').count()
     symb_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='151').count()
     symb_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='151').count()
+    symb_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='151').count()
 
+    malash_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='154').count()
+    malash_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='154').count()
+    malash_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='154').count()
     malash_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='154').count()
     malash_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='154').count()
+    malash_2437 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2437').filter(human__id='154').count()
     malash_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='154').count()
     malash_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='154').count()
     malash_invis_duos = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos').filter(human__id='154').count()
@@ -152,9 +161,14 @@ def reserve_view(request):
     malash_invis_duos_3d_l = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos 3D L').filter(human__id='154').count()
     malash_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='154').count()
     malash_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='154').count()
+    malash_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='154').count()
 
+    leht_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='152').count()
+    leht_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='152').count()
+    leht_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='152').count()
     leht_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='152').count()
     leht_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='152').count()
+    leht_2437 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2437').filter(human__id='152').count()
     leht_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='152').count()
     leht_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='152').count()
     leht_invis_duos = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos').filter(human__id='152').count()
@@ -162,13 +176,21 @@ def reserve_view(request):
     leht_invis_duos_3d_l = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos 3D L').filter(human__id='152').count()
     leht_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='152').count()
     leht_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='152').count()
+    leht_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='152').count()
 
-    mersl_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='673').count()
-    mersl_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='673').count()
+    yar_2420 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2420').filter(human__id='501').count()
+    yar_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='501').count()
+
+#    mersl_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='673').count()
+#    mersl_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='673').count()
 
     context = {
+        'symb_2011': symb_2011,
+        'symb_2421': symb_2421,
+        'symb_2423': symb_2423,
         'symb_2425': symb_2425,
         'symb_2435': symb_2435,
+        'symb_2437': symb_2437,
         'symb_333': symb_333,
         'symb_007': symb_007,
         'symb_invis_duos': symb_invis_duos,
@@ -176,8 +198,13 @@ def reserve_view(request):
         'symb_invis_duos_3d_l': symb_invis_duos_3d_l,
         'symb_mts': symb_mts,
         'symb_mega': symb_mega,
+        'symb_sim2m': symb_sim2m,
+        'malash_2011': malash_2011,
+        'malash_2421': malash_2421,
+        'malash_2423': malash_2423,
         'malash_2425': malash_2425,
         'malash_2435': malash_2435,
+        'malash_2437': malash_2437,
         'malash_333': malash_333,
         'malash_007': malash_007,
         'malash_invis_duos': malash_invis_duos,
@@ -185,8 +212,13 @@ def reserve_view(request):
         'malash_invis_duos_3d_l': malash_invis_duos_3d_l,
         'malash_mts': malash_mts,
         'malash_mega': malash_mega,
+        'malash_sim2m': malash_sim2m,
+        'leht_2011': leht_2011,
+        'leht_2421': leht_2421,
+        'leht_2423': leht_2423,
         'leht_2425': leht_2425,
         'leht_2435': leht_2435,
+        'leht_2437': leht_2437,
         'leht_333': leht_333,
         'leht_007': leht_007,
         'leht_invis_duos': leht_invis_duos,
@@ -194,8 +226,11 @@ def reserve_view(request):
         'leht_invis_duos_3d_l': leht_invis_duos_3d_l,
         'leht_mts': leht_mts,
         'leht_mega': leht_mega,
-        'mersl_mts': mersl_mts,
-        'mersl_mega': mersl_mega
+        'leht_sim2m': leht_sim2m,
+        'yar_2420': yar_2420,
+        'yar_2421': yar_2421
+#        'mersl_mts': mersl_mts,
+#        'mersl_mega': mersl_mega
 
     }
     return render(request, 'general_app/reserve.html', context=context)
