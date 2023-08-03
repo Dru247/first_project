@@ -134,3 +134,4 @@ dmypy.json
 
 #dj_commads_file
 general/general_app/management/commands/*.csv
+general/general_app/management/commands/*.xlsx
