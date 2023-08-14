@@ -274,7 +274,7 @@ class HumanSimPresence(models.Model):
 
 class WialonUser(models.Model):
     user_name = models.CharField(
-        max_length=20,
+        max_length=40,
         unique=True,
         verbose_name='Пользователь'
     )
