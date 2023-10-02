@@ -23,17 +23,17 @@
       </tbody>
     </table></p>
     <p><table>
-      <caption>Деактивация симкарт</caption>
+      <caption>Замена симкарт</caption>
       <thead>
         <tr>
           <th>Оператор</th>
           <th>Номер</th>
           <th>ICC</th>
-          <th>Дата деактивации</th>
+          <th>Дата блокировки</th>
         </tr>
       </thead>
       <tbody>
-      {% for sim in sim_list_deactivate %}
+      {% for sim in sim_list_replace %}
         <tr>
           <td>{{ sim.operator }}</td>
           <td class="copy-all">{{ sim.number }}</td>

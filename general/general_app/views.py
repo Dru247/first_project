@@ -1,5 +1,6 @@
 import datetime
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
@@ -94,29 +95,29 @@ def server_view(request, server_id):
 def delete_sim_view(request):
     date_1 = datetime.datetime.now()
     year_now = date_1.year
-    month_now_1 = date_1.month
     month_now = date_1.month
     if month_now < 6:
         month_now = date_1.month + 12
-    month_delta = month_now - 5
+    replace_date = datetime.datetime.today() - relativedelta(months=6)
     sim_list_delete = SimCards.objects.filter(
-        terminal__wialonobjects__wialonobjectactive__last_modified__month__lte=month_now_1,
+        terminal__wialonobjects__wialonobjectactive__last_modified__month__lte=month_now,
         terminal__wialonobjects__wialonobjectactive__active=False
     ).exclude(
         terminal__wialonobjects__wialonobjectactive__last_modified__year=year_now
     ).annotate(
         data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
     ).order_by('operator')
-    sim_list_deactivate = SimCards.objects.filter(
-        terminal__wialonobjects__wialonobjectactive__last_modified__month=month_delta,
+    sim_list_replace = SimCards.objects.filter(
+        terminal__wialonobjects__wialonobjectactive__last_modified__lte=replace_date,
         terminal__wialonobjects__wialonobjectactive__active=False,
         operator__name='МТС'
     ).annotate(
         data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
-    )
+    ).order_by('terminal__wialonobjects__wialonobjectactive__last_modified')
+
     context = {
         'sim_list': sim_list_delete,
-        'sim_list_deactivate': sim_list_deactivate
+        'sim_list_replace': sim_list_replace
     }
     return render(request, 'general_app/sim_delete.html', context=context)
 
