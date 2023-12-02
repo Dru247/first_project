@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count, Q
 
 from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Telegram, TelephoneNumber, Terminals, UserWialonServer,
@@ -25,14 +26,33 @@ class HumanContactAdmin(admin.ModelAdmin):
 
 @admin.register(WialonUser)
 class WialonUserAdmin(admin.ModelAdmin):
-    list_display = ('user_name', 'password', 'human', 'server')
+    list_display = (
+        'user_name',
+        'password',
+        'human',
+        'server',
+        'active_objs',
+        'payment',
+        'comment'
+    )
     autocomplete_fields = ('human',)
     search_fields = ('user_name', 'human__first_name', 'human__last_name')
+    list_filter = ('payment',)
     empty_value_display = '-пусто-'
 
-    @admin.display()
+    @admin.display(description="Сервер")
     def server(self, obj):
         return UserWialonServer.objects.get(user=obj).server
+
+    @admin.display(
+        description="Кол-во"
+    )
+    def active_objs(self, obj):
+        count_objs = WialonObject.objects.filter(
+            wialon_user=obj,
+            wialonobjectactive__active=True,
+            ).count()
+        return count_objs
 
 
 @admin.register(WialonObject)
@@ -43,22 +63,30 @@ class WialonObjectAdmin(admin.ModelAdmin):
         'terminal',
         'active',
         'last_change',
-        'sim'
+        'sim',
+        'price',
+        'comment'
     )
     search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
     autocomplete_fields = ('terminal', 'wialon_user')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'
 
-    @admin.display(ordering='wialonobjectactive__last_modified')
+    @admin.display(
+        description="Посл. изменения",
+        ordering='wialonobjectactive__last_modified'
+    )
     def last_change(self, obj):
         return WialonObjectActive.objects.get(wialon_object=obj).last_modified
 
+    @admin.display(description="Статус")
     def active(self, obj):
         return WialonObjectActive.objects.get(wialon_object=obj).active
 
+    @admin.display(description="СИМ-карты")
     def sim(self, obj):
-        return SimCards.objects.filter(terminal=obj.terminal)
+        sim_list = [sim for sim in SimCards.objects.filter(terminal=obj.terminal)]
+        return sim_list
 
 
 @admin.register(WialonObjectActive)
@@ -209,6 +237,7 @@ class InstallationAdmin(admin.ModelAdmin):
         'date',
         'location',
         'model',
+        'vin',
         'state_number',
         'terminal',
         'human_worker',
@@ -224,17 +253,17 @@ class InstallationAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'state_number',
+        'vin',
         'terminal__imei',
-        'installationcomments__text',
         'model__brand__name',
         'model__name',
         'user__user_name'
     )
     empty_value_display = '-пусто-'
 
-    @admin.display()
-    def comment(self, obj):
-        return InstallationComment.objects.get(installation=obj).text
+    # @admin.display()
+    # def comment(self, obj):
+    #     return InstallationComment.objects.get(installation=obj).text
 
 
 @admin.register(InstallationComment)

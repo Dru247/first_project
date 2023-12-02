@@ -291,6 +291,16 @@ class WialonUser(models.Model):
         null=True,
         blank=True
     )
+    payment = models.BooleanField(
+        default=False,
+        verbose_name='Оплата'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
+    )
 
     def __str__(self):
         return self.user_name
@@ -322,6 +332,17 @@ class WialonObject(models.Model):
     time_create = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата'
+    )
+    price = models.PositiveBigIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Цена'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
     )
 
     def __str__(self):
@@ -517,6 +538,12 @@ class Installation(models.Model):
         related_name='installations',
         verbose_name='Модель ТС'
     )
+    vin = models.CharField(
+        max_length=17,
+        null=True,
+        blank=True,
+        verbose_name='VIN'
+    )
     state_number = models.CharField(
         max_length=20,
         null=True,
@@ -544,6 +571,12 @@ class Installation(models.Model):
     payment = models.BooleanField(
         default=False,
         verbose_name='Оплата'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
     )
 
     def __str__(self):
