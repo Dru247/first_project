@@ -135,6 +135,7 @@ def info_view(request):
 @login_required
 def reserve_view(request):
     symb_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='151').count()
+    symb_2013 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2013').filter(human__id='151').count()
     symb_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='151').count()
     symb_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='151').count()
     symb_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='151').count()
@@ -150,6 +151,7 @@ def reserve_view(request):
     symb_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='151').count()
 
     malash_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='154').count()
+    malash_2013 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2013').filter(human__id='154').count()
     malash_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='154').count()
     malash_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='154').count()
     malash_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='154').count()
@@ -165,6 +167,7 @@ def reserve_view(request):
     malash_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='154').count()
 
     leht_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='152').count()
+    leht_2013 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2013').filter(human__id='152').count()
     leht_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='152').count()
     leht_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='152').count()
     leht_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='152').count()
@@ -187,6 +190,7 @@ def reserve_view(request):
 
     context = {
         'symb_2011': symb_2011,
+        'symb_2013': symb_2013,
         'symb_2421': symb_2421,
         'symb_2423': symb_2423,
         'symb_2425': symb_2425,
@@ -201,6 +205,7 @@ def reserve_view(request):
         'symb_mega': symb_mega,
         'symb_sim2m': symb_sim2m,
         'malash_2011': malash_2011,
+        'malash_2013': malash_2013,
         'malash_2421': malash_2421,
         'malash_2423': malash_2423,
         'malash_2425': malash_2425,
@@ -215,6 +220,7 @@ def reserve_view(request):
         'malash_mega': malash_mega,
         'malash_sim2m': malash_sim2m,
         'leht_2011': leht_2011,
+        'leht_2013': leht_2013,
         'leht_2421': leht_2421,
         'leht_2423': leht_2423,
         'leht_2425': leht_2425,
