@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-      {% for serv in wia_obj_serv_active %}
+      {% for serv in serv_all_active_obj %}
         <tr>
           <td>{{ serv }}</td>
           <td>{{ serv.active }}</td>
@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for client in company_list_annot %}
+    {% for client in company_list %}
       <tr>
         <td>{{ client }}</td>
         <td>{{ client.active }}</td>
@@ -41,13 +41,15 @@
       <tr>
         <th>Клиент</th>
         <th>Кол-во</th>
+        <th>Стоимость</th>
       </tr>
     </thead>
     <tbody>
-    {% for client in human_list_server %}
+    {% for client in human_list %}
       <tr>
         <td>{{ client }}</td>
         <td>{{ client.active }}</td>
+        <td>{{ client.cost }}</td>
       </tr>
     {% endfor %}
     </tbody>

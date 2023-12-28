@@ -2,7 +2,7 @@ import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
+from django.db.models import Count, Sum, Q
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
 
@@ -64,29 +64,41 @@ def clients_view(request):
 
 @login_required
 def server_view(request, server_id):
-    serv_now = get_object_or_404(WialonServer, pk=server_id)
-    a = WialonUser.objects.filter(userwialonserver__server=serv_now).filter(wialonobjects__wialonobjectactive__active=True)
-    sum_wia_obj_active = Count(
-        'wialonuser__wialonobjects__wialonobjectactive',
-        filter=Q(wialonuser__wialonobjects__wialonobjectactive__active=True)
-    )
-    human_list_server = Human.objects.filter(wialonuser__in=a).annotate(active=sum_wia_obj_active)
-    sum_wia_obj_active_comp = Count(
-        'usercompany__user_comp__wialonobjects__wialonobjectactive',
-        filter=Q(usercompany__user_comp__wialonobjects__wialonobjectactive__active=True)
-    )
-    company_list = Company.objects.filter(usercompany__user_comp__in=a)
-    company_list_annot = company_list.annotate(active=sum_wia_obj_active_comp)
-    sum_wia_obj_serv_active = Count(
+    # count all active objects on the server
+    count_serv_all_active_obj = Count(
         'userwialonservers__user__wialonobjects__wialonobjectactive',
         filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
     )
-    wia_obj_serv = WialonServer.objects.filter(pk=server_id)
-    wia_obj_serv_active = wia_obj_serv.annotate(active=sum_wia_obj_serv_active)
+    serv_all_active_obj = WialonServer.objects.filter(pk=server_id).annotate(active=count_serv_all_active_obj)
+
+    serv_now = get_object_or_404(WialonServer, pk=server_id)
+    active_users = WialonUser.objects.filter(
+        userwialonserver__server=serv_now,
+        wialonobjects__wialonobjectactive__active=True
+    )
+
+    # view list companies width count active objects
+    count_active_obj = Count(
+        'usercompany__user_comp__wialonobjects',
+        filter=Q(usercompany__user_comp__wialonobjects__wialonobjectactive__active=True)
+    )
+    company_list = Company.objects.filter(usercompany__user_comp__in=active_users).annotate(active=count_active_obj)
+
+    # view list clients width count active objects
+    count_active_obj = Count(
+        'wialonuser__wialonobjects',
+        filter=Q(wialonuser__wialonobjects__wialonobjectactive__active=True)
+    )
+    cost_month = Sum(
+        'wialonuser__wialonobjects__price',
+        filter=Q(wialonuser__wialonobjects__wialonobjectactive__active=True)
+    )
+    human_list = Human.objects.filter(wialonuser__in=active_users).annotate(active=count_active_obj, cost=cost_month)
+
     context = {
-        'human_list_server': human_list_server,
-        'company_list_annot': company_list_annot,
-        'wia_obj_serv_active': wia_obj_serv_active
+        'human_list': human_list,
+        'company_list': company_list,
+        'serv_all_active_obj': serv_all_active_obj
     }
     return render(request, 'general_app/server.html', context=context)
 
