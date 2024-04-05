@@ -219,6 +219,8 @@ class SimCards(models.Model):
     number = models.CharField(
         max_length=16,
         unique=True,
+        null=True,
+        blank=True,
         verbose_name='Номер'
     )
     icc = models.CharField(
@@ -236,11 +238,11 @@ class SimCards(models.Model):
     )
     time_create = models.DateTimeField(
         auto_now_add=True,
-        verbose_name='Дата'
+        verbose_name='Дата создания'
     )
 
     def __str__(self):
-        return self.number
+        return self.icc
 
     class Meta:
         ordering = ['number']

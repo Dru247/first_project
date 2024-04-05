@@ -118,11 +118,10 @@ class TerminalsAdmin(admin.ModelAdmin):
 
 @admin.register(SimCards)
 class SimCardsAdmin(admin.ModelAdmin):
-    list_display = ('number', 'icc', 'operator', 'terminal', 'time_create')
+    list_display = ('operator', 'icc', 'number', 'terminal', 'time_create')
     search_fields = ('number', 'icc', 'terminal__imei')
     autocomplete_fields = ('terminal',)
     list_filter = ('operator',)
-    empty_value_display = '-пусто-'
 
 
 @admin.register(UserWialonServer)
