@@ -1,8 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-    <p><table>
-      <caption>Симкарты на удаление</caption>
+<p>
+  <table>
+    <caption>Замена симкарт</caption>
+    <thead>
+      <tr>
+        <th>Оператор</th>
+        <th>Номер</th>
+          <th>ICC</th>
+          <th>Дата блокировки</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sim in sim_list_replace %}
+      <tr>
+        <td>{{ sim.operator }}</td>
+        <td class="copy-all">{{ sim.number }}</td>
+        <td class="copy-all">{{ sim.icc }}</td>
+        <td>{{ sim.data_deactivate }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</p>
+<p>
+  <table>
+    <caption>Симкарты на удаление</caption>
       <thead>
         <tr>
           <th>Оператор</th>
@@ -21,26 +45,6 @@
         </tr>
       {% endfor %}
       </tbody>
-    </table></p>
-    <p><table>
-      <caption>Замена симкарт</caption>
-      <thead>
-        <tr>
-          <th>Оператор</th>
-          <th>Номер</th>
-          <th>ICC</th>
-          <th>Дата блокировки</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for sim in sim_list_replace %}
-        <tr>
-          <td>{{ sim.operator }}</td>
-          <td class="copy-all">{{ sim.number }}</td>
-          <td class="copy-all">{{ sim.icc }}</td>
-          <td>{{ sim.data_deactivate }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table></p>
+  </table>
+</p>
 {% endblock %}

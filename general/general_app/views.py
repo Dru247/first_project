@@ -105,20 +105,21 @@ def server_view(request, server_id):
 
 @login_required
 def delete_sim_view(request):
-    date_1 = datetime.datetime.now()
-    year_now = date_1.year
-    month_now = date_1.month
-    if month_now < 6:
-        month_now = date_1.month + 12
-    replace_date = datetime.datetime.today() - relativedelta(months=6)
+    date_now = datetime.datetime.now()
+    date_critical = date_now - relativedelta(months=3)
+    replace_date = date_now - relativedelta(months=5)
+
     sim_list_delete = SimCards.objects.filter(
-        terminal__wialonobjects__wialonobjectactive__last_modified__month__lte=month_now,
-        terminal__wialonobjects__wialonobjectactive__active=False
-    ).exclude(
-        terminal__wialonobjects__wialonobjectactive__last_modified__year=year_now
+        terminal__wialonobjects__wialonobjectactive__last_modified__lte=date_critical,
+        terminal__wialonobjects__wialonobjectactive__active=False,
+        operator__name='СИМ2М'
     ).annotate(
         data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
-    ).order_by('operator')
+    ).order_by(
+        'operator',
+        'terminal__wialonobjects__wialonobjectactive__last_modified'
+    )
+
     sim_list_replace = SimCards.objects.filter(
         terminal__wialonobjects__wialonobjectactive__last_modified__lte=replace_date,
         terminal__wialonobjects__wialonobjectactive__active=False,
