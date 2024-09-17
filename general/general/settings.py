@@ -22,11 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-tui&zc)iwrzn7614hj+jwwhttwf9ztwrkt7vijnldo4v9htc0_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    '89.169.129.80',
     'testserver',
     'www.Andrey1989.pythonanywhere.com',
     'Andrey1989.pythonanywhere.com',
