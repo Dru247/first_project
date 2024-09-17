@@ -5,10 +5,23 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum, Q
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
+from rest_framework import generics
 
 from .models import (Human, SimCards, Terminals, WialonObject, HumanTerminalPresence,
                      WialonObjectActive, WialonUser, WialonServer, Company, UserCompany,
                      HumanSimPresence)
+from .serializers import SimSerializer, TerminalSerializer
+
+
+class SimAPIView(generics.ListAPIView):
+    queryset = SimCards.objects.all()
+    serializer_class = SimSerializer
+    # permission_classes = ('IsAuthenticated',)
+
+
+class TerminalAPIView(generics.ListAPIView):
+    queryset = Terminals.objects.all()
+    serializer_class = TerminalSerializer
 
 
 @login_required

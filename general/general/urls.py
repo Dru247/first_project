@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from general_app.views import SimAPIView, TerminalAPIView
 
 
 urlpatterns = [
     path('', include('general_app.urls', namespace='index')),
     path('admin/', admin.site.urls),
+    path('api/v1/simlist/', SimAPIView.as_view()),
+    path('api/v1/termlist/', TerminalAPIView.as_view()),
     path('auth/', include('django.contrib.auth.urls')),
 ]
