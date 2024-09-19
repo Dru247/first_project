@@ -314,14 +314,9 @@ class WialonUser(models.Model):
 
 
 class WialonObject(models.Model):
-    name = models.CharField(max_length=45)
-    wialon_user = models.ForeignKey(
-        WialonUser,
-        on_delete=models.PROTECT,
-        related_name='wialonobjects',
-        verbose_name='Пользователь',
-        null=True,
-        blank=True
+    name = models.CharField(
+        max_length=45,
+        verbose_name='Имя',
     )
     terminal = models.OneToOneField(
         Terminals,
@@ -331,20 +326,34 @@ class WialonObject(models.Model):
         null=True,
         blank=True
     )
-    time_create = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Дата'
+    wialon_user = models.ForeignKey(
+        WialonUser,
+        on_delete=models.PROTECT,
+        related_name='wialonobjects',
+        verbose_name='Пользователь',
+        null=True,
+        blank=True
     )
     price = models.PositiveBigIntegerField(
         null=True,
         blank=True,
         verbose_name='Цена'
     )
+    payer = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        related_name='payer_human',
+        verbose_name='Плательщик'
+    )
     comment = models.CharField(
         max_length=255,
         null=True,
         blank=True,
         verbose_name='Комментарий'
+    )
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
     )
 
     def __str__(self):

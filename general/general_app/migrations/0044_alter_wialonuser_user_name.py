@@ -15,4 +15,24 @@ class Migration(migrations.Migration):
             name='user_name',
             field=models.CharField(max_length=40, unique=True, verbose_name='Пользователь'),
         ),
+        migrations.AddField(
+            model_name='wialonobject',
+            name='comment',
+            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Комментарий'),
+        ),
+        migrations.AddField(
+            model_name='wialonobject',
+            name='price',
+            field=models.PositiveBigIntegerField(blank=True, null=True, verbose_name='Цена'),
+        ),
+        migrations.AddField(
+            model_name='wialonuser',
+            name='comment',
+            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Комментарий'),
+        ),
+        migrations.AddField(
+            model_name='wialonuser',
+            name='payment',
+            field=models.BooleanField(default=False, verbose_name='Оплата'),
+        ),
     ]

@@ -63,12 +63,13 @@ class WialonObjectAdmin(admin.ModelAdmin):
         'terminal',
         'active',
         'last_change',
-        'sim',
+#        'sim',
         'price',
+        'payer',
         'comment'
     )
     search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
-    autocomplete_fields = ('terminal', 'wialon_user')
+    autocomplete_fields = ('terminal', 'wialon_user', 'payer')
     list_filter = ('wialon_user',)
     empty_value_display = '-пусто-'
 
@@ -83,10 +84,10 @@ class WialonObjectAdmin(admin.ModelAdmin):
     def active(self, obj):
         return WialonObjectActive.objects.get(wialon_object=obj).active
 
-    @admin.display(description="СИМ-карты")
-    def sim(self, obj):
-        sim_list = [sim for sim in SimCards.objects.filter(terminal=obj.terminal)]
-        return sim_list
+#    @admin.display(description="СИМ-карты")
+#    def sim(self, obj):
+#        sim_list = [sim for sim in SimCards.objects.filter(terminal=obj.terminal)]
+#        return sim_list
 
 
 @admin.register(WialonObjectActive)
