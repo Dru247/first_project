@@ -242,6 +242,7 @@ class InstallationAdmin(admin.ModelAdmin):
         'terminal',
         'human_worker',
         'user',
+        'juristic_person',
         'payment',
         'comment'
     )

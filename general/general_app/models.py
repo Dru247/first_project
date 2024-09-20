@@ -579,6 +579,9 @@ class Installation(models.Model):
         related_name='installations',
         verbose_name='Пользователь'
     )
+    juristic_person = models.BooleanField(
+        verbose_name='Юр-лицо'
+    )
     payment = models.BooleanField(
         default=False,
         verbose_name='Оплата'
