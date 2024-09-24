@@ -58,6 +58,7 @@ class WialonUserAdmin(admin.ModelAdmin):
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'name',
         'wialon_user',
         'terminal',
@@ -70,8 +71,8 @@ class WialonObjectAdmin(admin.ModelAdmin):
     )
     search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
     autocomplete_fields = ('terminal', 'wialon_user', 'payer')
-    list_filter = ('wialon_user',)
-    empty_value_display = '-пусто-'
+    list_filter = ('payer',)
+    empty_value_display = '-'
 
     @admin.display(
         description="Посл. изменения",
