@@ -62,11 +62,13 @@ class WialonObjectAdmin(admin.ModelAdmin):
         'name',
         'wialon_user',
         'terminal',
-        'active',
-        'last_change',
-#        'sim',
+        # 'active',
+        # 'last_change',
+        # 'sim',
         'price',
         'payer',
+        'active',
+        'date_change_status',
         'comment'
     )
     search_fields = ('name', 'wialon_user__user_name', 'terminal__imei')
@@ -74,16 +76,16 @@ class WialonObjectAdmin(admin.ModelAdmin):
     list_filter = ('payer',)
     empty_value_display = '-'
 
-    @admin.display(
-        description="Посл. изменения",
-        ordering='wialonobjectactive__last_modified'
-    )
-    def last_change(self, obj):
-        return WialonObjectActive.objects.get(wialon_object=obj).last_modified
-
-    @admin.display(description="Статус")
-    def active(self, obj):
-        return WialonObjectActive.objects.get(wialon_object=obj).active
+    # @admin.display(
+    #     description="Посл. изменения",
+    #     ordering='wialonobjectactive__last_modified'
+    # )
+    # def last_change(self, obj):
+    #     return WialonObjectActive.objects.get(wialon_object=obj).last_modified
+    #
+    # @admin.display(description="Статус")
+    # def active(self, obj):
+    #     return WialonObjectActive.objects.get(wialon_object=obj).active
 
 #    @admin.display(description="СИМ-карты")
 #    def sim(self, obj):
@@ -91,12 +93,12 @@ class WialonObjectAdmin(admin.ModelAdmin):
 #        return sim_list
 
 
-@admin.register(WialonObjectActive)
-class WialonObjectActiveAdmin(admin.ModelAdmin):
-    list_display = ('wialon_object', 'active',)
-    search_fields = ('wialon_object__name', )
-    autocomplete_fields = ('wialon_object',)
-    empty_value_display = '-пусто-'
+# @admin.register(WialonObjectActive)
+# class WialonObjectActiveAdmin(admin.ModelAdmin):
+#     list_display = ('wialon_object', 'active',)
+#     search_fields = ('wialon_object__name', )
+#     autocomplete_fields = ('wialon_object',)
+#     empty_value_display = '-пусто-'
 
 
 @admin.register(BrandTerminals)

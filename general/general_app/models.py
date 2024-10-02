@@ -345,6 +345,12 @@ class WialonObject(models.Model):
         related_name='payer_human',
         verbose_name='Плательщик'
     )
+    active = models.BooleanField(
+        verbose_name='Статус'
+    )
+    date_change_status = models.DateField(
+        verbose_name='Дата изменения статуса'
+    )
     comment = models.CharField(
         max_length=255,
         null=True,
