@@ -5,20 +5,47 @@ from django.core.exceptions import ValidationError
 import datetime
 
 
+class HumanNames(models.Model):
+    name = models.CharField(
+        max_length=128,
+        verbose_name='Имя'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Имя'
+        verbose_name_plural = 'Имена'
+
+
 class Human(models.Model):
     first_name = models.CharField(
         max_length=20,
         verbose_name='Имя'
     )
+    # name_id = models.ForeignKey(
+    #     HumanNames,
+    #     on_delete=models.PROTECT,
+    #     verbose_name='Имя'
+    # )
     last_name = models.CharField(
         max_length=20,
-        verbose_name='Фамилия')
+        verbose_name='Фамилия'
+    )
+    description = models.CharField(
+        max_length=128,
+        verbose_name='Описание',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
 
     class Meta:
-        ordering = ['first_name']
+        ordering = ['last_name']
         verbose_name = 'Человек'
         verbose_name_plural = 'Люди'
 

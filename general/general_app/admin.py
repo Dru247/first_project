@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count, Q
 
-from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
+from .models import (HumanNames, Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Telegram, TelephoneNumber, Terminals, UserWialonServer,
                      WialonObject, WialonObjectActive, WialonUser, Company,
                      UserCompany, HumanCompany, Contact, HumanContact,
@@ -9,11 +9,18 @@ from .models import (Human, HumanSimPresence, HumanTerminalPresence, SimCards,
                      Installation, InstallationComment)
 
 
+@admin.register(HumanNames)
+class HumanNamesAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name')
+    search_fields = ('name',)
+    empty_value_display = '-'
+
+
 @admin.register(Human)
 class HumanAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'first_name', 'last_name')
+    list_display = ('pk', 'first_name', 'last_name', 'description')
     search_fields = ('first_name', 'last_name')
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(HumanContact)
@@ -21,7 +28,7 @@ class HumanContactAdmin(admin.ModelAdmin):
     list_display = ('human', 'contact', 'contact_rec')
     search_fields = ('human__first_name', 'human__last_name', 'contact_rec',)
     autocomplete_fields = ('human',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(WialonUser)
