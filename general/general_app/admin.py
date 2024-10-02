@@ -58,7 +58,6 @@ class WialonUserAdmin(admin.ModelAdmin):
 @admin.register(WialonObject)
 class WialonObjectAdmin(admin.ModelAdmin):
     list_display = (
-        'id',
         'name',
         'wialon_user',
         'terminal',
