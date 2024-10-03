@@ -135,7 +135,7 @@ class BrandTerminals(models.Model):
     class Meta:
         ordering = ['brand']
         verbose_name = 'Марка терминала'
-        verbose_name_plural = 'Марки терминалов'
+        verbose_name_plural = 'Терминал: марки'
 
 
 class ModelTerminals(models.Model):
@@ -158,7 +158,7 @@ class ModelTerminals(models.Model):
     class Meta:
         ordering = ['model']
         verbose_name = 'Модель терминала'
-        verbose_name_plural = 'Модели терминалов'
+        verbose_name_plural = 'Терминал: модели'
 
 
 class Terminals(models.Model):
@@ -465,8 +465,8 @@ class UserWialonServer(models.Model):
 
     class Meta:
         ordering = ['user']
-        verbose_name = 'Пользователь + Сервер'
-        verbose_name_plural = 'Пользователи + Серверы'
+        verbose_name = 'Сервер + Пользователь'
+        verbose_name_plural = 'Серверы + Пользователи'
 
 
 class Company(models.Model):
@@ -536,7 +536,7 @@ class BrandCar(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = 'Марка ТС'
-        verbose_name_plural = 'Марки ТС'
+        verbose_name_plural = 'ТС: марки'
 
 
 class ModelCar(models.Model):
@@ -544,13 +544,13 @@ class ModelCar(models.Model):
         BrandCar,
         on_delete=models.PROTECT,
         related_name='modelcars',
-        verbose_name='Марка ТС'
+        verbose_name='Марка'
     )
     name = models.CharField(
         max_length=50,
         null=True,
         blank=True,
-        verbose_name='Название Модели'
+        verbose_name='Модель'
     )
 
     def __str__(self):
@@ -560,7 +560,7 @@ class ModelCar(models.Model):
     class Meta:
         ordering = ['brand']
         verbose_name = 'Модель ТС'
-        verbose_name_plural = 'Модели ТС'
+        verbose_name_plural = 'ТС: модели'
 
 
 class Installation(models.Model):

@@ -276,9 +276,9 @@ class InstallationAdmin(admin.ModelAdmin):
     #     return InstallationComment.objects.get(installation=obj).text
 
 
-@admin.register(InstallationComment)
-class InstallationCommentAdmin(admin.ModelAdmin):
-    list_display = ('installation', 'text')
-    autocomplete_fields = ('installation',)
-    search_fields = ('installation__terminal__imei', 'text')
-    empty_value_display = 'пусто'
+# @admin.register(InstallationComment)
+# class InstallationCommentAdmin(admin.ModelAdmin):
+#     list_display = ('installation', 'text')
+#     autocomplete_fields = ('installation',)
+#     search_fields = ('installation__terminal__imei', 'text')
+#     empty_value_display = 'пусто'
