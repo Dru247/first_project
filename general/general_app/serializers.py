@@ -17,4 +17,4 @@ class TerminalSerializer(serializers.ModelSerializer):
 class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonObject
-        fields = ('terminal', 'payer')
+        fields = ('terminal', 'payer', 'active', 'date_change_status')

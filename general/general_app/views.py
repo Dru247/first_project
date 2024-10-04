@@ -16,7 +16,6 @@ from .serializers import ObjectSerializer, SimSerializer, TerminalSerializer
 class SimAPIView(generics.ListAPIView):
     queryset = SimCards.objects.all()
     serializer_class = SimSerializer
-    # permission_classes = ('IsAuthenticated',)
 
 
 class TerminalAPIView(generics.ListAPIView):
@@ -44,9 +43,13 @@ def index_view(request):
     wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
     sum_wia_obj = WialonObject.objects.filter(wialonobjectactive__active=True).count()
     sum_wia_obj_serv_active = Count(
-        'userwialonservers__user__wialonobjects__wialonobjectactive',
-        filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
+        'userwialonservers__user__wialonobjects',
+        filter=Q(userwialonservers__user__wialonobjects__active=True)
     )
+    # sum_wia_obj_serv_active = Count(
+    #     'userwialonservers__user__wialonobjects__wialonobjectactive',
+    #     filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
+    # )
     wia_obj_serv_active = WialonServer.objects.annotate(active=sum_wia_obj_serv_active)
     user_not_serv = WialonUser.objects.filter(userwialonserver__isnull=True)
     context = {
