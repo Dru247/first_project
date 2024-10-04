@@ -18,8 +18,9 @@ class HumanNamesAdmin(admin.ModelAdmin):
 
 @admin.register(Human)
 class HumanAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'first_name', 'last_name', 'description')
-    search_fields = ('first_name', 'last_name')
+    list_display = ('pk', 'name_id', 'last_name', 'description')
+    search_fields = ('name_id', 'last_name')
+    autocomplete_fields = ('name_id',)
     empty_value_display = '-'
 
 
@@ -35,7 +36,6 @@ class HumanContactAdmin(admin.ModelAdmin):
 class WialonUserAdmin(admin.ModelAdmin):
     list_display = (
         'user_name',
-        'password',
         'human',
         'server',
         'active_objs',
@@ -45,7 +45,7 @@ class WialonUserAdmin(admin.ModelAdmin):
     autocomplete_fields = ('human',)
     search_fields = ('user_name', 'human__first_name', 'human__last_name')
     list_filter = ('payment',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
     @admin.display(description="Сервер")
     def server(self, obj):
@@ -110,20 +110,20 @@ class WialonObjectAdmin(admin.ModelAdmin):
 @admin.register(BrandTerminals)
 class BrandTerminalsAdmin(admin.ModelAdmin):
     list_display = ('brand',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(ModelTerminals)
 class ModelTerminalsAdmin(admin.ModelAdmin):
     list_display = ('brand', 'model',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(Terminals)
 class TerminalsAdmin(admin.ModelAdmin):
     list_display = ('imei', 'serial_number', 'model', 'time_create')
     search_fields = ('imei', 'serial_number')
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(SimCards)
@@ -140,7 +140,7 @@ class UserWialonServerAdmin(admin.ModelAdmin):
     search_fields = ('user__user_name',)
     autocomplete_fields = ('user',)
     list_filter = ('server',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(HumanTerminalPresence)
@@ -160,7 +160,7 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
     )
     autocomplete_fields = ('human', 'terminal')
     list_filter = ('terminal__model',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
     @admin.display()
     def terminal_model(self, obj):
@@ -188,7 +188,7 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     )
     autocomplete_fields = ('human', 'simcard')
     list_filter = ('simcard__operator',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
     @admin.display()
     def simcard_icc(self, obj):
@@ -230,14 +230,14 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
 class BrandCarAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(ModelCar)
 class ModelCarAdmin(admin.ModelAdmin):
     list_display = ('brand', 'name')
     search_fields = ('brand', 'name')
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
 
 @admin.register(Installation)
@@ -269,7 +269,7 @@ class InstallationAdmin(admin.ModelAdmin):
         'model__name',
         'user__user_name'
     )
-    empty_value_display = '-пусто-'
+    empty_value_display = '-'
 
     # @admin.display()
     # def comment(self, obj):

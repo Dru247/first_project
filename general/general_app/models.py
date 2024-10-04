@@ -21,15 +21,11 @@ class HumanNames(models.Model):
 
 
 class Human(models.Model):
-    first_name = models.CharField(
-        max_length=20,
+    name_id = models.ForeignKey(
+        HumanNames,
+        on_delete=models.PROTECT,
         verbose_name='Имя'
     )
-    # name_id = models.ForeignKey(
-    #     HumanNames,
-    #     on_delete=models.PROTECT,
-    #     verbose_name='Имя'
-    # )
     last_name = models.CharField(
         max_length=20,
         verbose_name='Фамилия'
@@ -42,10 +38,10 @@ class Human(models.Model):
     )
 
     def __str__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return '%s %s' % (self.name_id, self.last_name)
 
     class Meta:
-        ordering = ['last_name']
+        ordering = ['name_id', 'last_name']
         verbose_name = 'Человек'
         verbose_name_plural = 'Люди'
 
@@ -306,12 +302,6 @@ class WialonUser(models.Model):
         max_length=40,
         unique=True,
         verbose_name='Пользователь'
-    )
-    password = models.CharField(
-        max_length=20,
-        verbose_name='Пароль',
-        null=True,
-        blank=True
     )
     human = models.ForeignKey(
         Human,
