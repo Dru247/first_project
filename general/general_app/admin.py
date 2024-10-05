@@ -19,7 +19,7 @@ class HumanNamesAdmin(admin.ModelAdmin):
 @admin.register(Human)
 class HumanAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name_id', 'last_name', 'description')
-    search_fields = ('name_id', 'last_name')
+    search_fields = ('name_id__name', 'last_name')
     autocomplete_fields = ('name_id',)
     empty_value_display = '-'
 
@@ -27,7 +27,7 @@ class HumanAdmin(admin.ModelAdmin):
 @admin.register(HumanContact)
 class HumanContactAdmin(admin.ModelAdmin):
     list_display = ('human', 'contact', 'contact_rec')
-    search_fields = ('human__first_name', 'human__last_name', 'contact_rec',)
+    search_fields = ('human__name_id__name', 'human__last_name', 'contact_rec',)
     autocomplete_fields = ('human',)
     empty_value_display = '-'
 
@@ -43,7 +43,7 @@ class WialonUserAdmin(admin.ModelAdmin):
         'comment'
     )
     autocomplete_fields = ('human',)
-    search_fields = ('user_name', 'human__first_name', 'human__last_name')
+    search_fields = ('user_name', 'human__name_id__name', 'human__last_name')
     list_filter = ('payment',)
     empty_value_display = '-'
 
@@ -156,7 +156,7 @@ class HumanTerminalPresenceAdmin(admin.ModelAdmin):
         'terminal__imei',
         'terminal__serial_number',
         'human__last_name',
-        'human__first_name'
+        'human__name_id__name'
     )
     autocomplete_fields = ('human', 'terminal')
     list_filter = ('terminal__model',)
@@ -183,7 +183,7 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     search_fields = (
         'simcard__number',
         'simcard__icc',
-        'human__first_name',
+        'human__name_id__name',
         'human__last_name'
     )
     autocomplete_fields = ('human', 'simcard')

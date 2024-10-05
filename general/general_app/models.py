@@ -546,11 +546,36 @@ class ModelCar(models.Model):
     def __str__(self):
         return '%s %s' % (self.brand, self.name)
 
-
     class Meta:
         ordering = ['brand']
         verbose_name = 'Модель ТС'
         verbose_name_plural = 'ТС: модели'
+
+
+class CarGenerations(models.Model):
+    model_id = models.ForeignKey(
+        ModelCar,
+        on_delete=models.PROTECT,
+        verbose_name='Модель'
+    )
+    generation = models.CharField(
+        max_length=128,
+        verbose_name='Поколение'
+    )
+    description = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True,
+        verbose_name='Описание'
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.model_id, self.generation)
+
+    class Meta:
+        ordering = ['model_id']
+        verbose_name = 'Поколение ТС'
+        verbose_name_plural = 'ТС: поколения'
 
 
 class Installation(models.Model):
