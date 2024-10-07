@@ -1,3 +1,5 @@
+from audioop import minmax
+
 from django.db import models
 from django.utils import timezone as tz
 from django.core.exceptions import ValidationError
@@ -297,11 +299,30 @@ class HumanSimPresence(models.Model):
         verbose_name_plural = 'Люди + SIM-карты'
 
 
+class WialonServer(models.Model):
+    name = models.CharField(
+        max_length=20,
+        verbose_name='Сервер'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Сервер'
+        verbose_name_plural = 'Серверы'
+
+
 class WialonUser(models.Model):
+    server = models.ForeignKey(
+        WialonServer,
+        on_delete=models.PROTECT,
+        verbose_name='Сервер',
+    )
     user_name = models.CharField(
-        max_length=40,
-        unique=True,
-        verbose_name='Пользователь'
+        max_length=255,
+        verbose_name='Учётная запись'
     )
     human = models.ForeignKey(
         Human,
@@ -309,10 +330,6 @@ class WialonUser(models.Model):
         verbose_name='Человек',
         null=True,
         blank=True
-    )
-    payment = models.BooleanField(
-        default=False,
-        verbose_name='Оплата'
     )
     comment = models.CharField(
         max_length=255,
@@ -326,13 +343,13 @@ class WialonUser(models.Model):
 
     class Meta:
         ordering = ['user_name']
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = 'Учётная запись'
+        verbose_name_plural = 'Учётные записи'
 
 
 class WialonObject(models.Model):
     name = models.CharField(
-        max_length=45,
+        max_length=255,
         verbose_name='Имя',
     )
     terminal = models.OneToOneField(
@@ -347,13 +364,10 @@ class WialonObject(models.Model):
         WialonUser,
         on_delete=models.PROTECT,
         related_name='wialonobjects',
-        verbose_name='Пользователь',
-        null=True,
-        blank=True
+        verbose_name='Учётная запись',
     )
     price = models.PositiveBigIntegerField(
-        null=True,
-        blank=True,
+        default=1,
         verbose_name='Цена'
     )
     payer = models.ForeignKey(
@@ -363,6 +377,7 @@ class WialonObject(models.Model):
         verbose_name='Плательщик'
     )
     active = models.BooleanField(
+        default=True,
         verbose_name='Статус'
     )
     date_change_status = models.DateField(
@@ -394,6 +409,7 @@ class WialonObject(models.Model):
         super(WialonObject, self).save(*args, **kwargs)
 
 
+# Нужно удалить
 class WialonObjectActive(models.Model):
     wialon_object = models.OneToOneField(
         WialonObject,
@@ -418,22 +434,6 @@ class WialonObjectActive(models.Model):
         verbose_name_plural = 'Объекты + Статусы'
 
 
-class WialonServer(models.Model):
-    name = models.CharField(
-        max_length=20,
-        verbose_name='Сервер'
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = 'Сервер'
-        verbose_name_plural = 'Серверы'
-
-
-
 class UserWialonServer(models.Model):
     user = models.OneToOneField(
         WialonUser,
@@ -451,7 +451,6 @@ class UserWialonServer(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.user, self.server)
-
 
     class Meta:
         ordering = ['user']

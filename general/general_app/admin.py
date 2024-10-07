@@ -36,30 +36,30 @@ class HumanContactAdmin(admin.ModelAdmin):
 class WialonUserAdmin(admin.ModelAdmin):
     list_display = (
         'user_name',
-        'human',
         'server',
-        'active_objs',
-        'payment',
+        'human',
+        # 'active_objs',
+        # 'payment',
         'comment'
     )
     autocomplete_fields = ('human',)
     search_fields = ('user_name', 'human__name_id__name', 'human__last_name')
-    list_filter = ('payment',)
+    list_filter = ('server',)
     empty_value_display = '-'
 
-    @admin.display(description="Сервер")
-    def server(self, obj):
-        return UserWialonServer.objects.get(user=obj).server
+    # @admin.display(description="Сервер")
+    # def server(self, obj):
+    #     return UserWialonServer.objects.get(user=obj).server
 
-    @admin.display(
-        description="Кол-во"
-    )
-    def active_objs(self, obj):
-        count_objs = WialonObject.objects.filter(
-            wialon_user=obj,
-            wialonobjectactive__active=True,
-            ).count()
-        return count_objs
+    # @admin.display(
+    #     description="Кол-во"
+    # )
+    # def active_objs(self, obj):
+    #     count_objs = WialonObject.objects.filter(
+    #         wialon_user=obj,
+    #         wialonobjectactive__active=True,
+    #         ).count()
+    #     return count_objs
 
 
 @admin.register(WialonObject)
@@ -134,13 +134,12 @@ class SimCardsAdmin(admin.ModelAdmin):
     list_filter = ('operator',)
 
 
-@admin.register(UserWialonServer)
-class UserWialonServerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'server',)
-    search_fields = ('user__user_name',)
-    autocomplete_fields = ('user',)
-    list_filter = ('server',)
-    empty_value_display = '-'
+# @admin.register(UserWialonServer)
+# class UserWialonServerAdmin(admin.ModelAdmin):
+#     list_display = ('user', 'server')
+#     search_fields = ('user_name',)
+#     list_filter = ('server',)
+#     empty_value_display = '-'
 
 
 @admin.register(HumanTerminalPresence)
