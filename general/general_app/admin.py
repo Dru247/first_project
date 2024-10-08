@@ -38,12 +38,12 @@ class WialonUserAdmin(admin.ModelAdmin):
         'user_name',
         'server',
         'human',
-        # 'active_objs',
+        'active',
         # 'payment',
         'comment'
     )
     autocomplete_fields = ('human',)
-    search_fields = ('user_name', 'human__name_id__name', 'human__last_name')
+    search_fields = ('user_name', 'human__name_id__name', 'human__last_name', 'server')
     list_filter = ('server',)
     empty_value_display = '-'
 
@@ -51,15 +51,13 @@ class WialonUserAdmin(admin.ModelAdmin):
     # def server(self, obj):
     #     return UserWialonServer.objects.get(user=obj).server
 
-    # @admin.display(
-    #     description="Кол-во"
-    # )
-    # def active_objs(self, obj):
-    #     count_objs = WialonObject.objects.filter(
-    #         wialon_user=obj,
-    #         wialonobjectactive__active=True,
-    #         ).count()
-    #     return count_objs
+    @admin.display(description="Кол-во")
+    def active(self, obj):
+        count_objs = WialonObject.objects.filter(
+            wialon_user=obj,
+            active=True
+            ).count()
+        return count_objs
 
 
 @admin.register(WialonObject)
@@ -68,7 +66,6 @@ class WialonObjectAdmin(admin.ModelAdmin):
         'name',
         'wialon_user',
         'terminal',
-        # 'active',
         # 'last_change',
         # 'sim',
         'price',
