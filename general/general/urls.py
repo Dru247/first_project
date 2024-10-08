@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from general_app.views import ObjectAPIView, SimAPIView, TerminalAPIView
+from general_app.views import ObjectAPIView, SimAPIView, TerminalAPIView, UsersAPIView
 from rest_framework.authtoken import views
 
 
@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/v1/objects/', ObjectAPIView.as_view()),
     path('api/v1/simlist/', SimAPIView.as_view()),
     path('api/v1/termlist/', TerminalAPIView.as_view()),
+    path('api/v1/userlist/', UsersAPIView.as_view()),
     path('auth/', include('django.contrib.auth.urls')),
 ]

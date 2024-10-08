@@ -10,7 +10,7 @@ from rest_framework import generics
 from .models import (Human, SimCards, Terminals, WialonObject, HumanTerminalPresence,
                      WialonObjectActive, WialonUser, WialonServer, Company, UserCompany,
                      HumanSimPresence)
-from .serializers import ObjectSerializer, SimSerializer, TerminalSerializer
+from .serializers import ObjectSerializer, SimSerializer, TerminalSerializer, UsersSerializer
 
 
 class SimAPIView(generics.ListAPIView):
@@ -21,6 +21,11 @@ class SimAPIView(generics.ListAPIView):
 class TerminalAPIView(generics.ListAPIView):
     queryset = Terminals.objects.all()
     serializer_class = TerminalSerializer
+
+
+class UsersAPIView(generics.ListAPIView):
+    queryset = WialonUser.objects.all()
+    serializer_class = UsersSerializer
 
 
 class ObjectAPIView(generics.ListAPIView):
