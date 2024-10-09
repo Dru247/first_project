@@ -45,8 +45,8 @@ def index_view(request):
     )
     user_company_list = UserCompany.objects.all()
     user_list = WialonUser.objects.filter(human=None).exclude(usercompany__in=user_company_list)
-    wia_obj_list = WialonObject.objects.filter(wialonobjectactive__isnull=True)
-    sum_wia_obj = WialonObject.objects.filter(wialonobjectactive__active=True).count()
+    wia_obj_list = WialonObject.objects.filter(active__isnull=True)
+    sum_wia_obj = WialonObject.objects.filter(active=True).count()
     sum_wia_obj_serv_active = Count(
         'userwialonservers__user__wialonobjects',
         filter=Q(userwialonservers__user__wialonobjects__active=True)
@@ -71,12 +71,12 @@ def index_view(request):
 
 @login_required
 def clients_view(request):
-    activ_obj_all = len(WialonObjectActive.objects.filter(active=True))
-    not_activ_obj_all = len(WialonObjectActive.objects.filter(active=False))
+    activ_obj_all = WialonObject.objects.filter(active=True).count()
+    not_activ_obj_all = WialonObject.objects.filter(active=False).count()
     wialon_obj_all = Count('wialonuser__wialonobjects')
     wialon_obj_active = Count(
-        'wialonuser__wialonobjects__wialonobjectactive',
-        filter=Q(wialonuser__wialonobjects__wialonobjectactive__active=True)
+        'wialonuser__wialonobjects',
+        filter=Q(wialonuser__wialonobjects__active=True)
     )
     client_list = Human.objects.annotate(all=wialon_obj_all). \
         annotate(active=wialon_obj_active)
@@ -92,32 +92,32 @@ def clients_view(request):
 def server_view(request, server_id):
     # count all active objects on the server
     count_serv_all_active_obj = Count(
-        'userwialonservers__user__wialonobjects__wialonobjectactive',
-        filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
+        'userwialonservers__user__wialonobjects',
+        filter=Q(userwialonservers__user__wialonobjects__active=True)
     )
     serv_all_active_obj = WialonServer.objects.filter(pk=server_id).annotate(active=count_serv_all_active_obj)
 
     serv_now = get_object_or_404(WialonServer, pk=server_id)
     active_users = WialonUser.objects.filter(
         userwialonserver__server=serv_now,
-        wialonobjects__wialonobjectactive__active=True
+        wialonobjects__active=True
     )
 
     # view list companies width count active objects
     count_active_obj = Count(
         'usercompany__user_comp__wialonobjects',
-        filter=Q(usercompany__user_comp__wialonobjects__wialonobjectactive__active=True)
+        filter=Q(usercompany__user_comp__wialonobjects__active=True)
     )
     company_list = Company.objects.filter(usercompany__user_comp__in=active_users).annotate(active=count_active_obj)
 
     # view list clients width count active objects
     count_active_obj = Count(
         'wialonuser__wialonobjects',
-        filter=Q(wialonuser__wialonobjects__wialonobjectactive__active=True)
+        filter=Q(wialonuser__wialonobjects__active=True)
     )
     cost_month = Sum(
         'wialonuser__wialonobjects__price',
-        filter=Q(wialonuser__wialonobjects__wialonobjectactive__active=True)
+        filter=Q(wialonuser__wialonobjects__active=True)
     )
     human_list = Human.objects.filter(wialonuser__in=active_users).annotate(active=count_active_obj, cost=cost_month)
 
