@@ -18,23 +18,6 @@
       {% endfor %}
       </tbody>
     </table></p>
-   <p><table>
-    <caption>Юр лица/Активные объекты</caption>
-    <thead>
-      <tr>
-        <th>Клиент</th>
-        <th>Кол-во</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for client in company_list %}
-      <tr>
-        <td>{{ client }}</td>
-        <td>{{ client.active }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table></p>
   <p><table>
     <caption>Клиенты/Активные объекты</caption>
     <thead>
@@ -42,6 +25,7 @@
         <th>Клиент</th>
         <th>Кол-во</th>
         <th>Стоимость</th>
+        <th>Описание</th>
       </tr>
     </thead>
     <tbody>
@@ -50,6 +34,7 @@
         <td>{{ client }}</td>
         <td>{{ client.active }}</td>
         <td>{{ client.cost }}</td>
+        <td>{{ client.description }}</td>
       </tr>
     {% endfor %}
     </tbody>

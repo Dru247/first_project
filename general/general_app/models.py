@@ -381,7 +381,9 @@ class WialonObject(models.Model):
         verbose_name='Статус'
     )
     date_change_status = models.DateField(
-        verbose_name='Дата изменения статуса'
+        verbose_name='Дата оплаты',
+        null=True,
+        blank=True
     )
     comment = models.CharField(
         max_length=255,

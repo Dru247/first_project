@@ -6,7 +6,7 @@ from .models import (HumanNames, Human, HumanSimPresence, HumanTerminalPresence,
                      WialonObject, WialonObjectActive, WialonUser, Company,
                      UserCompany, HumanCompany, Contact, HumanContact,
                      BrandTerminals, ModelTerminals, BrandCar, ModelCar,
-                     Installation, InstallationComment)
+                     Installation, InstallationComment, WialonServer)
 
 
 @admin.register(HumanNames)
@@ -278,3 +278,9 @@ class InstallationAdmin(admin.ModelAdmin):
 #     autocomplete_fields = ('installation',)
 #     search_fields = ('installation__terminal__imei', 'text')
 #     empty_value_display = 'пусто'
+
+@admin.register(WialonServer)
+class ServersAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'name')
+    search_fields = ('name',)
+    empty_value_display = '-'

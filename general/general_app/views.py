@@ -90,25 +90,25 @@ def clients_view(request):
 
 @login_required
 def server_view(request, server_id):
-    # count all active objects on the server
+    """Считает кол-во объектов у клиентов по серверам"""
     count_serv_all_active_obj = Count(
         'userwialonservers__user__wialonobjects',
         filter=Q(userwialonservers__user__wialonobjects__active=True)
     )
     serv_all_active_obj = WialonServer.objects.filter(pk=server_id).annotate(active=count_serv_all_active_obj)
 
-    serv_now = get_object_or_404(WialonServer, pk=server_id)
+    server = get_object_or_404(WialonServer, pk=server_id)
     active_users = WialonUser.objects.filter(
-        userwialonserver__server=serv_now,
+        userwialonserver__server=server,
         wialonobjects__active=True
     )
 
     # view list companies width count active objects
-    count_active_obj = Count(
-        'usercompany__user_comp__wialonobjects',
-        filter=Q(usercompany__user_comp__wialonobjects__active=True)
-    )
-    company_list = Company.objects.filter(usercompany__user_comp__in=active_users).annotate(active=count_active_obj)
+    # count_active_obj = Count(
+    #     'usercompany__user_comp__wialonobjects',
+    #     filter=Q(usercompany__user_comp__wialonobjects__active=True)
+    # )
+    # company_list = Company.objects.filter(usercompany__user_comp__in=active_users).annotate(active=count_active_obj)
 
     # view list clients width count active objects
     count_active_obj = Count(
@@ -119,11 +119,11 @@ def server_view(request, server_id):
         'wialonuser__wialonobjects__price',
         filter=Q(wialonuser__wialonobjects__active=True)
     )
-    human_list = Human.objects.filter(wialonuser__in=active_users).annotate(active=count_active_obj, cost=cost_month)
+    human_list = Human.objects.filter(wialonuser__in=active_users) \
+        .annotate(active=count_active_obj, cost=cost_month)
 
     context = {
         'human_list': human_list,
-        'company_list': company_list,
         'serv_all_active_obj': serv_all_active_obj
     }
     return render(request, 'general_app/server.html', context=context)
