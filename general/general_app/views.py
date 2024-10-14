@@ -91,17 +91,6 @@ def clients_view(request):
 @login_required
 def server_view(request, server_id):
     """Считает кол-во объектов у клиентов по серверам"""
-    count_serv_all_active_obj = Count(
-        'userwialonservers__user__wialonobjects',
-        filter=Q(userwialonservers__user__wialonobjects__active=True)
-    )
-    serv_all_active_obj = WialonServer.objects.filter(pk=server_id).annotate(active=count_serv_all_active_obj)
-
-    server = get_object_or_404(WialonServer, pk=server_id)
-    active_users = WialonUser.objects.filter(
-        userwialonserver__server=server,
-        wialonobjects__active=True
-    )
 
     # view list companies width count active objects
     # count_active_obj = Count(
@@ -110,17 +99,53 @@ def server_view(request, server_id):
     # )
     # company_list = Company.objects.filter(usercompany__user_comp__in=active_users).annotate(active=count_active_obj)
 
-    # view list clients width count active objects
-    count_active_obj = Count(
-        'wialonuser__wialonobjects',
-        filter=Q(wialonuser__wialonobjects__active=True)
+    # count_serv_all_active_obj = Count(
+    #     'userwialonservers__user__wialonobjects',
+    #     filter=Q(userwialonservers__user__wialonobjects__active=True)
+    # )
+    # serv_all_active_obj = WialonServer.objects.filter(pk=server_id).annotate(active=count_serv_all_active_obj)
+
+    serv_all_active_obj = WialonObject.objects.raw(
+        """
+        SELECT * FROM general_app_wialonobject
+        JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
+        WHERE general_app_wialonobject.active = 1
+        AND general_app_wialonuser.server_id = %s
+        """,
+        [server_id]
     )
-    cost_month = Sum(
-        'wialonuser__wialonobjects__price',
-        filter=Q(wialonuser__wialonobjects__active=True)
+    serv_all_active_obj = len(serv_all_active_obj)
+
+    # server = get_object_or_404(WialonServer, pk=server_id)
+    # active_users = WialonUser.objects.filter(
+    #     userwialonserver__server=server,
+    #     wialonobjects__active=True
+    # )
+    #
+    # count_active_obj = Count(
+    #     'wialonuser__wialonobjects',
+    #     filter=Q(wialonuser__wialonobjects__active=True)
+    # )
+    # cost_month = Sum(
+    #     'wialonuser__wialonobjects__price',
+    #     filter=Q(wialonuser__wialonobjects__active=True)
+    # )
+    # human_list = Human.objects.filter(wialonuser__in=active_users) \
+    #     .annotate(active=count_active_obj, cost=cost_month)
+
+    human_list = Human.objects.raw(
+        '''
+        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost  FROM general_app_human
+        JOIN general_app_wialonuser ON general_app_wialonuser.human_id = general_app_human.id
+        JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        WHERE general_app_wialonuser.server_id = %s
+        AND general_app_wialonobject.active = 1
+        GROUP BY general_app_human.id
+        ORDER BY general_app_humannames.name, general_app_human.last_name
+        ''',
+        [server_id]
     )
-    human_list = Human.objects.filter(wialonuser__in=active_users) \
-        .annotate(active=count_active_obj, cost=cost_month)
 
     context = {
         'human_list': human_list,

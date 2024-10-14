@@ -1,23 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-    <p><table>
-      <caption>Активные объекты</caption>
-      <thead>
-        <tr>
-          <th>Сервер</th>
-          <th>Кол-во</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for serv in serv_all_active_obj %}
-        <tr>
-          <td>{{ serv }}</td>
-          <td>{{ serv.active }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table></p>
+    <p>Объектов на сервере: {{ serv_all_active_obj }} шт.</p>
   <p><table>
     <caption>Клиенты/Активные объекты</caption>
     <thead>
