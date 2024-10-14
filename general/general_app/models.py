@@ -631,6 +631,11 @@ class Installation(models.Model):
     juristic_person = models.BooleanField(
         verbose_name='Юр-лицо'
     )
+    payer = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        verbose_name='Плательщик'
+    )
     payment = models.BooleanField(
         default=False,
         verbose_name='Оплата'

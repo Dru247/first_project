@@ -37,13 +37,11 @@ class WialonUserAdmin(admin.ModelAdmin):
     list_display = (
         'user_name',
         'server',
-        'human',
         'active',
         # 'payment',
         'comment'
     )
-    autocomplete_fields = ('human',)
-    search_fields = ('user_name', 'human__name_id__name', 'human__last_name')
+    search_fields = ('user_name',)
     list_filter = ('server',)
     empty_value_display = '-'
 
@@ -246,8 +244,9 @@ class InstallationAdmin(admin.ModelAdmin):
         'state_number',
         'terminal',
         'human_worker',
-        'user',
+        # 'user',
         'juristic_person',
+        'payer',
         'payment',
         'comment'
     )
@@ -255,7 +254,8 @@ class InstallationAdmin(admin.ModelAdmin):
         'model',
         'terminal',
         'human_worker',
-        'user'
+        'user',
+        'payer'
     )
     search_fields = (
         'state_number',
@@ -263,8 +263,9 @@ class InstallationAdmin(admin.ModelAdmin):
         'terminal__imei',
         'model__brand__name',
         'model__name',
-        'user__user_name'
+        # 'user__user_name',
     )
+    list_filter = ('payer',)
     empty_value_display = '-'
 
     # @admin.display()

@@ -44,7 +44,7 @@ def index_view(request):
         humanterminalpresence__isnull=True
     )
     user_company_list = UserCompany.objects.all()
-    user_list = WialonUser.objects.filter(human=None).exclude(usercompany__in=user_company_list)
+    # user_list = WialonUser.objects.filter(human=None).exclude(usercompany__in=user_company_list)
     wia_obj_list = WialonObject.objects.filter(active__isnull=True)
     sum_wia_obj = WialonObject.objects.filter(active=True).count()
     sum_wia_obj_serv_active = Count(
@@ -60,7 +60,7 @@ def index_view(request):
     context = {
         'sim_list': sim_list,
         'term_list': term_list,
-        'user_list': user_list,
+        # 'user_list': user_list,
         'wia_obj_list': wia_obj_list,
         'wia_obj_serv_active': wia_obj_serv_active,
         'user_not_serv': user_not_serv,
@@ -136,8 +136,8 @@ def server_view(request, server_id):
     human_list = Human.objects.raw(
         '''
         SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost  FROM general_app_human
-        JOIN general_app_wialonuser ON general_app_wialonuser.human_id = general_app_human.id
         JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
         JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
         WHERE general_app_wialonuser.server_id = %s
         AND general_app_wialonobject.active = 1
