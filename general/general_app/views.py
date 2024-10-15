@@ -109,7 +109,8 @@ def server_view(request, server_id):
         """
         SELECT * FROM general_app_wialonobject
         JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
-        WHERE general_app_wialonobject.active = 1
+        WHERE general_app_wialonobject.date_change_status > date('now')
+        AND general_app_wialonobject.active = 1
         AND general_app_wialonuser.server_id = %s
         """,
         [server_id]
