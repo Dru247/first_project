@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
-{% block title %}Клиенты{% endblock %}
+{% block title %}Оплата{% endblock %}
 {% block content %}
-<p>
-  Всего объектов: {{ activ_obj_all }} (активных), {{ not_activ_obj_all }} (неактивных).
-</p>
-<p>
-  <table>
-    <caption>Все клиенты</caption>
+  <p><table>
+    <caption>Таблица оплаты</caption>
     <thead>
       <tr>
-        <th>Клиенты</th>
-        <th>Всего объектов</th>
-	<th>Активные объекты</th>
+        <th>Клиент</th>
+        <th>Кол-во</th>
+        <th>Стоимость</th>
+        <th>Описание</th>
+        <th>Текст</th>
       </tr>
     </thead>
     <tbody>
-      {% for client in client_list %}
+    {% for client in human_list %}
       <tr>
         <td>{{ client }}</td>
-        <td>{{ client.all }}</td>
         <td>{{ client.active }}</td>
+        <td>{{ client.cost }}</td>
+        <td>{{ client.description }}</td>
+        <td>Добрый день! Напоминаем о переводе за ГЛОНАСС за {{ month }}: {{ client.cost }} руб за {{ client.active }} ТС на Сбер, Альфа или Т-банк по номеру +79154545686 (Андрей Алексеевич Л)</td>
       </tr>
-      {% endfor %}
+    {% endfor %}
     </tbody>
-  </table>
-</p>
+  </table></p>
 {% endblock %}

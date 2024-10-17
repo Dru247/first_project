@@ -71,19 +71,36 @@ def index_view(request):
 
 @login_required
 def clients_view(request):
-    activ_obj_all = WialonObject.objects.filter(active=True).count()
-    not_activ_obj_all = WialonObject.objects.filter(active=False).count()
-    wialon_obj_all = Count('wialonuser__wialonobjects')
-    wialon_obj_active = Count(
-        'wialonuser__wialonobjects',
-        filter=Q(wialonuser__wialonobjects__active=True)
+    # activ_obj_all = WialonObject.objects.filter(active=True).count()
+    # not_activ_obj_all = WialonObject.objects.filter(active=False).count()
+    # wialon_obj_all = Count('wialonuser__wialonobjects')
+    # wialon_obj_active = Count(
+    #     'wialonuser__wialonobjects',
+    #     filter=Q(wialonuser__wialonobjects__active=True)
+    # )
+    # client_list = Human.objects.annotate(all=wialon_obj_all). \
+    #     annotate(active=wialon_obj_active)
+    months = ['', 'Январь', 'февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+           'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+    target_month = datetime.datetime.today() + relativedelta(months=+1)
+    month = months[target_month.month]
+    human_list = Human.objects.raw(
+        '''
+        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
+        FROM general_app_human
+        JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        WHERE NOT general_app_wialonobject.date_change_status >= date('now', '+1 month')
+        AND general_app_wialonobject.date_change_status > date('now')
+        AND general_app_wialonobject.active = 1
+        GROUP BY general_app_human.id
+        ORDER BY general_app_humannames.name, general_app_human.last_name
+        '''
     )
-    client_list = Human.objects.annotate(all=wialon_obj_all). \
-        annotate(active=wialon_obj_active)
+
     context = {
-        'client_list': client_list,
-        'activ_obj_all': activ_obj_all,
-        'not_activ_obj_all': not_activ_obj_all,
+        'human_list': human_list,
+        'month': month
     }
     return render(request, 'general_app/clients.html', context=context)
 
@@ -136,7 +153,8 @@ def server_view(request, server_id):
 
     human_list = Human.objects.raw(
         '''
-        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost  FROM general_app_human
+        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
+        FROM general_app_human
         JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
         JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
         JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
