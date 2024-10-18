@@ -42,6 +42,7 @@ class WialonUserAdmin(admin.ModelAdmin):
         'comment'
     )
     search_fields = ('user_name',)
+    autocomplete_fields = ('human',)
     list_filter = ('server',)
     empty_value_display = '-'
 

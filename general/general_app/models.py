@@ -378,7 +378,7 @@ class WialonObject(models.Model):
     )
     active = models.BooleanField(
         default=True,
-        verbose_name='Статус'
+        verbose_name='Нужность'
     )
     date_change_status = models.DateField(
         verbose_name='Дата оплаты',
