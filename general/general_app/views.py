@@ -33,6 +33,11 @@ class ObjectAPIView(generics.ListAPIView):
     serializer_class = ObjectSerializer
 
 
+class ObjectsAPIUpdate(generics.UpdateAPIView):
+    queryset = WialonObject.objects.all()
+    serializer_class = ObjectSerializer
+
+
 @login_required
 def index_view(request):
     sim_list = SimCards.objects.filter(

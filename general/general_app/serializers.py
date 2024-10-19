@@ -23,4 +23,4 @@ class UsersSerializer(serializers.ModelSerializer):
 class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonObject
-        fields = ('name', 'wialon_user', 'terminal', 'payer', 'active', 'date_change_status')
+        fields = '__all__'
