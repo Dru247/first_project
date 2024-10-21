@@ -7,10 +7,23 @@ from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
 from rest_framework import generics
 
-from .models import (Human, SimCards, Terminals, WialonObject, HumanTerminalPresence,
-                     WialonObjectActive, WialonUser, WialonServer, Company, UserCompany,
-                     HumanSimPresence)
-from .serializers import ObjectSerializer, SimSerializer, TerminalSerializer, UsersSerializer
+from .models import *
+from .serializers import *
+
+
+class HumanContactsAPIView(generics.ListAPIView):
+    queryset = HumanContact.objects.all()
+    serializer_class = HumanContactsSerializer
+
+
+class ObjectAPIView(generics.ListAPIView):
+    queryset = WialonObject.objects.all()
+    serializer_class = ObjectSerializer
+
+
+class ObjectsAPIUpdate(generics.UpdateAPIView):
+    queryset = WialonObject.objects.all()
+    serializer_class = ObjectSerializer
 
 
 class SimAPIView(generics.ListAPIView):
@@ -26,16 +39,6 @@ class TerminalAPIView(generics.ListAPIView):
 class UsersAPIView(generics.ListAPIView):
     queryset = WialonUser.objects.all()
     serializer_class = UsersSerializer
-
-
-class ObjectAPIView(generics.ListAPIView):
-    queryset = WialonObject.objects.all()
-    serializer_class = ObjectSerializer
-
-
-class ObjectsAPIUpdate(generics.UpdateAPIView):
-    queryset = WialonObject.objects.all()
-    serializer_class = ObjectSerializer
 
 
 @login_required

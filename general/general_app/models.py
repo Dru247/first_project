@@ -1,10 +1,9 @@
-from audioop import minmax
+import datetime
 
+# from audioop import minmax
 from django.db import models
 from django.utils import timezone as tz
-from django.core.exceptions import ValidationError
-
-import datetime
+# from django.core.exceptions import ValidationError
 
 
 class HumanNames(models.Model):

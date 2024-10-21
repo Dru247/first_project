@@ -1,12 +1,7 @@
 from django.contrib import admin
-from django.db.models import Count, Q
+# from django.db.models import Count, Q
 
-from .models import (HumanNames, Human, HumanSimPresence, HumanTerminalPresence, SimCards,
-                     Telegram, TelephoneNumber, Terminals, UserWialonServer,
-                     WialonObject, WialonObjectActive, WialonUser, Company,
-                     UserCompany, HumanCompany, Contact, HumanContact,
-                     BrandTerminals, ModelTerminals, BrandCar, ModelCar,
-                     Installation, InstallationComment, WialonServer)
+from .models import *
 
 
 @admin.register(HumanNames)
