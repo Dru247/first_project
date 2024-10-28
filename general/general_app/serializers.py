@@ -8,6 +8,12 @@ class HumanContactsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class HumanTerminalPresenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HumanTerminalPresence
+        fields = '__all__'
+
+
 class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonObject
@@ -17,16 +23,19 @@ class ObjectSerializer(serializers.ModelSerializer):
 class SimSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimCards
-        fields = ('id', 'operator', 'number', 'icc', 'terminal')
+        fields = '__all__'
 
 
 class TerminalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Terminals
-        fields = ('id', 'imei')
+        fields = '__all__'
 
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonUser
-        fields = ('id', 'server', 'user_name')
+        fields = '__all__'
+
+
+HumanTerminalPresence

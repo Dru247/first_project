@@ -79,7 +79,7 @@ class HumanContact(models.Model):
         verbose_name='Версия контакта'
     )
     contact_rec = models.CharField(
-        max_length=45,
+        max_length=255,
         verbose_name='Запись'
     )
 
