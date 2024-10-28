@@ -16,6 +16,11 @@ class HumanTerminalPresenceAPIView(generics.ListAPIView):
     serializer_class = HumanTerminalPresenceSerializer
 
 
+class InstallationsAPIView(generics.ListAPIView):
+    queryset = Installation.objects.all()
+    serializer_class = InstallationsSerializer
+
+
 class HumanContactsAPIView(generics.ListAPIView):
     queryset = HumanContact.objects.all()
     serializer_class = HumanContactsSerializer

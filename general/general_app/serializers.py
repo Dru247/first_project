@@ -14,6 +14,12 @@ class HumanTerminalPresenceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class InstallationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Installation
+        fields = '__all__'
+
+
 class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonObject
