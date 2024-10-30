@@ -25,6 +25,7 @@ urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
     path('api/v1/human-contacts/', HumanContactsAPIView.as_view()),
     path('api/v1/human-terminals/', HumanTerminalPresenceAPIView.as_view()),
+    path('api/v1/human-sim-cards/', HumanSimPresenceAPIView.as_view()),
     path('api/v1/installations/', InstallationsAPIView.as_view()),
     path('api/v1/objects/', ObjectAPIView.as_view()),
     path('api/v1/object/<int:pk>/', ObjectsAPIUpdate.as_view()),

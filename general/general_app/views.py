@@ -1,14 +1,17 @@
-import datetime
-
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Sum, Q
-from django.shortcuts import get_object_or_404, render
+from django.db.models import Count, Q
+from django.shortcuts import render
 from django.db.models import Max
 from rest_framework import generics
 
 from .models import *
 from .serializers import *
+
+
+class HumanSimPresenceAPIView(generics.ListAPIView):
+    queryset = HumanSimPresence.objects.all()
+    serializer_class = HumanSimPresenceSerializer
 
 
 class HumanTerminalPresenceAPIView(generics.ListAPIView):

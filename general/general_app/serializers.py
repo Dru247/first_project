@@ -8,6 +8,12 @@ class HumanContactsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class HumanSimPresenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HumanSimPresence
+        fields = '__all__'
+
+
 class HumanTerminalPresenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = HumanTerminalPresence
@@ -42,6 +48,3 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonUser
         fields = '__all__'
-
-
-HumanTerminalPresence
