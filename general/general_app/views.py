@@ -111,7 +111,7 @@ def clients_view(request):
         FROM general_app_human
         JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
         JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
-        WHERE NOT general_app_wialonobject.date_change_status >= date('now', '+1 month')
+        WHERE NOT general_app_wialonobject.date_change_status > date('now', '+20 days')
         AND general_app_wialonobject.active = 1
         GROUP BY general_app_human.id
         ORDER BY general_app_humannames.name, general_app_human.last_name
