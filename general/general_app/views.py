@@ -105,17 +105,19 @@ def clients_view(request):
            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
     target_month = datetime.datetime.today() + relativedelta(months=+1)
     month = months[target_month.month]
+    first_day_next_month = (datetime.datetime.today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1)
     human_list = Human.objects.raw(
         '''
         SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
         FROM general_app_human
         JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
         JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
-        WHERE NOT general_app_wialonobject.date_change_status > date('now', '+20 days')
+        WHERE NOT general_app_wialonobject.date_change_status > %s
         AND general_app_wialonobject.active = 1
         GROUP BY general_app_human.id
         ORDER BY general_app_humannames.name, general_app_human.last_name
-        '''
+        ''',
+        [first_day_next_month]
     )
 
     context = {
@@ -146,7 +148,7 @@ def server_view(request, server_id):
         """
         SELECT * FROM general_app_wialonobject
         JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
-        WHERE general_app_wialonobject.date_change_status > date('now')
+        WHERE general_app_wialonobject.date_change_status >= date('now')
         AND general_app_wialonuser.server_id = %s
         """,
         [server_id]
@@ -178,7 +180,7 @@ def server_view(request, server_id):
         JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
         JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
         WHERE general_app_wialonuser.server_id = %s
-        AND general_app_wialonobject.date_change_status > date('now')
+        AND general_app_wialonobject.date_change_status >= date('now')
         GROUP BY general_app_human.id
         ORDER BY general_app_humannames.name, general_app_human.last_name
         ''',
