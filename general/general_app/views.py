@@ -1,3 +1,5 @@
+import calendar
+
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
@@ -103,8 +105,6 @@ def clients_view(request):
     #     annotate(active=wialon_obj_active)
     months = ['', 'Январь', 'февраль', 'Март', 'Апрель', 'Май', 'Июнь',
            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-    target_month = datetime.datetime.today() + relativedelta(months=+1)
-    month = months[target_month.month]
     first_day_next_month = (datetime.datetime.today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1)
     human_list = Human.objects.raw(
         '''
@@ -119,12 +119,38 @@ def clients_view(request):
         ''',
         [first_day_next_month]
     )
-
     context = {
         'human_list': human_list,
-        'month': month
+        'month': months[first_day_next_month.month]
     }
     return render(request, 'general_app/clients.html', context=context)
+
+
+@login_required
+def get_without_payment(request):
+    """Выводит список не оплативших клиентов за прошлый месяц"""
+    date_now = datetime.date.today()
+    past_month = date_now - relativedelta(months=1)
+    past_month_last_day = calendar.monthrange(date_now.year, past_month.month)[1]
+    date_target = past_month.strftime(f'%Y-%m-{past_month_last_day}')
+    print(date_target)
+    human_list = Human.objects.raw(
+        '''
+        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
+        FROM general_app_human
+        JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        WHERE general_app_wialonobject.date_change_status = %s
+        AND general_app_wialonobject.active = 1
+        GROUP BY general_app_human.id
+        ORDER BY general_app_humannames.name, general_app_human.last_name
+        ''',
+        [date_target]
+    )
+    context = {
+        'human_list': human_list
+    }
+    return render(request, 'general_app/without_payment.html', context=context)
 
 
 @login_required

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Без оплаты{% endblock %}
+{% block content %}
+  <p><table>
+    <caption>Таблица не оплативших клиентов за прошлый месяц</caption>
+    <thead>
+      <tr>
+        <th>Клиент</th>
+        <th>Кол-во</th>
+        <th>Стоимость</th>
+        <th>Описание</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for client in human_list %}
+      <tr>
+        <td>{{ client }}</td>
+        <td>{{ client.active }}</td>
+        <td>{{ client.cost }}</td>
+        <td>{{ client.description }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></p>
+{% endblock %}

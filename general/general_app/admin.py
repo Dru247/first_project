@@ -166,7 +166,7 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     list_display = (
         'human',
         'simcard',
-        'simcard_icc',
+        'simcard_number',
         'simcard_operator',
         'time_create'
     )
@@ -181,8 +181,8 @@ class HumanSimPresenceAdmin(admin.ModelAdmin):
     empty_value_display = '-'
 
     @admin.display()
-    def simcard_icc(self, obj):
-        return obj.simcard.icc
+    def simcard_number(self, obj):
+        return obj.simcard.number
 
     @admin.display()
     def simcard_operator(self, obj):
