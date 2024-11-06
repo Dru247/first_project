@@ -674,3 +674,29 @@ class InstallationComment(models.Model):
         ordering = ['installation']
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Установки + Комментарии'
+
+
+class Schedules(models.Model):
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        verbose_name='Человек'
+    )
+    date = models.DateField(
+        default=datetime.date.today,
+        verbose_name='Дата'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.human, self.date)
+
+    class Meta:
+        ordering = ['-date']
+        verbose_name = 'Смена'
+        verbose_name_plural = 'График'

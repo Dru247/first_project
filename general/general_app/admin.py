@@ -281,3 +281,20 @@ class ServersAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name')
     search_fields = ('name',)
     empty_value_display = '-'
+
+
+@admin.register(Schedules)
+class SchedulesAdmin(admin.ModelAdmin):
+    list_display = (
+        'human',
+        'date',
+        'comment'
+    )
+    search_fields = (
+        'human__name_id__name',
+        'human__last_name',
+        'date'
+    )
+    autocomplete_fields = ('human',)
+    list_filter = ('human',)
+    empty_value_display = '-'
