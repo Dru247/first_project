@@ -47,4 +47,31 @@
       </tbody>
   </table>
 </p>
+<p>
+  <table>
+    <caption>СИМки на удаление в объектах</caption>
+      <thead>
+        <tr>
+          <th>Имя объекта</th>
+          <th>Дата оплаты</th>
+          <th>Фамииля</th>
+          <th>Имя</th>
+          <th>СИМка</th>
+          <th>Оператор</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for object in later_objects %}
+        <tr>
+          <td class="copy-all">{{ object.name }}</td>
+          <td class="copy-all">{{ object.date_change_status }}</td>
+          <td class="copy-all">{{ object.last_name }}</td>
+          <td class="copy-all">{{ object.payer_name }}</td>
+          <td class="copy-all">{{ object.number }}</td>
+          <td class="copy-all">{{ object.operator_name }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</p>
 {% endblock %}

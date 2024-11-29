@@ -245,9 +245,27 @@ def delete_sim_view(request):
         data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
     ).order_by('terminal__wialonobjects__wialonobjectactive__last_modified')
 
+    later_objects = WialonObject.objects.raw(
+        '''
+        SELECT general_app_wialonobject.id, general_app_wialonobject.name, general_app_wialonobject.date_change_status, general_app_human.last_name,
+            general_app_humannames.name as payer_name, general_app_simcards.number, general_app_operatorssim.name as operator_name
+        FROM general_app_wialonobject
+        JOIN general_app_human ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
+        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        JOIN general_app_simcards ON general_app_simcards.terminal_id = general_app_wialonobject.terminal_id
+        JOIN general_app_operatorssim  ON general_app_operatorssim.id = general_app_simcards.operator_id
+        WHERE date_change_status < date('now', '-6 months')
+        AND general_app_wialonobject.terminal_id
+        AND general_app_simcards.terminal_id
+        ORDER BY general_app_wialonobject.payer_id, date_change_status
+        '''
+    )
+
     context = {
         'sim_list': sim_list_delete,
-        'sim_list_replace': sim_list_replace
+        'sim_list_replace': sim_list_replace,
+        'later_objects': later_objects
     }
     return render(request, 'general_app/sim_delete.html', context=context)
 
