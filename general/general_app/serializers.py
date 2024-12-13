@@ -32,6 +32,12 @@ class ObjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schedules
+        fields = '__all__'
+
+
 class SimSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimCards

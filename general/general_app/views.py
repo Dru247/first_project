@@ -41,6 +41,11 @@ class ObjectsAPIUpdate(generics.UpdateAPIView):
     serializer_class = ObjectSerializer
 
 
+class ScheduleAPIView(generics.ListAPIView):
+    queryset = Schedules.objects.all()
+    serializer_class = ScheduleSerializer
+
+
 class SimAPIView(generics.ListAPIView):
     queryset = SimCards.objects.all()
     serializer_class = SimSerializer
