@@ -2,9 +2,21 @@ from rest_framework import serializers
 from .models import *
 
 
+class HumansSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Human
+        fields = '__all__'
+
+
 class HumanContactsSerializer(serializers.ModelSerializer):
     class Meta:
         model = HumanContact
+        fields = '__all__'
+
+
+class HumanNamesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HumanNames
         fields = '__all__'
 
 

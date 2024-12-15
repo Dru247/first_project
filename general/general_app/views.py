@@ -11,6 +11,21 @@ from .models import *
 from .serializers import *
 
 
+class HumansAPIView(generics.ListAPIView):
+    queryset = Human.objects.all()
+    serializer_class = HumansSerializer
+
+
+class HumanContactsAPIView(generics.ListAPIView):
+    queryset = HumanContact.objects.all()
+    serializer_class = HumanContactsSerializer
+
+
+class HumanNamesAPIView(generics.ListAPIView):
+    queryset = HumanNames.objects.all()
+    serializer_class = HumanNamesSerializer
+
+
 class HumanSimPresenceAPIView(generics.ListAPIView):
     queryset = HumanSimPresence.objects.all()
     serializer_class = HumanSimPresenceSerializer
@@ -24,11 +39,6 @@ class HumanTerminalPresenceAPIView(generics.ListAPIView):
 class InstallationsAPIView(generics.ListAPIView):
     queryset = Installation.objects.all()
     serializer_class = InstallationsSerializer
-
-
-class HumanContactsAPIView(generics.ListAPIView):
-    queryset = HumanContact.objects.all()
-    serializer_class = HumanContactsSerializer
 
 
 class ObjectAPIView(generics.ListAPIView):
