@@ -700,3 +700,31 @@ class Schedules(models.Model):
         ordering = ['-date']
         verbose_name = 'Смена'
         verbose_name_plural = 'График'
+
+
+class PriceLogistics(models.Model):
+    city = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Пункт'
+    )
+    cost = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Цена'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.city, self.cost)
+
+    class Meta:
+        ordering = ['city']
+        verbose_name = 'Выезд'
+        verbose_name_plural = 'Цена выездов'

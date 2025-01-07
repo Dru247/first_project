@@ -23,6 +23,7 @@ class HumanAdmin(admin.ModelAdmin):
 class HumanContactAdmin(admin.ModelAdmin):
     list_display = ('human', 'contact', 'contact_rec')
     search_fields = ('human__name_id__name', 'human__last_name', 'contact_rec',)
+    list_filter = ('contact',)
     autocomplete_fields = ('human',)
     empty_value_display = '-'
 
@@ -297,4 +298,11 @@ class SchedulesAdmin(admin.ModelAdmin):
     )
     autocomplete_fields = ('human',)
     list_filter = ('human',)
+    empty_value_display = '-'
+
+
+@admin.register(PriceLogistics)
+class PriceLogisticsAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'city', 'cost', 'comment')
+    search_fields = ('city',)
     empty_value_display = '-'
