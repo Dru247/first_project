@@ -306,3 +306,20 @@ class PriceLogisticsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'city', 'cost', 'comment')
     search_fields = ('city',)
     empty_value_display = '-'
+
+
+@admin.register(Sensors)
+class FuelSensorsAdmin(admin.ModelAdmin):
+    empty_value_display = '-'
+    list_display = ('pk', 'model', 'serial_number', 'add_information', 'comment', 'time_create')
+    list_filter = ('model',)
+    search_fields = ('serial_number', 'add_information')
+
+
+@admin.register(HumanSensorRelations)
+class HumanSensorRelationsAdmin(admin.ModelAdmin):
+    autocomplete_fields = ('human', 'sensor')
+    empty_value_display = '-'
+    list_display = ('pk', 'human', 'sensor', 'comment', 'time_create')
+    list_filter = ('human',)
+    search_fields = ('sensor__serial_number',)

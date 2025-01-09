@@ -216,6 +216,72 @@ class HumanTerminalPresence(models.Model):
         verbose_name_plural = 'Люди + Терминалы'
 
 
+class Sensors(models.Model):
+    model = models.ForeignKey(
+        ModelTerminals,
+        on_delete=models.PROTECT,
+        verbose_name='Модель'
+    )
+    serial_number = models.CharField(
+        max_length=255,
+        verbose_name='Серийный номер',
+        blank=True,
+        null=True
+    )
+    add_information = models.CharField(
+        max_length=255,
+        verbose_name='Доп.инфо',
+        blank=True,
+        null=True,
+    )
+    comment = models.CharField(
+        max_length=255,
+        verbose_name='Комментарий',
+        blank=True,
+        null=True,
+    )
+    time_create = models.DateField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.model, self.serial_number)
+
+    class Meta:
+        ordering = ['serial_number']
+        verbose_name = 'Датчик'
+        verbose_name_plural = 'Датчики'
+
+
+class HumanSensorRelations(models.Model):
+    human = models.ForeignKey(
+        Human,
+        on_delete=models.PROTECT,
+        verbose_name='Человек'
+    )
+    sensor = models.OneToOneField(
+        Sensors,
+        on_delete=models.PROTECT,
+        verbose_name='Датчик'
+    )
+    comment = models.CharField(
+        max_length=255,
+        verbose_name='Комментарий',
+        blank=True,
+        null=True,
+    )
+    time_create = models.DateField(
+        auto_now=True,
+        verbose_name='Дата создания'
+    )
+
+    class Meta:
+        ordering = ['human']
+        verbose_name = 'Человек + Датчик'
+        verbose_name_plural = 'Люди + Датчики'
+
+
 class OperatorsSim(models.Model):
     name = models.CharField(
         max_length=20,
