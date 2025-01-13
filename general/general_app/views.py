@@ -41,6 +41,11 @@ class InstallationsAPIView(generics.ListAPIView):
     serializer_class = InstallationsSerializer
 
 
+class ModelTerminalsAPIView(generics.ListAPIView):
+    queryset = ModelTerminals.objects.all()
+    serializer_class = ModelTerminalsSerializer
+
+
 class ObjectAPIView(generics.ListAPIView):
     queryset = WialonObject.objects.all()
     serializer_class = ObjectSerializer

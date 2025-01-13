@@ -38,6 +38,12 @@ class InstallationsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ModelTerminalsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModelTerminals
+        fields = '__all__'
+
+
 class ObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = WialonObject
