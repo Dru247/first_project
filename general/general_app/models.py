@@ -179,6 +179,10 @@ class Terminals(models.Model):
         unique=True,
         null=True,
     )
+    active = models.BooleanField(
+        default=True,
+        verbose_name='Действующий'
+    )
     time_create = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата'

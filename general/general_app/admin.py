@@ -113,7 +113,8 @@ class ModelTerminalsAdmin(admin.ModelAdmin):
 
 @admin.register(Terminals)
 class TerminalsAdmin(admin.ModelAdmin):
-    list_display = ('imei', 'serial_number', 'model', 'time_create')
+    list_display = ('pk', 'imei', 'serial_number', 'model', 'active', 'time_create')
+    list_filter = ('model',)
     search_fields = ('imei', 'serial_number')
     empty_value_display = '-'
 
