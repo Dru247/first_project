@@ -790,6 +790,10 @@ class PriceLogistics(models.Model):
         blank=True,
         verbose_name='Комментарий'
     )
+    last_modified = models.DateField(
+        auto_now=True,
+        verbose_name='Посл. изменения'
+    )
 
     def __str__(self):
         return '%s %s' % (self.city, self.cost)
@@ -797,4 +801,35 @@ class PriceLogistics(models.Model):
     class Meta:
         ordering = ['city']
         verbose_name = 'Выезд'
-        verbose_name_plural = 'Цена выездов'
+        verbose_name_plural = 'Прайс.Выезды'
+
+
+class PriceTrackers(models.Model):
+    tracker_model = models.ForeignKey(
+        ModelTerminals,
+        on_delete=models.PROTECT,
+        verbose_name='Модель трекера'
+    )
+    cost = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Цена'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
+    )
+    last_modified = models.DateField(
+        auto_now=True,
+        verbose_name='Посл. изменения'
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.tracker_model, self.cost)
+
+    class Meta:
+        ordering = ['cost']
+        verbose_name = 'Цена'
+        verbose_name_plural = 'Прайс.Трекеры'

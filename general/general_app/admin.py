@@ -304,7 +304,7 @@ class SchedulesAdmin(admin.ModelAdmin):
 
 @admin.register(PriceLogistics)
 class PriceLogisticsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'city', 'cost', 'comment')
+    list_display = ('pk', 'city', 'cost', 'comment', 'last_modified')
     search_fields = ('city',)
     empty_value_display = '-'
 
@@ -324,3 +324,9 @@ class HumanSensorRelationsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'human', 'sensor', 'comment', 'time_create')
     list_filter = ('human',)
     search_fields = ('sensor__serial_number',)
+
+
+@admin.register(PriceTrackers)
+class PriceTrackersAdmin(admin.ModelAdmin):
+    empty_value_display = '-'
+    list_display = ('pk', 'tracker_model', 'cost', 'comment', 'last_modified')

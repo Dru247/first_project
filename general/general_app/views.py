@@ -61,6 +61,11 @@ class PriceLogisticsAPIView(generics.ListAPIView):
     serializer_class = PriceLogisticsSerializer
 
 
+class PriceTrackersAPIView(generics.ListAPIView):
+    queryset = PriceTrackers.objects.all()
+    serializer_class = PriceTrackersSerializer
+
+
 class ScheduleAPIView(generics.ListAPIView):
     queryset = Schedules.objects.all()
     serializer_class = ScheduleSerializer

@@ -56,6 +56,12 @@ class PriceLogisticsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PriceTrackersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PriceTrackers
+        fields = '__all__'
+
+
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedules
