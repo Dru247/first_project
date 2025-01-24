@@ -57,9 +57,11 @@ class PriceLogisticsSerializer(serializers.ModelSerializer):
 
 
 class PriceTrackersSerializer(serializers.ModelSerializer):
+    tracker_model = serializers.StringRelatedField()
+
     class Meta:
         model = PriceTrackers
-        fields = '__all__'
+        fields = ('tracker_model', 'cost')
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
