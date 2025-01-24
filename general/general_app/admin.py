@@ -330,3 +330,9 @@ class HumanSensorRelationsAdmin(admin.ModelAdmin):
 class PriceTrackersAdmin(admin.ModelAdmin):
     empty_value_display = '-'
     list_display = ('pk', 'tracker_model', 'cost', 'comment', 'last_modified')
+
+
+@admin.register(Services)
+class ServicesAdmin(admin.ModelAdmin):
+    empty_value_display = '-'
+    list_display = ('pk', 'service', 'cost', 'ordering', 'comment', 'last_modified')

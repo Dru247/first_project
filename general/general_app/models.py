@@ -832,4 +832,39 @@ class PriceTrackers(models.Model):
     class Meta:
         ordering = ['cost']
         verbose_name = 'Цена'
-        verbose_name_plural = 'Прайс.Трекеры'
+        verbose_name_plural = 'Прайс.Оборудование'
+
+
+class Services(models.Model):
+    service = models.CharField(
+        max_length=255,
+        verbose_name='Услуга'
+    )
+    cost = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Цена'
+    )
+    ordering = models.SmallIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Очерёдность'
+    )
+    comment = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Комментарий'
+    )
+    last_modified = models.DateField(
+        auto_now=True,
+        verbose_name='Посл. изменения'
+    )
+
+    def __str__(self):
+        return self.service
+
+    class Meta:
+        ordering = ['ordering', 'service']
+        verbose_name = 'Услуга'
+        verbose_name_plural = 'Услуги'

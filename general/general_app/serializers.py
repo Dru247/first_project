@@ -70,6 +70,12 @@ class ScheduleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Services
+        fields = ('service', 'cost')
+
+
 class SimSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimCards

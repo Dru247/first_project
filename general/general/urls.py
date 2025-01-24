@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/v1/price-logistics/', PriceLogisticsAPIView.as_view()),
     path('api/v1/price-trackers/', PriceTrackersAPIView.as_view()),
     path('api/v1/schedule/', ScheduleAPIView.as_view()),
+    path('api/v1/services/', ServicesAPIView.as_view()),
     path('api/v1/simlist/', SimAPIView.as_view()),
     path('api/v1/termlist/', TerminalAPIView.as_view()),
     path('api/v1/tracker-models/', ModelTerminalsAPIView.as_view()),
