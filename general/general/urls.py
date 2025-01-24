@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/v1/installations/', InstallationsAPIView.as_view()),
     path('api/v1/objects/', ObjectAPIView.as_view()),
     path('api/v1/object/<int:pk>/', ObjectsAPIUpdate.as_view()),
+    path('api/v1/price-logistics/', PriceLogisticsAPIView.as_view()),
     path('api/v1/schedule/', ScheduleAPIView.as_view()),
     path('api/v1/simlist/', SimAPIView.as_view()),
     path('api/v1/termlist/', TerminalAPIView.as_view()),

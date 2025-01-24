@@ -56,6 +56,11 @@ class ObjectsAPIUpdate(generics.UpdateAPIView):
     serializer_class = ObjectSerializer
 
 
+class PriceLogisticsAPIView(generics.ListAPIView):
+    queryset = PriceLogistics.objects.all()
+    serializer_class = PriceLogisticsSerializer
+
+
 class ScheduleAPIView(generics.ListAPIView):
     queryset = Schedules.objects.all()
     serializer_class = ScheduleSerializer

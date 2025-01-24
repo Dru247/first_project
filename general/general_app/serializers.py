@@ -50,6 +50,12 @@ class ObjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PriceLogisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PriceLogistics
+        fields = '__all__'
+
+
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedules
