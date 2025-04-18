@@ -1,6 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}Информация{% endblock %}
 {% block content %}
+<h2>Ретрансляторы</h2>
+<h3>РНИС МОСКВЫ</h3>
+<p><a target="_blank" href="https://rnis.mos.ru/">Оф. адрес сайта</a></p>
+<p><b>IP адрес:</b> data.rnis.mos.ru</p>
+<p><b>Порт:</b> 4444</p>
+<p><b>Протоколы:</b> EGTS, Navtelekom, GalileoSky, AvtoGRAF, Bin (Orbita), NDTP, <b>Wialon IPS</b>, Teltonika</p>
+<p>Если вы передаете телематику по протоколу EGTS, то должен быть указан корректный тип в зависимости от установленных оператором настроек передачи:</p>
+<p><i>*EGTS_O, если соблюдаются условия:<i><p>
+<ul>
+  <li>Идентификатор АТТ передается в составе телематики в поле OID,</li>
+  <li>Идентификатор АТТ содержит до 10 цифр (максимальное значение OID 4 294 967 295)</li>
+</ul>
+<p><i>*EGTS_I, если соблюдаются условия:</i></p>
+<ul>
+  <li>Идентификатор АТТ передается в составе телематике в поле IMEI,</li>
+  <li>Идентификатор АТТ содержит до 15 цифр</li>
+</ul>
+<p><i>*Максимальный интервал передачи данных <b>2 минуты</b></i></p>
+<h3>РНИС МО</h3>
+<p><a target="_blank" href="https://reg-rnis.mos.ru/">Оф. адрес сайта</a></p>
+<p><b>IP адрес:</b> 185.120.188.209</p>
+<p><b>Протокол:</b> EGTS</p>
+<p><b>Порт:</b></p>
+<ul>
+  <li>53060, 53061 (перевозка учащихся)</li>
+  <li>53014, 53016 (вывоз мусора)</li>
+  <li>53041, 53040 (Коммунальное хозяйство МО)</li>
+  <li>53010 (для ретрансляции), 52008 (для прямой передачи БСНО) - (Дорожное хозяйство МО)</li>
+  <li>52032 (транспортировка умерших)</li>
+</ul>
+<h3>САБКУТР</h3>
+<p><a target="_blank" href="https://ossigmos.ru/vnimanie-polzovatelej-ais-ossig-k-sisteme-sapkutr/">Оф. адрес сайта</a></p>
+<p><i>*Сначала нужно зарегистрироваться в РНИС МОСКВА</i></p>
+<p><b>IP адрес:</b> 94.79.51.144</p>
+<p><b>Порт:</b> 12300</p>
+<p><b>Протокол:</b> Wialon IPS</p>
 <h2>Хостинги</h2>
 <table>
   <caption>Адреса серверов</caption>
@@ -8,7 +44,6 @@
   <tr><td>Wialon.COM</td><td>nl.gpsgsm.org</td><td>193.193.165.165</td><td><a target="_blank" href="https://hosting.wialon.com/">https://hosting.wialon.com/</a></td><td><a target="_blank" href="https://cms.wialon.com/">https://cms.wialon.com/</a></td></tr>
   <tr><td>Wialon.RU</td><td>ru.gpsgsm.org</td><td>185.213.0.24</td><td><a target="_blank" href="https://hosting.wialon.ru/">https://hosting.wialon.ru/</a></td><td><a target="_blank" href="https://cms.wialon.ru/">https://cms.wialon.ru/</a></td></tr>
   <tr><td>Wialon.LOCAL</td><td>onwc.ru</td><td></td><td><a target="_blank" href="http://online.wialon.center/">http://online.wialon.center/</a></td><td><a target="_blank" href="http://cms.wialon.center/">http://cms.wialon.center/</a></td></tr>
-  <tr><td>Fort Monitor</td><td>dev.fort-monitor.ru</td><td>95.213.250.92</td><td><a href="https://web.fort-monitor.ru/login.aspx">https://web.fort-monitor.ru/</a></td></tr>
 </table>
 <p><table>
   <caption>Порты<caption>
@@ -93,6 +128,6 @@
     </tr>
     </tbody>
 </table></p>
-<h2>Fort Monitor</h2>
-<p><a target="_blank" href="https://support.fort-monitor.ru/">Fort Monitor. Инструкция</a></p>
+<h2>Ретрансляторы</h2>
+<h3>РНИС МСК</h3>
 {% endblock %}
