@@ -3,22 +3,18 @@
 {% block content %}
 <p>
   <table>
-    <caption>Замена симкарт</caption>
+    <caption>Замена SIM-карт МТС</caption>
     <thead>
       <tr>
-        <th>Оператор</th>
         <th>Номер</th>
-          <th>ICC</th>
-          <th>Дата блокировки</th>
+        <th>Дата блокировки</th>
       </tr>
     </thead>
     <tbody>
-      {% for sim in sim_list_replace %}
+      {% for sim in mts_last_replace %}
       <tr>
-        <td>{{ sim.operator }}</td>
         <td class="copy-all">{{ sim.number }}</td>
-        <td class="copy-all">{{ sim.icc }}</td>
-        <td>{{ sim.data_deactivate }}</td>
+        <td>{{ sim.date_change_status }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -26,25 +22,21 @@
 </p>
 <p>
   <table>
-    <caption>Симкарты на удаление</caption>
-      <thead>
-        <tr>
-          <th>Оператор</th>
-          <th>Номер</th>
-          <th>ICC</th>
-          <th>Дата деактивации</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for sim in sim_list %}
-        <tr>
-          <td>{{ sim.operator }}</td>
-          <td class="copy-all">{{ sim.number }}</td>
-          <td class="copy-all">{{ sim.icc }}</td>
-          <td>{{ sim.data_deactivate }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
+    <caption>SIM-карты SIM2M на удаление</caption>
+    <thead>
+      <tr>
+        <th>Номер</th>
+        <th>Дата деактивации</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for sim in sim2m_list_delete %}
+      <tr>
+        <td class="copy-all">{{ sim.number }}</td>
+        <td>{{ sim.date_change_status }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
   </table>
 </p>
 <p>
@@ -54,7 +46,7 @@
         <tr>
           <th>Имя объекта</th>
           <th>Дата оплаты</th>
-          <th>Фамииля</th>
+          <th>Фамилия</th>
           <th>Имя</th>
           <th>СИМка</th>
           <th>Оператор</th>

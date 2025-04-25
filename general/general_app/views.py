@@ -257,28 +257,34 @@ def server_view(request, server_id):
 
 @login_required
 def delete_sim_view(request):
-    date_now = datetime.datetime.now()
-    date_critical = date_now - relativedelta(months=3)
-    replace_date = date_now - relativedelta(months=5)
+    # date_now = datetime.datetime.now()
+    # date_critical = date_now - relativedelta(months=3)
+    # replace_date = date_now - relativedelta(months=5)
 
-    sim_list_delete = SimCards.objects.filter(
-        terminal__wialonobjects__wialonobjectactive__last_modified__lte=date_critical,
-        terminal__wialonobjects__wialonobjectactive__active=False,
-        operator__name='СИМ2М'
-    ).annotate(
-        data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
-    ).order_by(
-        'operator',
-        'terminal__wialonobjects__wialonobjectactive__last_modified'
+    # sim2m_list_delete = SimCards.objects.filter(
+    #     terminal__wialonobjects__wialonobjectactive__last_modified__lte=date_critical,
+    #     terminal__wialonobjects__wialonobjectactive__active=False,
+    #     operator__name='СИМ2М'
+    # ).annotate(
+    #     data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
+    # ).order_by(
+    #     'operator',
+    #     'terminal__wialonobjects__wialonobjectactive__last_modified'
+    # )
+
+    sim2m_list_delete = WialonObject.objects.raw(
+        '''
+        SELECT general_app_wialonobject.id, general_app_wialonobject.date_change_status, general_app_simcards.number
+        FROM general_app_wialonobject
+        JOIN general_app_simcards ON general_app_simcards.terminal_id = general_app_wialonobject.terminal_id
+        WHERE date_change_status < date('now', '-6 months')
+        AND operator_id = 3
+        AND active = 0
+        AND general_app_wialonobject.terminal_id
+        AND general_app_simcards.terminal_id
+        ORDER BY date_change_status
+        '''
     )
-
-    sim_list_replace = SimCards.objects.filter(
-        terminal__wialonobjects__wialonobjectactive__last_modified__lte=replace_date,
-        terminal__wialonobjects__wialonobjectactive__active=False,
-        operator__name='МТС'
-    ).annotate(
-        data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
-    ).order_by('terminal__wialonobjects__wialonobjectactive__last_modified')
 
     later_objects = WialonObject.objects.raw(
         '''
@@ -297,10 +303,33 @@ def delete_sim_view(request):
         '''
     )
 
+    # mts_last_replace = SimCards.objects.filter(
+    #     terminal__wialonobjects__wialonobjectactive__last_modified__lte=replace_date,
+    #     terminal__wialonobjects__wialonobjectactive__active=False,
+    #     operator__name='МТС'
+    # ).annotate(
+    #     data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
+    # ).order_by('terminal__wialonobjects__wialonobjectactive__last_modified')
+
+    mts_last_replace = WialonObject.objects.raw(
+        '''
+        SELECT general_app_wialonobject.id, general_app_wialonobject.date_change_status, general_app_simcards.number
+        FROM general_app_wialonobject
+        JOIN general_app_simcards ON general_app_simcards.terminal_id = general_app_wialonobject.terminal_id
+        WHERE date_change_status < date('now', '-6 months')
+        AND operator_id = 2
+        AND active = 0
+        AND general_app_wialonobject.terminal_id
+        AND general_app_simcards.terminal_id
+        ORDER BY date_change_status
+        LIMIT 5
+        '''
+    )
+
     context = {
-        'sim_list': sim_list_delete,
-        'sim_list_replace': sim_list_replace,
-        'later_objects': later_objects
+        'sim2m_list_delete': sim2m_list_delete,
+        'later_objects': later_objects,
+        'mts_last_replace': mts_last_replace
     }
     return render(request, 'general_app/sim_delete.html', context=context)
 
