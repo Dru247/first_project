@@ -121,7 +121,7 @@ class TerminalsAdmin(admin.ModelAdmin):
 
 @admin.register(SimCards)
 class SimCardsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'icc', 'operator', 'number', 'terminal', 'time_create')
+    list_display = ('id', 'icc', 'operator', 'number', 'terminal', 'personal', 'time_create')
     search_fields = ('number', 'icc', 'terminal__imei')
     autocomplete_fields = ('terminal',)
     list_filter = ('operator',)

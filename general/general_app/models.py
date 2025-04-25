@@ -330,6 +330,10 @@ class SimCards(models.Model):
         null=True,
         blank=True
     )
+    personal = models.BooleanField(
+        default=False,
+        verbose_name='Личная'
+    )
     time_create = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата создания'

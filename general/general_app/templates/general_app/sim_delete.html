@@ -14,7 +14,7 @@
       {% for sim in mts_last_replace %}
       <tr>
         <td class="copy-all">{{ sim.number }}</td>
-        <td>{{ sim.date_change_status }}</td>
+        <td>{{ sim.date_target }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -33,7 +33,7 @@
     {% for sim in sim2m_list_delete %}
       <tr>
         <td class="copy-all">{{ sim.number }}</td>
-        <td>{{ sim.date_change_status }}</td>
+        <td>{{ sim.date_target }}</td>
       </tr>
     {% endfor %}
     </tbody>

@@ -273,16 +273,17 @@ def delete_sim_view(request):
     # )
 
     sim2m_list_delete = WialonObject.objects.raw(
-        '''
-        SELECT general_app_wialonobject.id, general_app_wialonobject.date_change_status, general_app_simcards.number
-        FROM general_app_wialonobject
-        JOIN general_app_simcards ON general_app_simcards.terminal_id = general_app_wialonobject.terminal_id
-        WHERE date_change_status < date('now', '-6 months')
-        AND operator_id = 3
-        AND active = 0
-        AND general_app_wialonobject.terminal_id
-        AND general_app_simcards.terminal_id
-        ORDER BY date_change_status
+        '''        
+        SELECT general_app_simcards.id, general_app_simcards.number,
+            general_app_wialonobject.date_change_status as date_target
+        FROM general_app_simcards
+        JOIN general_app_wialonobject
+            ON general_app_wialonobject.terminal_id = general_app_simcards.terminal_id
+        WHERE date_target < date('now', '-6 months')
+        AND general_app_simcards.number
+        AND general_app_simcards.operator_id = 3
+        AND general_app_simcards.personal = 0
+        AND general_app_wialonobject.active = 0
         '''
     )
 
@@ -311,17 +312,48 @@ def delete_sim_view(request):
     #     data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
     # ).order_by('terminal__wialonobjects__wialonobjectactive__last_modified')
 
-    mts_last_replace = WialonObject.objects.raw(
-        '''
-        SELECT general_app_wialonobject.id, general_app_wialonobject.date_change_status, general_app_simcards.number
-        FROM general_app_wialonobject
-        JOIN general_app_simcards ON general_app_simcards.terminal_id = general_app_wialonobject.terminal_id
-        WHERE date_change_status < date('now', '-6 months')
-        AND operator_id = 2
-        AND active = 0
-        AND general_app_wialonobject.terminal_id
-        AND general_app_simcards.terminal_id
-        ORDER BY date_change_status
+    # Выборка 1: симки в объектах
+    # Выборка 2: симки на руках
+    # Выборка 3: симки в трекерах на руках
+    mts_last_replace = SimCards.objects.raw(
+        '''      
+        SELECT * FROM (  
+            SELECT general_app_simcards.id, general_app_simcards.number,
+                general_app_wialonobject.date_change_status as date_target
+            FROM general_app_simcards
+            JOIN general_app_wialonobject
+                ON general_app_wialonobject.terminal_id = general_app_simcards.terminal_id
+            WHERE date_target < date('now', '-6 months')
+            AND general_app_simcards.number
+            AND general_app_simcards.operator_id = 2
+            AND general_app_simcards.personal = 0
+            AND general_app_wialonobject.active = 0
+        )
+        UNION
+        SELECT * FROM (
+            SELECT general_app_simcards.id, general_app_simcards.number,
+                general_app_humansimpresence.time_create as date_target
+            FROM general_app_simcards
+            JOIN general_app_humansimpresence
+                ON general_app_humansimpresence.simcard_id = general_app_simcards.id
+            WHERE date_target < date('now', '-6 months')
+            AND general_app_simcards.number
+            AND general_app_simcards.operator_id = 2
+            AND general_app_simcards.personal = 0
+        )
+        UNION
+        SELECT * FROM (
+            SELECT general_app_simcards.id, general_app_simcards.number,
+                general_app_humanterminalpresence.time_create as date_target
+            FROM general_app_simcards
+            JOIN general_app_humanterminalpresence
+                ON general_app_humanterminalpresence.terminal_id = general_app_simcards.terminal_id
+            WHERE date_target < date('now', '-6 months')
+            AND general_app_simcards.number
+            AND general_app_simcards.operator_id = 2
+            AND general_app_simcards.personal = 0
+        )
+        ORDER BY date_target
         LIMIT 5
         '''
     )
