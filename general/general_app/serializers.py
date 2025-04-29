@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from .models import *
+
+from .models import (Human, HumanContact, HumanNames, HumanSimPresence,
+                     HumanTerminalPresence, Installation, ModelTerminals,
+                     PriceLogistics, PriceTrackers, Schedules, Services,
+                     SimCards, Terminals, WialonObject, WialonUser)
 
 
 class HumansSerializer(serializers.ModelSerializer):
@@ -44,12 +48,6 @@ class ModelTerminalsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ObjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = WialonObject
-        fields = '__all__'
-
-
 class PriceLogisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PriceLogistics
@@ -85,6 +83,12 @@ class SimSerializer(serializers.ModelSerializer):
 class TerminalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Terminals
+        fields = '__all__'
+
+
+class ObjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WialonObject
         fields = '__all__'
 
 

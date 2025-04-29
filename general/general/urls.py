@@ -1,4 +1,4 @@
-"""general URL Configuration
+"""General URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -15,9 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from general_app.views import *
 from rest_framework.authtoken import views
-
+from general_app.views import (HumansAPIView, HumanContactsAPIView,
+                               HumanNamesAPIView, HumanTerminalPresenceAPIView,
+                               HumanSimPresenceAPIView, InstallationsAPIView,
+                               ModelTerminalsAPIView, ObjectAPIView,
+                               ObjectsAPIUpdate, PriceLogisticsAPIView,
+                               PriceTrackersAPIView, ScheduleAPIView,
+                               ServicesAPIView, SimAPIView, TerminalAPIView,
+                               UsersAPIView)
 
 urlpatterns = [
     path('', include('general_app.urls', namespace='index')),

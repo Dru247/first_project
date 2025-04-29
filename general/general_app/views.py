@@ -1,14 +1,26 @@
+"""Файл для обработчиков запросов."""
 import calendar
+import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import render
-from django.db.models import Max
 from rest_framework import generics
 
-from .models import *
-from .serializers import *
+from .models import (Human, HumanContact, HumanNames, HumanSimPresence,
+                     HumanTerminalPresence, Installation, ModelTerminals,
+                     PriceLogistics, PriceTrackers, Schedules, Services,
+                     SimCards, Terminals, WialonObject, WialonServer,
+                     WialonUser)
+from .serializers import (HumanContactsSerializer, HumanNamesSerializer,
+                          HumansSerializer, HumanSimPresenceSerializer,
+                          HumanTerminalPresenceSerializer,
+                          InstallationsSerializer, ModelTerminalsSerializer,
+                          ObjectSerializer, PriceLogisticsSerializer,
+                          PriceTrackersSerializer, ScheduleSerializer,
+                          ServicesSerializer, SimSerializer,
+                          TerminalSerializer, UsersSerializer)
 
 
 class HumansAPIView(generics.ListAPIView):
@@ -93,6 +105,7 @@ class UsersAPIView(generics.ListAPIView):
 
 @login_required
 def index_view(request):
+    """Отображение страницы проверок."""
     sim_list = SimCards.objects.filter(
         terminal=None,
         humansimpresences__isnull=True
@@ -101,8 +114,9 @@ def index_view(request):
         wialonobjects__isnull=True,
         humanterminalpresence__isnull=True
     )
-    user_company_list = UserCompany.objects.all()
-    # user_list = WialonUser.objects.filter(human=None).exclude(usercompany__in=user_company_list)
+    # user_company_list = UserCompany.objects.all()
+    # user_list = (WialonUser.objects.filter(human=None)
+    #              .exclude(usercompany__in=user_company_list))
     wia_obj_list = WialonObject.objects.filter(active__isnull=True)
     sum_wia_obj = WialonObject.objects.filter(active=True).count()
     sum_wia_obj_serv_active = Count(
@@ -113,7 +127,9 @@ def index_view(request):
     #     'userwialonservers__user__wialonobjects__wialonobjectactive',
     #     filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
     # )
-    wia_obj_serv_active = WialonServer.objects.annotate(active=sum_wia_obj_serv_active)
+    wia_obj_serv_active = WialonServer.objects.annotate(
+        active=sum_wia_obj_serv_active
+        )
     user_not_serv = WialonUser.objects.filter(userwialonserver__isnull=True)
     context = {
         'sim_list': sim_list,
@@ -129,6 +145,7 @@ def index_view(request):
 
 @login_required
 def clients_view(request):
+    """Отображение страницы оплаты."""
     # activ_obj_all = WialonObject.objects.filter(active=True).count()
     # not_activ_obj_all = WialonObject.objects.filter(active=False).count()
     # wialon_obj_all = Count('wialonuser__wialonobjects')
@@ -139,14 +156,18 @@ def clients_view(request):
     # client_list = Human.objects.annotate(all=wialon_obj_all). \
     #     annotate(active=wialon_obj_active)
     months = ['', 'Январь', 'февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-           'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-    first_day_next_month = (datetime.datetime.today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1)
+              'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+    first_day_next_month = ((datetime.datetime.today().replace(day=1)
+                             + datetime.timedelta(days=32)).replace(day=1))
     human_list = Human.objects.raw(
         '''
-        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
+        SELECT *, count(general_app_wialonobject.id) as active,
+          sum(general_app_wialonobject.price) as cost
         FROM general_app_human
-        JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
-        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        JOIN general_app_wialonobject
+          ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_humannames
+          ON general_app_humannames.id = general_app_human.name_id_id
         WHERE NOT general_app_wialonobject.date_change_status > %s
         AND general_app_wialonobject.active = 1
         GROUP BY general_app_human.id
@@ -163,18 +184,24 @@ def clients_view(request):
 
 @login_required
 def get_without_payment(request):
-    """Выводит список не оплативших клиентов за прошлый месяц"""
+    """Выводит список не оплативших клиентов за прошлый месяц."""
     date_now = datetime.date.today()
     past_month = date_now - relativedelta(months=1)
-    past_month_last_day = calendar.monthrange(date_now.year, past_month.month)[1]
+    past_month_last_day = calendar.monthrange(
+        date_now.year,
+        past_month.month
+        )[1]
     date_target = past_month.strftime(f'%Y-%m-{past_month_last_day}')
     print(date_target)
     human_list = Human.objects.raw(
         '''
-        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
+        SELECT *, count(general_app_wialonobject.id) as active,
+          sum(general_app_wialonobject.price) as cost
         FROM general_app_human
-        JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
-        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        JOIN general_app_wialonobject
+          ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_humannames
+          ON general_app_humannames.id = general_app_human.name_id_id
         WHERE general_app_wialonobject.date_change_status = %s
         AND general_app_wialonobject.active = 1
         GROUP BY general_app_human.id
@@ -190,25 +217,27 @@ def get_without_payment(request):
 
 @login_required
 def server_view(request, server_id):
-    """Считает кол-во объектов у клиентов по серверам"""
-
-    # view list companies width count active objects
+    """Считает кол-во объектов у клиентов по серверам."""
     # count_active_obj = Count(
     #     'usercompany__user_comp__wialonobjects',
     #     filter=Q(usercompany__user_comp__wialonobjects__active=True)
     # )
-    # company_list = Company.objects.filter(usercompany__user_comp__in=active_users).annotate(active=count_active_obj)
+    # company_list = Company.objects.filter(
+    #     usercompany__user_comp__in=active_users
+    #     ).annotate(active=count_active_obj)
 
     # count_serv_all_active_obj = Count(
     #     'userwialonservers__user__wialonobjects',
     #     filter=Q(userwialonservers__user__wialonobjects__active=True)
     # )
-    # serv_all_active_obj = WialonServer.objects.filter(pk=server_id).annotate(active=count_serv_all_active_obj)
+    # serv_all_active_obj = (WialonServer.objects.filter(pk=server_id)
+    #                        .annotate(active=count_serv_all_active_obj))
 
     serv_all_active_obj = WialonObject.objects.raw(
         """
         SELECT * FROM general_app_wialonobject
-        JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
+        JOIN general_app_wialonuser
+        ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
         WHERE general_app_wialonobject.date_change_status >= date('now')
         AND general_app_wialonuser.server_id = %s
         """,
@@ -235,11 +264,16 @@ def server_view(request, server_id):
 
     human_list = Human.objects.raw(
         '''
-        SELECT *, count(general_app_wialonobject.id) as active, sum(general_app_wialonobject.price) as cost
+        SELECT *, count(general_app_wialonobject.id) as active,
+          sum(general_app_wialonobject.price) as cost
         FROM general_app_human
-        JOIN general_app_wialonobject ON general_app_wialonobject.payer_id = general_app_human.id
-        JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
-        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
+        JOIN general_app_wialonobject
+          ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_wialonuser
+          ON general_app_wialonuser.id
+            = general_app_wialonobject.wialon_user_id
+        JOIN general_app_humannames
+          ON general_app_humannames.id = general_app_human.name_id_id
         WHERE general_app_wialonuser.server_id = %s
         AND general_app_wialonobject.date_change_status >= date('now')
         GROUP BY general_app_human.id
@@ -257,6 +291,7 @@ def server_view(request, server_id):
 
 @login_required
 def delete_sim_view(request):
+    """Выводит данные на страницу удаления СИМ-карт."""
     # date_now = datetime.datetime.now()
     # date_critical = date_now - relativedelta(months=3)
     # replace_date = date_now - relativedelta(months=5)
@@ -273,12 +308,13 @@ def delete_sim_view(request):
     # )
 
     sim2m_list_delete = WialonObject.objects.raw(
-        '''        
+        '''
         SELECT general_app_simcards.id, general_app_simcards.number,
-            general_app_wialonobject.date_change_status as date_target
+          general_app_wialonobject.date_change_status as date_target
         FROM general_app_simcards
         JOIN general_app_wialonobject
-            ON general_app_wialonobject.terminal_id = general_app_simcards.terminal_id
+          ON general_app_wialonobject.terminal_id
+            = general_app_simcards.terminal_id
         WHERE date_target < date('now', '-6 months')
         AND general_app_simcards.number
         AND general_app_simcards.operator_id = 3
@@ -289,14 +325,25 @@ def delete_sim_view(request):
 
     later_objects = WialonObject.objects.raw(
         '''
-        SELECT general_app_wialonobject.id, general_app_wialonobject.name, general_app_wialonobject.date_change_status, general_app_human.last_name,
-            general_app_humannames.name as payer_name, general_app_simcards.number, general_app_operatorssim.name as operator_name
+        SELECT general_app_wialonobject.id, general_app_wialonobject.name,
+          general_app_wialonobject.date_change_status,
+          general_app_human.last_name,
+          general_app_humannames.name as payer_name,
+          general_app_simcards.number,
+          general_app_operatorssim.name as operator_name
         FROM general_app_wialonobject
-        JOIN general_app_human ON general_app_wialonobject.payer_id = general_app_human.id
-        JOIN general_app_wialonuser ON general_app_wialonuser.id = general_app_wialonobject.wialon_user_id
-        JOIN general_app_humannames ON general_app_humannames.id = general_app_human.name_id_id
-        JOIN general_app_simcards ON general_app_simcards.terminal_id = general_app_wialonobject.terminal_id
-        JOIN general_app_operatorssim  ON general_app_operatorssim.id = general_app_simcards.operator_id
+        JOIN general_app_human
+          ON general_app_wialonobject.payer_id = general_app_human.id
+        JOIN general_app_wialonuser
+          ON general_app_wialonuser.id
+            = general_app_wialonobject.wialon_user_id
+        JOIN general_app_humannames
+          ON general_app_humannames.id = general_app_human.name_id_id
+        JOIN general_app_simcards
+          ON general_app_simcards.terminal_id
+            = general_app_wialonobject.terminal_id
+        JOIN general_app_operatorssim
+          ON general_app_operatorssim.id = general_app_simcards.operator_id
         WHERE date_change_status < date('now', '-6 months')
         AND general_app_wialonobject.terminal_id
         AND general_app_simcards.terminal_id
@@ -312,17 +359,15 @@ def delete_sim_view(request):
     #     data_deactivate=Max('terminal__wialonobjects__wialonobjectactive__last_modified')
     # ).order_by('terminal__wialonobjects__wialonobjectactive__last_modified')
 
-    # Выборка 1: симки в объектах
-    # Выборка 2: симки на руках
-    # Выборка 3: симки в трекерах на руках
     mts_last_replace = SimCards.objects.raw(
-        '''      
-        SELECT * FROM (  
+        '''
+        SELECT * FROM (
             SELECT general_app_simcards.id, general_app_simcards.number,
-                general_app_wialonobject.date_change_status as date_target
+              general_app_wialonobject.date_change_status as date_target
             FROM general_app_simcards
             JOIN general_app_wialonobject
-                ON general_app_wialonobject.terminal_id = general_app_simcards.terminal_id
+              ON general_app_wialonobject.terminal_id
+                = general_app_simcards.terminal_id
             WHERE date_target < date('now', '-6 months')
             AND general_app_simcards.number
             AND general_app_simcards.operator_id = 2
@@ -332,10 +377,11 @@ def delete_sim_view(request):
         UNION
         SELECT * FROM (
             SELECT general_app_simcards.id, general_app_simcards.number,
-                general_app_humansimpresence.time_create as date_target
+              general_app_humansimpresence.time_create as date_target
             FROM general_app_simcards
             JOIN general_app_humansimpresence
-                ON general_app_humansimpresence.simcard_id = general_app_simcards.id
+              ON general_app_humansimpresence.simcard_id
+                = general_app_simcards.id
             WHERE date_target < date('now', '-6 months')
             AND general_app_simcards.number
             AND general_app_simcards.operator_id = 2
@@ -344,10 +390,11 @@ def delete_sim_view(request):
         UNION
         SELECT * FROM (
             SELECT general_app_simcards.id, general_app_simcards.number,
-                general_app_humanterminalpresence.time_create as date_target
+              general_app_humanterminalpresence.time_create as date_target
             FROM general_app_simcards
             JOIN general_app_humanterminalpresence
-                ON general_app_humanterminalpresence.terminal_id = general_app_simcards.terminal_id
+              ON general_app_humanterminalpresence.terminal_id
+                = general_app_simcards.terminal_id
             WHERE date_target < date('now', '-6 months')
             AND general_app_simcards.number
             AND general_app_simcards.operator_id = 2
@@ -378,59 +425,150 @@ def info_view(request):
 
 @login_required
 def reserve_view(request):
-    symb_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='151').count()
-    symb_2013 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2013').filter(human__id='151').count()
-    symb_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='151').count()
-    symb_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='151').count()
-    symb_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='151').count()
-    symb_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='151').count()
-    symb_2437 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2437').filter(human__id='151').count()
-    symb_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='151').count()
-    symb_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='151').count()
-    symb_invis_duos = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos').filter(human__id='151').count()
-    symb_invis_duos_s = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos S').filter(human__id='151').count()
-    symb_invis_duos_3d_l = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos 3D L').filter(human__id='151').count()
-    symb_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='151').count()
-    symb_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='151').count()
-    symb_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='151').count()
+    symb_2011 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Start S-2011')
+                 .filter(human__id='151').count())
+    symb_2013 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Start S-2013')
+                 .filter(human__id='151').count())
+    symb_2421 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2421')
+                 .filter(human__id='151').count())
+    symb_2423 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2423')
+                 .filter(human__id='151').count())
+    symb_2425 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2425')
+                 .filter(human__id='151').count())
+    symb_2435 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2435')
+                 .filter(human__id='151').count())
+    symb_2437 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2437')
+                 .filter(human__id='151').count())
+    symb_333 = (HumanTerminalPresence.objects
+                .filter(terminal__model__model='ADM333')
+                .filter(human__id='151').count())
+    symb_007 = (HumanTerminalPresence.objects
+                .filter(terminal__model__model='ADM007 BLE в прикуриватель')
+                .filter(human__id='151').count())
+    symb_invis_duos = (HumanTerminalPresence.objects
+                       .filter(terminal__model__model='Invis Duos')
+                       .filter(human__id='151').count())
+    symb_invis_duos_s = (HumanTerminalPresence.objects
+                         .filter(terminal__model__model='Invis Duos S')
+                         .filter(human__id='151').count())
+    symb_invis_duos_3d_l = (HumanTerminalPresence.objects
+                            .filter(terminal__model__model='Invis Duos 3D L')
+                            .filter(human__id='151').count())
+    symb_mts = (HumanSimPresence.objects
+                .filter(simcard__operator__name='МТС')
+                .filter(human__id='151').count())
+    symb_mega = (HumanSimPresence.objects
+                 .filter(simcard__operator__name='Мегафон')
+                 .filter(human__id='151').count())
+    symb_sim2m = (HumanSimPresence.objects
+                  .filter(simcard__operator__name='СИМ2М')
+                  .filter(human__id='151').count())
 
-    malash_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='154').count()
-    malash_2013 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2013').filter(human__id='154').count()
-    malash_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='154').count()
-    malash_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='154').count()
-    malash_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='154').count()
-    malash_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='154').count()
-    malash_2437 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2437').filter(human__id='154').count()
-    malash_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='154').count()
-    malash_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='154').count()
-    malash_invis_duos = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos').filter(human__id='154').count()
-    malash_invis_duos_s = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos S').filter(human__id='154').count()
-    malash_invis_duos_3d_l = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos 3D L').filter(human__id='154').count()
-    malash_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='154').count()
-    malash_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='154').count()
-    malash_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='154').count()
+    malash_2011 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Start S-2011')
+                   .filter(human__id='154').count())
+    malash_2013 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Start S-2013')
+                   .filter(human__id='154').count())
+    malash_2421 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Smart S-2421')
+                   .filter(human__id='154').count())
+    malash_2423 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Smart S-2423')
+                   .filter(human__id='154').count())
+    malash_2425 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Smart S-2425')
+                   .filter(human__id='154').count())
+    malash_2435 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Smart S-2435')
+                   .filter(human__id='154').count())
+    malash_2437 = (HumanTerminalPresence.objects
+                   .filter(terminal__model__model='Smart S-2437')
+                   .filter(human__id='154').count())
+    malash_333 = (HumanTerminalPresence.objects
+                  .filter(terminal__model__model='ADM333')
+                  .filter(human__id='154').count())
+    malash_007 = (HumanTerminalPresence.objects
+                  .filter(terminal__model__model='ADM007 BLE в прикуриватель')
+                  .filter(human__id='154').count())
+    malash_invis_duos = (HumanTerminalPresence.objects
+                         .filter(terminal__model__model='Invis Duos')
+                         .filter(human__id='154').count())
+    malash_invis_duos_s = (HumanTerminalPresence.objects
+                           .filter(terminal__model__model='Invis Duos S')
+                           .filter(human__id='154').count())
+    malash_invis_duos_3d_l = (HumanTerminalPresence.objects
+                              .filter(terminal__model__model='Invis Duos 3D L')
+                              .filter(human__id='154').count())
+    malash_mts = (HumanSimPresence.objects
+                  .filter(simcard__operator__name='МТС')
+                  .filter(human__id='154').count())
+    malash_mega = (HumanSimPresence.objects
+                   .filter(simcard__operator__name='Мегафон')
+                   .filter(human__id='154').count())
+    malash_sim2m = (HumanSimPresence.objects
+                    .filter(simcard__operator__name='СИМ2М')
+                    .filter(human__id='154').count())
 
-    leht_2011 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2011').filter(human__id='152').count()
-    leht_2013 = HumanTerminalPresence.objects.filter(terminal__model__model='Start S-2013').filter(human__id='152').count()
-    leht_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='152').count()
-    leht_2423 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2423').filter(human__id='152').count()
-    leht_2425 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2425').filter(human__id='152').count()
-    leht_2435 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2435').filter(human__id='152').count()
-    leht_2437 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2437').filter(human__id='152').count()
-    leht_333 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM333').filter(human__id='152').count()
-    leht_007 = HumanTerminalPresence.objects.filter(terminal__model__model='ADM007 BLE в прикуриватель').filter(human__id='152').count()
-    leht_invis_duos = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos').filter(human__id='152').count()
-    leht_invis_duos_s = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos S').filter(human__id='152').count()
-    leht_invis_duos_3d_l = HumanTerminalPresence.objects.filter(terminal__model__model='Invis Duos 3D L').filter(human__id='152').count()
-    leht_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='152').count()
-    leht_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='152').count()
-    leht_sim2m = HumanSimPresence.objects.filter(simcard__operator__name='СИМ2М').filter(human__id='152').count()
+    leht_2011 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Start S-2011')
+                 .filter(human__id='152').count())
+    leht_2013 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Start S-2013')
+                 .filter(human__id='152').count())
+    leht_2421 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2421')
+                 .filter(human__id='152').count())
+    leht_2423 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2423')
+                 .filter(human__id='152').count())
+    leht_2425 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2425')
+                 .filter(human__id='152').count())
+    leht_2435 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2435')
+                 .filter(human__id='152').count())
+    leht_2437 = (HumanTerminalPresence.objects
+                 .filter(terminal__model__model='Smart S-2437')
+                 .filter(human__id='152').count())
+    leht_333 = (HumanTerminalPresence.objects
+                .filter(terminal__model__model='ADM333')
+                .filter(human__id='152').count())
+    leht_007 = (HumanTerminalPresence.objects
+                .filter(terminal__model__model='ADM007 BLE в прикуриватель')
+                .filter(human__id='152').count())
+    leht_invis_duos = (HumanTerminalPresence.objects
+                       .filter(terminal__model__model='Invis Duos')
+                       .filter(human__id='152').count())
+    leht_invis_duos_s = (HumanTerminalPresence.objects
+                         .filter(terminal__model__model='Invis Duos S')
+                         .filter(human__id='152').count())
+    leht_invis_duos_3d_l = (HumanTerminalPresence.objects
+                            .filter(terminal__model__model='Invis Duos 3D L')
+                            .filter(human__id='152').count())
+    leht_mts = (HumanSimPresence.objects
+                .filter(simcard__operator__name='МТС')
+                .filter(human__id='152').count())
+    leht_mega = (HumanSimPresence.objects
+                 .filter(simcard__operator__name='Мегафон')
+                 .filter(human__id='152').count())
+    leht_sim2m = (HumanSimPresence.objects
+                  .filter(simcard__operator__name='СИМ2М')
+                  .filter(human__id='152').count())
 
-    yar_2420 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2420').filter(human__id='501').count()
-    yar_2421 = HumanTerminalPresence.objects.filter(terminal__model__model='Smart S-2421').filter(human__id='501').count()
-
-#    mersl_mts = HumanSimPresence.objects.filter(simcard__operator__name='МТС').filter(human__id='673').count()
-#    mersl_mega = HumanSimPresence.objects.filter(simcard__operator__name='Мегафон').filter(human__id='673').count()
+    yar_2420 = (HumanTerminalPresence.objects
+                .filter(terminal__model__model='Smart S-2420')
+                .filter(human__id='501').count())
+    yar_2421 = (HumanTerminalPresence.objects
+                .filter(terminal__model__model='Smart S-2421')
+                .filter(human__id='501').count())
 
     context = {
         'symb_2011': symb_2011,
@@ -480,8 +618,6 @@ def reserve_view(request):
         'leht_sim2m': leht_sim2m,
         'yar_2420': yar_2420,
         'yar_2421': yar_2421
-#        'mersl_mts': mersl_mts,
-#        'mersl_mega': mersl_mega
-
     }
+
     return render(request, 'general_app/reserve.html', context=context)
