@@ -4,8 +4,9 @@ import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
+from django.db.models import Count, Q, OuterRef
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework import generics
 
 from .models import (Human, HumanContact, HumanNames, HumanSimPresence,
@@ -20,7 +21,8 @@ from .serializers import (HumanContactsSerializer, HumanNamesSerializer,
                           ObjectSerializer, PriceLogisticsSerializer,
                           PriceTrackersSerializer, ScheduleSerializer,
                           ServicesSerializer, SimSerializer,
-                          TerminalSerializer, UsersSerializer)
+                          SimCardMtsAllActiveSerializer, TerminalSerializer,
+                          UsersSerializer)
 
 
 class HumansAPIView(generics.ListAPIView):
@@ -93,6 +95,19 @@ class SimAPIView(generics.ListAPIView):
     serializer_class = SimSerializer
 
 
+class SimCardMtsAllActiveAPIView(generics.ListAPIView):
+    """Возвращает все номера МТС в активных объектах."""
+
+    queryset = SimCards.objects.values('number').filter(
+        operator__name='МТС',
+        number__isnull=False,
+        terminal__terminal_glonass_objects__date_change_status__gt=(
+            timezone.now()
+        )
+    ).values('number')
+    serializer_class = SimCardMtsAllActiveSerializer
+
+
 class TerminalAPIView(generics.ListAPIView):
     queryset = Terminals.objects.all()
     serializer_class = TerminalSerializer
@@ -106,40 +121,41 @@ class UsersAPIView(generics.ListAPIView):
 @login_required
 def index_view(request):
     """Отображение страницы проверок."""
-    sim_list = SimCards.objects.filter(
-        terminal=None,
-        humansimpresences__isnull=True
-    )
-    term_list = Terminals.objects.filter(
-        wialonobjects__isnull=True,
-        humanterminalpresence__isnull=True
-    )
-    # user_company_list = UserCompany.objects.all()
-    # user_list = (WialonUser.objects.filter(human=None)
-    #              .exclude(usercompany__in=user_company_list))
-    wia_obj_list = WialonObject.objects.filter(active__isnull=True)
-    sum_wia_obj = WialonObject.objects.filter(active=True).count()
-    sum_wia_obj_serv_active = Count(
-        'userwialonservers__user__wialonobjects',
-        filter=Q(userwialonservers__user__wialonobjects__active=True)
-    )
-    # sum_wia_obj_serv_active = Count(
-    #     'userwialonservers__user__wialonobjects__wialonobjectactive',
-    #     filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
+    # sim_list = SimCards.objects.filter(
+    #     terminal=None,
+    #     humansimpresences__isnull=True
     # )
-    wia_obj_serv_active = WialonServer.objects.annotate(
-        active=sum_wia_obj_serv_active
-        )
-    user_not_serv = WialonUser.objects.filter(userwialonserver__isnull=True)
-    context = {
-        'sim_list': sim_list,
-        'term_list': term_list,
-        # 'user_list': user_list,
-        'wia_obj_list': wia_obj_list,
-        'wia_obj_serv_active': wia_obj_serv_active,
-        'user_not_serv': user_not_serv,
-        'sum_wia_obj': sum_wia_obj
-    }
+    # term_list = Terminals.objects.filter(
+    #     wialonobjects__isnull=True,
+    #     humanterminalpresence__isnull=True
+    # )
+    # # user_company_list = UserCompany.objects.all()
+    # # user_list = (WialonUser.objects.filter(human=None)
+    # #              .exclude(usercompany__in=user_company_list))
+    # wia_obj_list = WialonObject.objects.filter(active__isnull=True)
+    # sum_wia_obj = WialonObject.objects.filter(active=True).count()
+    # sum_wia_obj_serv_active = Count(
+    #     'userwialonservers__user__wialonobjects',
+    #     filter=Q(userwialonservers__user__wialonobjects__active=True)
+    # )
+    # # sum_wia_obj_serv_active = Count(
+    # #     'userwialonservers__user__wialonobjects__wialonobjectactive',
+    # #     filter=Q(userwialonservers__user__wialonobjects__wialonobjectactive__active=True)
+    # # )
+    # wia_obj_serv_active = WialonServer.objects.annotate(
+    #     active=sum_wia_obj_serv_active
+    #     )
+    # user_not_serv = WialonUser.objects.filter(userwialonserver__isnull=True)
+    # context = {
+    #     'sim_list': sim_list,
+    #     'term_list': term_list,
+    #     # 'user_list': user_list,
+    #     'wia_obj_list': wia_obj_list,
+    #     'wia_obj_serv_active': wia_obj_serv_active,
+    #     'user_not_serv': user_not_serv,
+    #     'sum_wia_obj': sum_wia_obj
+    # }
+    context = {}
     return render(request, 'general_app/index.html', context=context)
 
 

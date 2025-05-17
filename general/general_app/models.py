@@ -1,9 +1,7 @@
 import datetime
 
-# from audioop import minmax
 from django.db import models
 from django.utils import timezone as tz
-# from django.core.exceptions import ValidationError
 
 
 class HumanNames(models.Model):
@@ -25,6 +23,7 @@ class Human(models.Model):
     name_id = models.ForeignKey(
         HumanNames,
         on_delete=models.PROTECT,
+        related_name='name_humans',
         verbose_name='Имя'
     )
     last_name = models.CharField(
@@ -91,33 +90,6 @@ class HumanContact(models.Model):
         verbose_name_plural = 'Контакты'
 
 
-class TelephoneNumber(models.Model):
-    """Пока не нужна"""
-    human = models.ForeignKey(
-        Human,
-        on_delete=models.PROTECT,
-    )
-    number = models.CharField(
-        max_length=20,
-        unique=True
-    )
-
-    def __str__(self):
-        return str(self.number)
-
-
-class Telegram(models.Model):
-    """Пока не нужна"""
-    human = models.ForeignKey(
-        Human,
-        on_delete=models.PROTECT
-    )
-    telegram_id = models.PositiveBigIntegerField(unique=True)
-
-    def __str__(self):
-        return str(self.telegram_id)
-
-
 class BrandTerminals(models.Model):
     brand = models.CharField(
         max_length=20,
@@ -139,7 +111,7 @@ class ModelTerminals(models.Model):
     brand = models.ForeignKey(
         BrandTerminals,
         on_delete=models.PROTECT,
-        related_name='models',
+        related_name='brand_models',
         verbose_name='Марка'
     )
     model = models.CharField(
@@ -162,7 +134,7 @@ class Terminals(models.Model):
     model = models.ForeignKey(
         ModelTerminals,
         on_delete=models.PROTECT,
-        related_name='t_model',
+        related_name='model_terminals',
         verbose_name='Модель',
         null=True,
         blank=True
@@ -201,12 +173,13 @@ class HumanTerminalPresence(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        related_name='humanterminalpresences',
+        related_name='human_terminal_holders',
         verbose_name='Человек'
     )
     terminal = models.OneToOneField(
         Terminals,
         on_delete=models.PROTECT,
+        related_name='terminal_holders',
         verbose_name='Терминал'
     )
     time_create = models.DateTimeField(
@@ -224,6 +197,7 @@ class Sensors(models.Model):
     model = models.ForeignKey(
         ModelTerminals,
         on_delete=models.PROTECT,
+        related_name='model_sensors',
         verbose_name='Модель'
     )
     serial_number = models.CharField(
@@ -262,11 +236,13 @@ class HumanSensorRelations(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
+        related_name='human_sensor_holders',
         verbose_name='Человек'
     )
     sensor = models.OneToOneField(
         Sensors,
         on_delete=models.PROTECT,
+        related_name='sensor_holders',
         verbose_name='Датчик'
     )
     comment = models.CharField(
@@ -307,7 +283,7 @@ class SimCards(models.Model):
     operator = models.ForeignKey(
         OperatorsSim,
         on_delete=models.PROTECT,
-        related_name='s_operator',
+        related_name='operator_sim_cards',
         verbose_name='Оператор'
     )
     number = models.CharField(
@@ -325,7 +301,7 @@ class SimCards(models.Model):
     terminal = models.ForeignKey(
         Terminals,
         on_delete=models.PROTECT,
-        related_name='s_terminal',
+        related_name='terminal_sim_cards',
         verbose_name='Терминал',
         null=True,
         blank=True
@@ -352,13 +328,13 @@ class HumanSimPresence(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        related_name='humansimpresences',
+        related_name='human_sim_card_holders',
         verbose_name='Человек'
     )
     simcard = models.OneToOneField(
         SimCards,
         on_delete=models.PROTECT,
-        related_name='humansimpresences',
+        related_name='sim_card_holders',
         verbose_name='SIM-карта'
     )
     time_create = models.DateTimeField(
@@ -391,6 +367,7 @@ class WialonUser(models.Model):
     server = models.ForeignKey(
         WialonServer,
         on_delete=models.PROTECT,
+        related_name='server_glonass_users',
         verbose_name='Сервер',
     )
     user_name = models.CharField(
@@ -400,6 +377,7 @@ class WialonUser(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
+        related_name='human_glonass_users',
         verbose_name='Человек',
         null=True,
         blank=True
@@ -428,7 +406,7 @@ class WialonObject(models.Model):
     terminal = models.OneToOneField(
         Terminals,
         on_delete=models.PROTECT,
-        related_name='wialonobjects',
+        related_name='terminal_glonass_objects',
         verbose_name='Терминал',
         null=True,
         blank=True
@@ -436,7 +414,7 @@ class WialonObject(models.Model):
     wialon_user = models.ForeignKey(
         WialonUser,
         on_delete=models.PROTECT,
-        related_name='wialonobjects',
+        related_name='user_glonass_objects',
         verbose_name='Учётная запись',
     )
     price = models.PositiveBigIntegerField(
@@ -446,7 +424,7 @@ class WialonObject(models.Model):
     payer = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        related_name='payer_human',
+        related_name='payer_glonass_objects',
         verbose_name='Плательщик'
     )
     active = models.BooleanField(
@@ -484,31 +462,6 @@ class WialonObject(models.Model):
         super(WialonObject, self).save(*args, **kwargs)
 
 
-# Нужно удалить
-class WialonObjectActive(models.Model):
-    wialon_object = models.OneToOneField(
-        WialonObject,
-        on_delete=models.CASCADE,
-        verbose_name='Объект'
-    )
-    active = models.BooleanField(
-        default=True,
-        verbose_name='Статус'
-    )
-    last_modified = models.DateTimeField(
-        default=tz.now,
-        verbose_name='Дата'
-    )
-
-    def __str__(self):
-        return str(self.wialon_object)
-
-    class Meta:
-        ordering = ['wialon_object']
-        verbose_name = 'Объект + Статус'
-        verbose_name_plural = 'Объекты + Статусы'
-
-
 class UserWialonServer(models.Model):
     user = models.OneToOneField(
         WialonUser,
@@ -533,60 +486,6 @@ class UserWialonServer(models.Model):
         verbose_name_plural = 'Серверы + Пользователи'
 
 
-class Company(models.Model):
-    name = models.CharField(
-        max_length=45,
-        verbose_name='Название'
-    )
-    human_company = models.ManyToManyField(
-        Human,
-        through='HumanCompany',
-        verbose_name='Человек'
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = 'Компания'
-        verbose_name_plural = 'Компании'
-
-
-class HumanCompany(models.Model):
-    company_hum = models.ForeignKey(
-        Company,
-        on_delete=models.PROTECT,
-        verbose_name='Компания'
-    )
-    human_comp = models.ForeignKey(
-        Human,
-        on_delete=models.PROTECT,
-        verbose_name='Человек'
-    )
-
-    class Meta:
-        verbose_name = 'Компания + Человек'
-        verbose_name_plural = 'Компании + Люди'
-
-
-class UserCompany(models.Model):
-    company_us = models.ForeignKey(
-        Company,
-        on_delete=models.PROTECT,
-        verbose_name='Компания'
-    )
-    user_comp = models.ForeignKey(
-        WialonUser,
-        on_delete=models.PROTECT,
-        verbose_name='Пользователь'
-    )
-
-    class Meta:
-        verbose_name = 'Компания + Пользователь'
-        verbose_name_plural = 'Компании + Пользователи'
-
-
 class BrandCar(models.Model):
     name = models.CharField(
         max_length=50,
@@ -607,7 +506,7 @@ class ModelCar(models.Model):
     brand = models.ForeignKey(
         BrandCar,
         on_delete=models.PROTECT,
-        related_name='modelcars',
+        related_name='brand_car_models',
         verbose_name='Марка'
     )
     name = models.CharField(
@@ -630,6 +529,7 @@ class CarGenerations(models.Model):
     model_id = models.ForeignKey(
         ModelCar,
         on_delete=models.PROTECT,
+        related_name='model_car_generations',
         verbose_name='Модель'
     )
     generation = models.CharField(
@@ -668,7 +568,7 @@ class Installation(models.Model):
         on_delete=models.PROTECT,
         null=True,
         blank=True,
-        related_name='installations',
+        related_name='model_installations',
         verbose_name='Модель ТС'
     )
     vin = models.CharField(
@@ -686,19 +586,19 @@ class Installation(models.Model):
     terminal = models.ForeignKey(
         Terminals,
         on_delete=models.PROTECT,
-        related_name='installations',
+        related_name='terminal_installations',
         verbose_name='Терминал'
     )
     human_worker = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
-        related_name='installations',
+        related_name='human_worker_installations',
         verbose_name='Установщик'
     )
     user = models.ForeignKey(
         WialonUser,
         on_delete=models.PROTECT,
-        related_name='installations',
+        related_name='user_installations',
         verbose_name='Пользователь'
     )
     juristic_person = models.BooleanField(
@@ -707,6 +607,7 @@ class Installation(models.Model):
     payer = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
+        related_name='payer_installations',
         verbose_name='Плательщик'
     )
     payment = models.BooleanField(
@@ -729,31 +630,11 @@ class Installation(models.Model):
         verbose_name_plural = 'Установки'
 
 
-class InstallationComment(models.Model):
-    installation = models.OneToOneField(
-        Installation,
-        on_delete=models.PROTECT,
-        related_name='installationcomments',
-        verbose_name='Установка'
-    )
-    text = models.CharField(
-        max_length=255,
-        verbose_name='Текст'
-    )
-
-    def __str__(self):
-        return self.text
-
-    class Meta:
-        ordering = ['installation']
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Установки + Комментарии'
-
-
 class Schedules(models.Model):
     human = models.ForeignKey(
         Human,
         on_delete=models.PROTECT,
+        related_name='human_schedules',
         verbose_name='Человек'
     )
     date = models.DateField(
@@ -812,6 +693,7 @@ class PriceTrackers(models.Model):
     tracker_model = models.ForeignKey(
         ModelTerminals,
         on_delete=models.PROTECT,
+        related_name='model_tracker_prices',
         verbose_name='Модель трекера'
     )
     cost = models.IntegerField(

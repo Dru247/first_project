@@ -22,7 +22,8 @@ from general_app.views import (HumansAPIView, HumanContactsAPIView,
                                ModelTerminalsAPIView, ObjectAPIView,
                                ObjectsAPIUpdate, PriceLogisticsAPIView,
                                PriceTrackersAPIView, ScheduleAPIView,
-                               ServicesAPIView, SimAPIView, TerminalAPIView,
+                               ServicesAPIView, SimAPIView,
+                               SimCardMtsAllActiveAPIView, TerminalAPIView,
                                UsersAPIView)
 
 urlpatterns = [
@@ -42,6 +43,9 @@ urlpatterns = [
     path('api/v1/schedule/', ScheduleAPIView.as_view()),
     path('api/v1/services/', ServicesAPIView.as_view()),
     path('api/v1/simlist/', SimAPIView.as_view()),
+
+    path('api/v1/sim/all-active-mts/', SimCardMtsAllActiveAPIView.as_view()),
+
     path('api/v1/termlist/', TerminalAPIView.as_view()),
     path('api/v1/tracker-models/', ModelTerminalsAPIView.as_view()),
     path('api/v1/userlist/', UsersAPIView.as_view()),

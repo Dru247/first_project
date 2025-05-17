@@ -80,6 +80,16 @@ class SimSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SimCardMtsAllActiveSerializer(serializers.ModelSerializer):
+    """Все активные номера МТС."""
+
+    class Meta:
+        """Класс Meta."""
+
+        model = SimCards
+        fields = ('number',)
+
+
 class TerminalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Terminals
