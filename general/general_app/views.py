@@ -4,7 +4,7 @@ import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q, OuterRef
+from django.db.models import Count, Q
 from django.shortcuts import render
 from django.utils import timezone
 from rest_framework import generics
@@ -98,13 +98,16 @@ class SimAPIView(generics.ListAPIView):
 class SimCardMtsAllActiveAPIView(generics.ListAPIView):
     """Возвращает все номера МТС в активных объектах."""
 
+    target_operator = 'МТС'
     queryset = SimCards.objects.values('number').filter(
-        operator__name='МТС',
-        number__isnull=False,
-        terminal__terminal_glonass_objects__date_change_status__gt=(
-            timezone.now()
-        )
-    ).values('number')
+        Q(
+            operator__name=target_operator,
+            number__isnull=False,
+            terminal__terminal_glonass_objects__date_change_status__gt=(
+                  timezone.now()
+            )
+        ) | Q(sim_card_holders__personal=True)
+    )
     serializer_class = SimCardMtsAllActiveSerializer
 
 

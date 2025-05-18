@@ -38,7 +38,7 @@ class Human(models.Model):
     )
 
     def __str__(self):
-        return '%s %s' % (self.name_id, self.last_name)
+        return f'{self.name_id} {self.last_name}'
 
     class Meta:
         ordering = ['name_id', 'last_name']
@@ -61,7 +61,6 @@ class Contact(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
         verbose_name = 'Вариант контакта'
         verbose_name_plural = 'Варианты контактов'
 
@@ -102,7 +101,6 @@ class BrandTerminals(models.Model):
         return self.brand
 
     class Meta:
-        ordering = ['brand']
         verbose_name = 'Марка терминала'
         verbose_name_plural = 'Терминал: марки'
 
@@ -122,10 +120,9 @@ class ModelTerminals(models.Model):
     )
 
     def __str__(self):
-        return '%s %s' % (self.brand, self.model)
+        return f'{self.brand} {self.model}'
 
     class Meta:
-        ordering = ['model']
         verbose_name = 'Модель терминала'
         verbose_name_plural = 'Терминал: модели'
 
@@ -164,7 +161,6 @@ class Terminals(models.Model):
         return self.imei
 
     class Meta:
-        ordering = ['imei']
         verbose_name = 'Терминал'
         verbose_name_plural = 'Терминалы'
 
@@ -188,7 +184,6 @@ class HumanTerminalPresence(models.Model):
     )
 
     class Meta:
-        ordering = ['human']
         verbose_name = 'Человек + Терминал'
         verbose_name_plural = 'Люди + Терминалы'
 
@@ -257,7 +252,6 @@ class HumanSensorRelations(models.Model):
     )
 
     class Meta:
-        ordering = ['human']
         verbose_name = 'Человек + Датчик'
         verbose_name_plural = 'Люди + Датчики'
 
@@ -274,7 +268,6 @@ class OperatorsSim(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
         verbose_name = 'Оператор'
         verbose_name_plural = 'Операторы'
 
@@ -306,10 +299,6 @@ class SimCards(models.Model):
         null=True,
         blank=True
     )
-    personal = models.BooleanField(
-        default=False,
-        verbose_name='Личная'
-    )
     time_create = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата создания'
@@ -319,7 +308,6 @@ class SimCards(models.Model):
         return self.icc
 
     class Meta:
-        ordering = ['number']
         verbose_name = 'SIM-карта'
         verbose_name_plural = 'SIM-карты'
 
@@ -329,7 +317,7 @@ class HumanSimPresence(models.Model):
         Human,
         on_delete=models.PROTECT,
         related_name='human_sim_card_holders',
-        verbose_name='Человек'
+        verbose_name='Держатель'
     )
     simcard = models.OneToOneField(
         SimCards,
@@ -337,15 +325,18 @@ class HumanSimPresence(models.Model):
         related_name='sim_card_holders',
         verbose_name='SIM-карта'
     )
+    personal = models.BooleanField(
+        default=False,
+        verbose_name='Личная'
+    )
     time_create = models.DateTimeField(
         auto_now=True,
         verbose_name='Дата'
     )
 
     class Meta:
-        ordering = ['human']
-        verbose_name = 'Человек + SIM-карта'
-        verbose_name_plural = 'Люди + SIM-карты'
+        verbose_name = 'Держатель SIM-карты'
+        verbose_name_plural = 'Держатели SIM-карт'
 
 
 class WialonServer(models.Model):
